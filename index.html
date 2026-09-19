@@ -40,518 +40,262 @@
   >
 </head>
 
-<body>
+<body class="home-page intro-active">
 
-<header class="site-header">
+<div
+  class="site-intro"
+  data-site-intro
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="intro-title"
+>
 
-  <div class="container nav">
-
-    <a class="brand" href="index.html">
-      <span class="brand-mark"></span>
-      <span>SPRINKLE OF HAPPINESS</span>
-    </a>
+  <section
+    class="intro-panel intro-panel-active"
+    data-intro-panel="start"
+  >
 
     <button
-      class="menu-toggle"
-      aria-label="Open navigation"
+      class="intro-button intro-button-primary"
+      type="button"
+      data-intro-next="question"
+      id="intro-title"
     >
-      ☰
+      ARE YOU A SURVIVOR?
     </button>
 
-    <nav class="nav-links">
-      <a class="active" href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="workshops.html">Workshops</a>
-      <a href="community.html">Community</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+  </section>
 
-    <a class="btn" href="community.html">
-      Join Us
-    </a>
+  <section
+    class="intro-panel"
+    data-intro-panel="question"
+    aria-hidden="true"
+  >
 
-  </div>
+    <div class="intro-card">
 
-</header>
-
-<main>
-
-<section class="hero">
-
-  <div class="container">
-
-    <div class="eyebrow">
-      Creative wellbeing for real life
-    </div>
-
-    <h1>
-      Creative spaces for
-      <span class="accent">healing</span>,
-      connection & joy.
-    </h1>
-
-    <p class="lead">
-      Sprinkle of Happiness Holistic Creative Arts Factory
-      creates free and accessible spaces where people can
-      explore mental wellbeing through creativity,
-      conversation, movement and community.
-    </p>
-
-    <div class="actions">
-
-      <a
-        class="btn"
-        href="workshops.html"
-      >
-        Explore Workshops
-      </a>
-
-      <a
-        class="btn btn-secondary"
-        href="community.html"
-      >
-        Join the Community
-      </a>
-
-    </div>
-
-    <p class="hero-note">
-      Come as you are. Create, reflect, move,
-      share and grow with us.
-    </p>
-
-  </div>
-
-</section>
-
-<section class="section">
-
-  <div class="container">
-
-    <div class="eyebrow">
-      Why we exist
-    </div>
-
-    <h2 class="section-title">
-      A different kind of wellbeing space.
-    </h2>
-
-    <p class="section-copy">
-      Not another wellness brand selling perfection.
-      A creative community built around honesty,
-      expression, compassion and practical support.
-    </p>
-
-    <p class="section-copy">
-      We believe healing does not have to happen alone.
-      Through creative workshops, honest conversations
-      and shared experiences, we make space for people
-      to feel seen, supported and inspired.
-    </p>
-
-  </div>
-
-</section>
-
-<section class="section">
-
-  <div class="container">
-
-    <div class="eyebrow">
-      Get involved
-    </div>
-
-    <h2 class="section-title">
-      Three ways in. One community.
-    </h2>
-
-    <div class="grid-3">
-
-      <article class="card">
-
-        <span class="number">
-          01
-        </span>
-
-        <h3>
-          Volunteer
-        </h3>
-
-        <p>
-          Help us create safe, welcoming and
-          imaginative spaces for the community.
-        </p>
-
-        <a
-          class="btn btn-ghost"
-          href="community.html"
-        >
-          Volunteer With Us
-        </a>
-
-      </article>
-
-      <article class="card">
-
-        <span class="number">
-          02
-        </span>
-
-        <h3>
-          Become a Member
-        </h3>
-
-        <p>
-          Stay connected to workshops,
-          conversations and community resources.
-        </p>
-
-        <a
-          class="btn btn-ghost"
-          href="community.html"
-        >
-          Become a Member
-        </a>
-
-      </article>
-
-      <article class="card">
-
-        <span class="number">
-          03
-        </span>
-
-        <h3>
-          Join Us
-        </h3>
-
-        <p>
-          Take part in a creative gathering
-          and meet people who understand.
-        </p>
-
-        <a
-          class="btn btn-ghost"
-          href="workshops.html"
-        >
-          See What's On
-        </a>
-
-      </article>
-
-    </div>
-
-  </div>
-
-</section>
-
-<section class="section">
-
-  <div class="container">
-
-    <div class="eyebrow">
-      What's on
-    </div>
-
-    <h2 class="section-title">
-      Spaces to breathe, create & connect.
-    </h2>
-
-    <div class="grid-3">
-
-      <article class="card workshop-card">
-
-        <div class="meta">
-          Free · London · Hybrid
-        </div>
-
-        <h3>
-          Creative Expression Circle
-        </h3>
-
-        <p>
-          A gentle space to explore thoughts and
-          feelings through writing, poetry and
-          conversation.
-        </p>
-
-        <p>
-          No previous creative experience needed.
-        </p>
-
-        <a
-          class="btn"
-          href="#"
-          data-placeholder
-        >
-          Book a Workshop
-        </a>
-
-      </article>
-
-      <article class="card workshop-card">
-
-        <div class="meta">
-          Community · Reflective
-        </div>
-
-        <h3>
-          Storytelling & Self-Discovery
-        </h3>
-
-        <p>
-          Explore lived experience, identity and
-          connection through guided storytelling
-          and reflective prompts.
-        </p>
-
-        <a
-          class="btn"
-          href="#"
-          data-placeholder
-        >
-          Book a Workshop
-        </a>
-
-      </article>
-
-      <article class="card workshop-card">
-
-        <div class="meta">
-          Movement · Mindfulness
-        </div>
-
-        <h3>
-          Move & Reset
-        </h3>
-
-        <p>
-          A welcoming session combining mindful
-          movement, breath and simple grounding
-          practices.
-        </p>
-
-        <a
-          class="btn"
-          href="#"
-          data-placeholder
-        >
-          Book a Workshop
-        </a>
-
-      </article>
-
-    </div>
-
-  </div>
-
-</section>
-
-<section class="section">
-
-  <div class="container grid-2">
-
-    <div class="placeholder">
-
-      <div>
-
-        <strong>
-          Community Image
-        </strong>
-
-        <p class="small">
-          Replace this with approved
-          Sprinkle of Happiness photography.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div>
-
-      <div class="eyebrow">
-        Community voice
-      </div>
-
-      <p class="quote">
-        <span class="quote-mark">“</span>
-        You do not need to have everything
-        figured out. You only need to take
-        the next small step.
+      <p class="intro-question">
+        Click to survive.
       </p>
 
-      <p class="section-copy">
-        Participant stories, testimonials
-        and workshop moments can be added
-        here once approved.
-      </p>
+      <div class="intro-actions">
 
-    </div>
-
-  </div>
-
-</section>
-
-<section class="band">
-
-  <div class="container">
-
-    <div
-      class="eyebrow"
-      style="color:white"
-    >
-      Support the work
-    </div>
-
-    <h2 class="section-title">
-      Help us keep the door open.
-    </h2>
-
-    <p
-      class="lead"
-      style="color:white"
-    >
-      Your support helps us create accessible
-      workshops, pay creative facilitators fairly
-      and reach more people across London.
-    </p>
-
-    <a
-      class="btn btn-secondary"
-      href="#"
-      data-placeholder
-    >
-      Support Sprinkle of Happiness
-    </a>
-
-  </div>
-
-</section>
-
-<section class="section">
-
-  <div class="container newsletter">
-
-    <div>
-
-      <div class="eyebrow">
-        Stay connected
-      </div>
-
-      <h2 class="section-title">
-        A little happiness in your inbox.
-      </h2>
-
-      <p class="section-copy">
-        Hear about workshops, community
-        gatherings and future programmes.
-      </p>
-
-    </div>
-
-    <form data-demo-form>
-
-      <label>
-        Email address
-      </label>
-
-      <div class="form-row">
-
-        <input
-          type="email"
-          required
-          placeholder="you@example.com"
+        <button
+          class="intro-button"
+          type="button"
+          data-intro-enter
         >
+          YES
+        </button>
 
-        <button class="btn">
-          Join Newsletter
+        <button
+          class="intro-button intro-button-secondary"
+          type="button"
+          data-intro-next="learn"
+        >
+          NO
         </button>
 
       </div>
 
-    </form>
+    </div>
 
+  </section>
+
+  <section
+    class="intro-panel"
+    data-intro-panel="learn"
+    aria-hidden="true"
+  >
+
+    <div class="intro-card intro-card-wide">
+
+      <p class="intro-question">
+        Would you like to learn about Sprinkle of Happiness?
+      </p>
+
+      <div class="intro-actions">
+
+        <button
+          class="intro-button"
+          type="button"
+          data-intro-enter
+        >
+          YES
+        </button>
+
+        <button
+          class="intro-button intro-button-secondary"
+          type="button"
+          data-intro-enter
+        >
+          HELL YEAH
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html"><span class="brand-mark"></span><span>SPRINKLE OF HAPPINESS</span></a>
+    <button class="menu-toggle" aria-label="Open navigation">Menu</button>
+    <nav class="nav-links">
+      <a data-nav="home" class="active" href="index.html">Home</a>
+      <a data-nav="about" href="about.html">About</a>
+      <a data-nav="kaan" href="kaan.html">Meet Kaan</a>
+      <a data-nav="experiences" href="experiences.html">Experiences</a>
+      <a data-nav="values" href="values.html">Our Values</a>
+      <a data-nav="community" href="community.html">Community</a>
+      <a data-nav="support" class="support-nav" href="support.html">Need Support?</a>
+      <a data-nav="contact" href="contact.html">Contact</a>
+    </nav>
+    <a class="btn" href="community.html">Join Us</a>
+  </div>
+</header>
+
+<main class="dreamland-main">
+
+<section class="story-scene dream-hero" aria-labelledby="home-title">
+  <div class="dream-sky" aria-hidden="true">
+    <span class="cloud cloud-large cloud-left"></span>
+    <span class="cloud cloud-medium cloud-right"></span>
+    <span class="floating-asset asset-star asset-one"></span>
+    <span class="floating-asset asset-flower asset-two"></span>
+    <span class="floating-asset asset-paper asset-three"></span>
   </div>
 
+  <div class="container storyboard-grid">
+    <div class="story-copy reveal">
+      <div class="eyebrow">From survival to Chardi Kala</div>
+      <h1 id="home-title">Sprinkle of Happiness</h1>
+      <p class="dreamline">What if everything turns out for your good?</p>
+      <p class="lead">Creative wellbeing. Community. Connection. Hope.</p>
+      <div class="actions">
+        <a class="btn" href="community.html">Join the Community</a>
+        <a class="btn btn-secondary" href="experiences.html">Explore Experiences</a>
+      </div>
+    </div>
+
+    <div class="dream-orbit dream-art dream-art--hero dream-art--environment reveal reveal-delay-1" data-art-id="HOME-HERO-01" aria-label="Creative dreamland motifs">
+      <div class="sun-core">Hope</div>
+      <span>Create</span>
+      <span>Connect</span>
+      <span>Move</span>
+      <span>Reflect</span>
+    </div>
+  </div>
+</section>
+
+<section class="story-scene scene-soft" aria-labelledby="why-exist">
+  <div class="container narrow-story reveal">
+    <div class="thought-bubble">
+      <div class="eyebrow">Why we exist</div>
+      <h2 id="why-exist" class="section-title">What if healing didn't have to happen alone?</h2>
+      <p class="story-statement">A world where no one has to heal alone.</p>
+      <p class="section-copy">Sprinkle of Happiness creates survivor-led spaces where creativity, spirituality and community can help people move from survival towards hope, connection and joy.</p>
+      <a class="organic-link" href="about.html">Discover our story</a>
+    </div>
+  </div>
+</section>
+
+<section class="story-scene scene-discovery" aria-labelledby="ways-in">
+  <div class="container">
+    <div class="scene-heading reveal">
+      <div class="eyebrow">Discover your way in</div>
+      <h2 id="ways-in" class="section-title">Create. Connect. Move. Reflect.</h2>
+    </div>
+
+    <div class="wayfinder" aria-label="Ways to engage with Sprinkle of Happiness">
+      <article class="way-cloud reveal"><span class="asset-icon">Pen</span><h3>Create</h3><p>Writing, poetry, photography and storytelling.</p></article>
+      <article class="way-cloud reveal reveal-delay-1"><span class="asset-icon">Cup</span><h3>Connect</h3><p>Circles, peer connection and community conversation.</p></article>
+      <article class="way-cloud reveal reveal-delay-2"><span class="asset-icon">Path</span><h3>Move</h3><p>Yoga, gentle movement, nature walks and grounding.</p></article>
+      <article class="way-cloud reveal reveal-delay-3"><span class="asset-icon">Sun</span><h3>Reflect</h3><p>Spirituality, journaling, mindfulness and Chardi Kala.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="story-scene scene-paths" aria-labelledby="experiences">
+  <div class="container">
+    <div class="scene-heading reveal">
+      <div class="eyebrow">Experiences</div>
+      <h2 id="experiences" class="section-title">Three paths through the world.</h2>
+    </div>
+
+    <div class="experience-paths">
+      <article class="path-panel reveal"><span class="path-label">Create</span><h3>Workshops</h3><p>Creative sessions for expression, storytelling and self-discovery.</p><a class="btn btn-ghost" href="workshops.html">Explore Workshops</a></article>
+      <article class="path-panel reveal reveal-delay-1"><span class="path-label">Connect</span><h3>Circles</h3><p>Welcoming spaces for conversation, reflection and being witnessed.</p><a class="btn btn-ghost" href="circles.html">Explore Circles</a></article>
+      <article class="path-panel reveal reveal-delay-2"><span class="path-label">Explore</span><h3>Walks</h3><p>Gentle movement and nature-led connection for body, mind and spirit.</p><a class="btn btn-ghost" href="walks.html">Explore Walks</a></article>
+    </div>
+  </div>
+</section>
+
+<section class="story-scene scene-founder" aria-labelledby="meet-kaan">
+  <div class="container founder-layout">
+    <div class="portrait-placeholder dream-art dream-art--portrait reveal" data-art-id="KAAN-PORTRAIT-01" aria-label="Replaceable Kaan Singh portrait asset slot"><span class="asset-icon">Portrait</span><strong>Kaan Singh</strong><p>Replace with approved founder photography or 3D portrait artwork.</p></div>
+    <div class="story-copy reveal reveal-delay-1">
+      <div class="eyebrow">Meet Kaan</div>
+      <h2 id="meet-kaan" class="section-title">Built from lived experience.</h2>
+      <p class="quote"><span class="quote-mark">&quot;</span>I created Sprinkle of Happiness from a deeply personal place...</p>
+      <p class="section-copy">Founder Kaan Singh is a writer, performer, photographer and creative facilitator. The work grew from his lived experiences of trauma, mental health challenges, homelessness, survival, recovery, spirituality and creative expression.</p>
+      <a class="organic-link" href="kaan.html">Meet Kaan</a>
+    </div>
+  </div>
+</section>
+
+<section class="story-scene scene-values" aria-labelledby="values">
+  <div class="container values-world reveal">
+    <div class="values-sun" aria-hidden="true"></div>
+    <div class="scene-heading"><div class="eyebrow">Our values</div><h2 id="values" class="section-title">Listening with compassion.</h2><p class="section-copy">Inspired by Sikh values while welcoming people of all faiths and none. Creating with honesty. Serving with humility. Choosing hope together.</p><a class="organic-link" href="values.html">Explore our values</a></div>
+    <div class="value-constellation" aria-label="Sprinkle of Happiness values"><span>Truth</span><span>Compassion</span><span>Contentment</span><span>Humility</span><span>Love</span><span>Seva</span><span>Equality</span><span>Chardi Kala</span></div>
+  </div>
+</section>
+
+<section class="story-scene scene-community" aria-labelledby="community">
+  <div class="container"><div class="community-gathering reveal"><div><div class="eyebrow">Community</div><h2 id="community" class="section-title">There is a place for you here.</h2></div><div class="community-actions" aria-label="Community paths"><a href="community.html">Join</a><a href="community.html">Volunteer</a><a href="contact.html">Collaborate</a><a href="experiences.html">Attend</a><a href="community.html">Support</a></div></div></div>
+</section>
+
+<section class="story-scene scene-night" aria-labelledby="support">
+  <div class="night-sky" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="container narrow-story reveal"><div class="support-cloud"><div class="eyebrow">Support</div><h2 id="support" class="section-title">Until there's not a single suicide.</h2><p class="story-statement">Compassion over condemnation.</p><p class="section-copy">Sprinkle of Happiness believes nobody should have to face unbearable pain alone. This work supports wellbeing but does not replace emergency, medical, therapeutic or crisis services.</p><a class="btn" href="support.html">I Need Support</a></div></div>
+</section>
+
+<section class="story-scene scene-sunrise" aria-labelledby="fly">
+  <div class="container storyboard-grid"><div class="story-copy reveal"><div class="eyebrow">Return to light</div><h2 id="fly" class="section-title">What if I fly?</h2><p class="dreamline">What if everything turns out for your good?</p><p class="section-copy">The journey keeps moving: survival, expression, connection, hope and joy.</p></div><div class="phoenix-placeholder dream-art dream-art--object dream-art--foreground reveal reveal-delay-1" data-art-id="HOME-PHOENIX-01" aria-label="Replaceable phoenix or bird artwork slot"><span class="asset-icon">Bird</span><strong>Phoenix / bird asset</strong></div></div>
+</section>
+
+<section class="story-scene scene-final" aria-labelledby="final-invite">
+  <div class="container final-cloud reveal"><h2 id="final-invite" class="section-title">There is a place for you here.</h2><p class="lead">Create. Connect. Move. Reflect. Join us.</p><div class="actions"><a class="btn" href="community.html">Join the Community</a><a class="btn btn-secondary" href="experiences.html">Explore Experiences</a></div></div>
 </section>
 
 </main>
 
 <footer class="footer">
-
   <div class="container">
-
     <div class="footer-grid">
-
-      <div>
-
-        <div class="brand">
-          <span class="brand-mark"></span>
-          <span>SPRINKLE OF HAPPINESS</span>
-        </div>
-
-        <p>
-          A community-led creative wellbeing
-          space for healing, expression and connection.
-        </p>
-
-      </div>
-
-      <div>
-        <h4>Explore</h4>
-        <p><a href="about.html">About</a></p>
-        <p><a href="workshops.html">Workshops</a></p>
-      </div>
-
-      <div>
-        <h4>Community</h4>
-        <p><a href="community.html">Join Us</a></p>
-        <p><a href="contact.html">Contact</a></p>
-      </div>
-
-      <div>
-        <h4>Important</h4>
-        <p><a href="#" data-placeholder>Safeguarding</a></p>
-        <p><a href="#" data-placeholder>Privacy</a></p>
-        <p><a href="#" data-placeholder>Terms</a></p>
-      </div>
-
+      <div><div class="brand"><span class="brand-mark"></span><span>SPRINKLE OF HAPPINESS</span></div><p>A community-led creative wellbeing space for healing, expression and connection.</p></div>
+      <div><h4>Explore</h4><p><a href="about.html">About</a></p><p><a href="experiences.html">Experiences</a></p><p><a href="values.html">Our Values</a></p></div>
+      <div><h4>Community</h4><p><a href="community.html">Community</a></p><p><a href="coffee.html">Let's Get a Coffee</a></p><p><a href="contact.html">Contact</a></p></div>
+      <div><h4>Support</h4><p><a href="support.html">Need Support?</a></p><p><a href="#" data-placeholder>Safeguarding</a></p><p><a href="#" data-placeholder>Privacy</a></p><p><a href="#" data-placeholder>Terms</a></p></div>
     </div>
-
-    <div class="notice">
-
-      <strong>Need urgent help?</strong>
-
-      These workshops support wellbeing but are
-      not a replacement for professional medical
-      or psychiatric care.
-
-      In the UK, contact Samaritans on
-      <strong>116 123</strong>.
-
-      In an emergency call <strong>999</strong>.
-
-    </div>
-
-    <div class="footer-bottom">
-
-      <span>
-        © 2026 Sprinkle of Happiness
-        Holistic Creative Arts Factory.
-      </span>
-
-      <span>
-        All rights reserved.
-      </span>
-
-    </div>
-
+    <div class="notice"><strong>Need urgent help?</strong> If there is immediate danger, call <strong>999</strong> or go to A&amp;E. Samaritans: <a href="tel:116123?oai_link_source=model_response_hotline"><strong>116 123</strong></a>.</div>
+    <div class="footer-bottom"><span>� 2026 Sprinkle of Happiness Holistic Creative Arts Factory.</span><span>All rights reserved.</span></div>
   </div>
-
 </footer>
 
 <script src="js/main.js"></script>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
