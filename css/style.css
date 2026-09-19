@@ -2514,3 +2514,305 @@ body.story-page {
   .sun-core,
   .way-cloud { animation: none !important; }
 }
+
+/* =========================
+   PROFESSIONAL RHYTHM PASS
+========================= */
+:root {
+  --text-xs: 0.78rem;
+  --text-sm: 0.9rem;
+  --text-base: 1rem;
+  --text-lg: clamp(1.08rem, 1.1vw, 1.2rem);
+  --text-intro: clamp(1.12rem, 1.45vw, 1.34rem);
+  --heading-sm: clamp(1.3rem, 1.8vw, 1.65rem);
+  --heading-md: clamp(2.1rem, 3.2vw, 3.6rem);
+  --heading-lg: clamp(2.85rem, 5.2vw, 5.6rem);
+  --heading-hero: clamp(3.25rem, 6.8vw, 6.8rem);
+  --space-xs: 0.55rem;
+  --space-sm: 0.85rem;
+  --space-md: 1.25rem;
+  --space-lg: 1.8rem;
+  --space-xl: clamp(2.4rem, 5vw, 4.4rem);
+  --space-section: clamp(4.6rem, 7.5vw, 6.8rem);
+  --space-section-tight: clamp(3.4rem, 5.8vw, 5rem);
+  --measure: 68ch;
+  --measure-wide: 78ch;
+  --reveal-normal: 520ms;
+  --scene-overlap: clamp(22px, 4vw, 56px);
+}
+
+body { font-size: var(--text-base); }
+.nav { min-height: 68px; }
+.brand { gap: 10px; font-size: var(--text-sm); }
+.brand-mark { width: 34px; height: 34px; }
+.nav-links { font-size: var(--text-xs); gap: clamp(10px, 1.45vw, 18px); letter-spacing: 0.07em; }
+.support-nav, .nav-links .support-nav { padding: 8px 12px; }
+.btn, .intro-button { min-height: 44px; padding: 11px 18px; font-size: var(--text-xs); letter-spacing: 0.065em; }
+.hero { min-height: 74vh; padding: var(--space-section) 0 var(--space-xl); }
+.hero h1, .dream-hero h1, .inner-story-main h1 { max-width: 920px; font-size: var(--heading-hero); line-height: 0.92; letter-spacing: -0.025em; }
+.dream-hero { min-height: calc(88vh - 68px); }
+.inner-hero { min-height: calc(72vh - 68px); padding: var(--space-section-tight) 0; }
+.contact-page-main .inner-hero, .coffee-page-main .inner-hero, .support-page-main .inner-hero { min-height: calc(64vh - 68px); }
+.section-title { max-width: 860px; font-size: var(--heading-lg); line-height: 0.98; letter-spacing: -0.024em; }
+.urgent-panel h2 { font-size: var(--heading-md); line-height: 1; }
+.path-gateways h2, .experience-card h2, .detail-panel h2, .way-cloud h3, .path-panel h3, .river-stone h3, .reflection-cloud h3, .belonging-island h3 { font-size: var(--heading-sm); line-height: 1.08; }
+.eyebrow, .path-label, .meta, .future-info dt, .contact-cloud-form label, .support-request-form label, .floating-asset, .asset-icon { font-size: var(--text-xs); letter-spacing: 0.09em; }
+.lead, .dreamline, .founder-note { max-width: var(--measure-wide); font-size: var(--text-intro); line-height: 1.45; }
+.dreamline { margin-top: var(--space-md); }
+.section-copy, .story-copy p, .detail-panel p, .experience-card p, .river-stone p, .reflection-cloud p, .future-info dd, .footer p, .footer a { max-width: var(--measure); font-size: var(--text-base); line-height: 1.62; }
+.story-statement, .cinematic-quote.compact { margin: var(--space-md) 0 var(--space-sm); font-size: clamp(1.35rem, 2.35vw, 2.35rem); line-height: 1.18; }
+.cinematic-quote { max-width: 900px; margin-top: var(--space-lg); font-size: clamp(1.85rem, 3.7vw, 3.7rem); line-height: 1.12; }
+.story-scene { min-height: auto; padding: var(--space-section) 0; }
+.scene-final { min-height: 56vh; }
+.storyboard-grid, .founder-layout { gap: clamp(24px, 4.2vw, 54px); }
+.scene-heading { max-width: 780px; margin-bottom: var(--space-lg); }
+.thought-bubble, .support-cloud, .final-cloud, .vision-cloud, .welcome-moment, .future-info, .community-agreements { padding: clamp(26px, 4.5vw, 52px); }
+.path-panel, .path-gateways .path-panel, .experience-card, .detail-panel, .river-stone, .reflection-cloud, .belonging-island, .urgent-card { min-height: auto; padding: clamp(22px, 3vw, 32px); }
+.path-gateways .path-panel, .experience-card { min-height: 280px; }
+.detail-panel, .river-stone, .reflection-cloud { min-height: 210px; }
+.asset-stage, .portrait-placeholder, .phoenix-placeholder, .community-people-stage, .contact-conversation-stage, .hospitality-moment { min-height: clamp(300px, 34vw, 430px); padding: clamp(24px, 4vw, 38px); }
+.art-slot--hero, .dream-art--hero { min-height: clamp(300px, 36vw, 520px); }
+.dream-art--portrait { min-height: clamp(320px, 36vw, 500px); }
+.dream-art--object, .dream-art--floating, .dream-art { min-height: clamp(240px, 30vw, 410px); }
+.dream-orbit { min-height: 390px; }
+.wayfinder { min-height: 460px; }
+.way-cloud { min-height: 190px; padding: 28px; }
+.values-world { min-height: 500px; }
+.value-constellation { min-height: 300px; }
+.community-gathering { min-height: 420px; gap: 28px; }
+.community-actions { min-height: 350px; }
+.community-orbit { min-height: 620px; }
+.community-orbit .belonging-island { min-height: 190px; }
+.welcome-words { margin: var(--space-lg) 0; }
+.mission-river, .lived-values, .reflection-path, .value-triad { gap: clamp(16px, 2.4vw, 24px); margin-top: var(--space-lg); }
+.creative-orbit { min-height: 320px; }
+.journey-thread { margin-top: var(--space-lg); }
+.hospitality-cloud, .parts-constellation, .small-orbit, .future-info dl { margin: var(--space-lg) 0; }
+.value-flowers span { min-height: 220px; padding: 24px 18px; }
+.belonging-pathways, .contact-pathways, .experience-list, .detail-layout, .community-agreements { gap: clamp(16px, 2.6vw, 28px); }
+.urgent-panel { padding: clamp(24px, 4vw, 42px); }
+.urgent-card { gap: 6px; min-height: 132px; }
+.urgent-card strong { font-size: 1.08rem; }
+.session-journey span, .agreement-clouds span, .tag-cloud span, .creative-orbit span, .journey-thread span, .gentle-list span, .hospitality-cloud span, .welcome-clouds span, .parts-constellation span, .speech-bubbles span, .contact-cloud-path a, .contact-pathways a, .welcome-words span { min-height: 56px; padding: 12px 18px; font-size: var(--text-sm); }
+.contact-cloud-path { gap: 12px; }
+.support-request-form { padding: clamp(22px, 3.5vw, 36px); }
+.form-row { gap: 16px; }
+label { margin-bottom: 7px; font-size: var(--text-sm); }
+input, textarea, select { padding: 13px 14px; }
+textarea { min-height: 130px; }
+.contact-cloud-form button, .support-request-form button { margin-top: var(--space-sm); }
+.footer { padding: var(--space-section-tight) 0 var(--space-lg); }
+.footer-grid { gap: clamp(20px, 3vw, 34px); }
+.footer h4 { margin-bottom: var(--space-sm); font-size: var(--text-sm); }
+.footer-bottom { margin-top: var(--space-lg); padding-top: var(--space-md); gap: 12px; }
+.reveal { transform: translateY(18px) scale(0.99); transition-duration: var(--reveal-normal); }
+.reveal-delay-1 { transition-delay: 70ms; }
+.reveal-delay-2 { transition-delay: 130ms; }
+.reveal-delay-3 { transition-delay: 190ms; }
+
+@media (min-width: 1440px) {
+  .story-scene { padding-top: var(--space-section); padding-bottom: var(--space-section); }
+}
+
+@media (max-width: 1100px) {
+  :root { --heading-hero: clamp(3rem, 7.2vw, 5.8rem); --heading-lg: clamp(2.5rem, 5vw, 4.6rem); --space-section: clamp(4rem, 7vw, 5.8rem); }
+  .nav-links { font-size: 0.76rem; }
+}
+
+@media (max-width: 900px) {
+  :root { --heading-hero: clamp(2.75rem, 9vw, 5rem); --heading-lg: clamp(2.25rem, 6vw, 4rem); --space-section: clamp(3.6rem, 8vw, 5rem); --space-section-tight: clamp(3rem, 7vw, 4.2rem); }
+  .inner-hero, .contact-page-main .inner-hero, .coffee-page-main .inner-hero, .support-page-main .inner-hero { min-height: auto; }
+  .storyboard-grid, .founder-layout { gap: 24px; }
+  .asset-stage, .portrait-placeholder, .phoenix-placeholder, .community-people-stage, .contact-conversation-stage, .hospitality-moment { min-height: 280px; }
+}
+
+@media (max-width: 640px) {
+  :root { --text-base: 1rem; --text-intro: 1.06rem; --heading-hero: clamp(2.55rem, 13vw, 4.35rem); --heading-lg: clamp(2rem, 10vw, 3.35rem); --heading-md: clamp(1.75rem, 8vw, 2.65rem); --space-section: 3.2rem; --space-section-tight: 2.8rem; }
+  .container { width: min(var(--max-width), calc(100% - 32px)); }
+  .hero, .dream-hero, .inner-hero { min-height: auto; padding: var(--space-section-tight) 0; }
+  .dream-hero h1, .inner-story-main h1, .hero h1 { font-size: var(--heading-hero); }
+  .lead, .dreamline, .section-copy, .story-statement { font-size: var(--text-base); }
+  .story-scene { padding: var(--space-section) 0; }
+  .thought-bubble, .support-cloud, .final-cloud, .vision-cloud, .welcome-moment, .future-info, .community-agreements, .support-request-form, .urgent-panel { padding: 22px; }
+  .dream-orbit span, .way-cloud, .community-actions a, .value-constellation span, .sun-core, .session-journey span, .agreement-clouds span, .tag-cloud span, .creative-orbit span, .journey-thread span, .gentle-list span, .hospitality-cloud span, .welcome-clouds span, .parts-constellation span, .speech-bubbles span, .contact-cloud-path a, .contact-pathways a, .welcome-words span { min-height: 52px; }
+  .asset-stage, .portrait-placeholder, .phoenix-placeholder, .community-people-stage, .contact-conversation-stage, .hospitality-moment, .dream-art, .dream-art--hero, .dream-art--portrait, .dream-art--object, .dream-art--floating { min-height: 240px; }
+  .footer { padding-top: var(--space-section); }
+}
+
+/* =========================
+   PROFESSIONAL DESIGN CORRECTION V2
+   Stronger proportion reset while preserving dreamland identity.
+========================= */
+:root {
+  --max-width: 1240px;
+  --type-label: clamp(0.8rem, 0.78vw, 0.9rem);
+  --type-body: clamp(1rem, 0.92vw, 1.08rem);
+  --type-body-lg: clamp(1.08rem, 1.18vw, 1.28rem);
+  --type-h3: clamp(1.18rem, 1.45vw, 1.48rem);
+  --type-h2: clamp(2rem, 3.2vw, 3.25rem);
+  --type-h1: clamp(2.85rem, 4.9vw, 4.8rem);
+  --type-display: clamp(3.5rem, 6.2vw, 6.4rem);
+  --space-1: 0.5rem;
+  --space-2: 0.8rem;
+  --space-3: 1.15rem;
+  --space-4: 1.6rem;
+  --space-5: 2.25rem;
+  --space-6: clamp(3rem, 5.5vw, 4.75rem);
+  --section-space: clamp(3.75rem, 6.4vw, 5.75rem);
+  --section-space-sm: clamp(2.75rem, 4.6vw, 4.25rem);
+  --measure: 64ch;
+  --measure-wide: 72ch;
+  --reveal-normal: 440ms;
+}
+
+body { font-size: var(--type-body); }
+.container { width: min(var(--max-width), calc(100% - clamp(32px, 5vw, 72px))); }
+
+.site-header { background: rgba(255,244,216,.9); }
+.nav { min-height: 74px; gap: clamp(14px, 2vw, 28px); }
+.brand { gap: 11px; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.015em; }
+.brand span:last-child { line-height: 1.12; }
+.brand-mark { width: 32px; height: 32px; border-width: 1.5px; }
+.nav-links { gap: clamp(14px, 1.65vw, 24px); font-size: clamp(0.82rem, 0.78vw, 0.9rem); font-weight: 500; letter-spacing: 0.035em; }
+.nav-links a { opacity: .74; }
+.support-nav, .nav-links .support-nav { padding: 7px 11px; font-weight: 600; background: rgba(255,217,90,.22); }
+.nav > .btn { min-height: 40px; padding: 9px 15px; font-size: 0.78rem; font-weight: 700; box-shadow: 0 8px 18px rgba(200,16,62,.16); }
+
+.btn, .intro-button { min-height: 42px; padding: 10px 17px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.045em; }
+.btn-secondary, .btn-ghost { font-weight: 600; }
+
+.hero, .dream-hero, .inner-hero { padding: var(--section-space) 0; }
+.hero { min-height: 68vh; }
+.dream-hero { min-height: calc(82vh - 74px); }
+.inner-hero { min-height: auto; }
+.contact-page-main .inner-hero, .coffee-page-main .inner-hero, .support-page-main .inner-hero, .about-page .inner-hero { min-height: auto; padding-top: var(--section-space-sm); padding-bottom: var(--section-space-sm); }
+
+.hero h1, .dream-hero h1, .inner-story-main h1, .page-hero h1 { max-width: 760px; font-family: Inter, Arial, sans-serif; font-size: var(--type-h1); font-weight: 700; line-height: 1.02; letter-spacing: -0.02em; text-transform: none; }
+.home-page .dream-hero h1 { max-width: 880px; font-family: "Arial Black", Impact, sans-serif; font-size: var(--type-display); font-weight: 800; line-height: .94; text-transform: uppercase; }
+.section-title { max-width: 760px; font-family: Inter, Arial, sans-serif; font-size: var(--type-h2); font-weight: 700; line-height: 1.08; letter-spacing: -0.018em; text-transform: none; }
+.scene-final .section-title, .cinematic-quote { font-size: clamp(2rem, 3.3vw, 3.7rem); }
+.urgent-panel h2 { font-family: Inter, Arial, sans-serif; font-size: clamp(1.8rem, 2.7vw, 2.8rem); font-weight: 700; line-height: 1.08; text-transform: none; }
+.path-gateways h2, .experience-card h2, .detail-panel h2, .way-cloud h3, .path-panel h3, .river-stone h3, .reflection-cloud h3, .belonging-island h3 { font-size: var(--type-h3); font-weight: 700; line-height: 1.15; letter-spacing: -0.008em; }
+
+.eyebrow, .path-label, .meta, .future-info dt, .floating-asset, .asset-icon, label, .contact-cloud-form label, .support-request-form label { font-size: var(--type-label); font-weight: 600; letter-spacing: 0.055em; }
+.lead, .dreamline, .founder-note { max-width: var(--measure-wide); font-size: var(--type-body-lg); font-weight: 400; line-height: 1.55; }
+.dreamline, .founder-note, .story-statement { font-family: Georgia, serif; }
+.story-statement { font-size: clamp(1.22rem, 1.7vw, 1.8rem); line-height: 1.38; }
+.section-copy, .story-copy p, .detail-panel p, .experience-card p, .river-stone p, .reflection-cloud p, .future-info dd, .footer p, .footer a { max-width: var(--measure); font-size: var(--type-body); line-height: 1.62; }
+.organic-link, .path-label, .contact-cloud-path a, .contact-pathways a, .session-journey span, .agreement-clouds span, .tag-cloud span, .gentle-list span, .welcome-clouds span, .parts-constellation span, .welcome-words span { font-weight: 700; }
+
+.story-scene { min-height: auto; padding: var(--section-space) 0; }
+.storyboard-grid, .founder-layout { grid-template-columns: minmax(0, 1fr) minmax(280px, .82fr); gap: clamp(28px, 4.5vw, 64px); }
+.inner-hero .storyboard-grid { align-items: center; }
+.scene-heading { max-width: 760px; margin-bottom: var(--space-5); }
+.narrow-story { max-width: 920px; }
+.scene-final { min-height: auto; padding: var(--section-space) 0; }
+
+.about-hero .storyboard-grid { grid-template-columns: minmax(0, .98fr) minmax(260px, .72fr); }
+.about-hero h1 { max-width: 620px; font-size: clamp(2.75rem, 4.4vw, 4.35rem); }
+.about-hero .dreamline { max-width: 620px; font-size: clamp(1.1rem, 1.25vw, 1.3rem); }
+.about-hero .asset-stage, .about-hero .dream-art { min-height: clamp(240px, 26vw, 360px); max-width: 440px; justify-self: end; }
+
+.thought-bubble, .support-cloud, .final-cloud, .vision-cloud, .welcome-moment, .future-info, .community-agreements { padding: clamp(24px, 3.6vw, 44px); }
+.path-panel, .path-gateways .path-panel, .experience-card, .detail-panel, .river-stone, .reflection-cloud, .belonging-island, .urgent-card { min-height: auto; padding: clamp(20px, 2.5vw, 30px); }
+.path-gateways .path-panel, .experience-card { min-height: 230px; }
+.detail-panel, .river-stone, .reflection-cloud { min-height: 170px; }
+.belonging-island { min-height: 210px; }
+.urgent-card { min-height: 118px; }
+
+.asset-stage, .portrait-placeholder, .phoenix-placeholder, .community-people-stage, .contact-conversation-stage, .hospitality-moment, .coffee-stage { min-height: clamp(260px, 30vw, 390px); padding: clamp(22px, 3vw, 34px); }
+.art-slot--hero, .dream-art--hero { min-height: clamp(260px, 30vw, 430px); }
+.dream-art--portrait { min-height: clamp(280px, 31vw, 440px); }
+.dream-art, .dream-art--object, .dream-art--floating { min-height: clamp(220px, 25vw, 360px); }
+.asset-stage strong, .portrait-placeholder strong, .phoenix-placeholder strong, .values-sun-panel strong, .community-people-stage strong, .contact-conversation-stage strong, .coffee-stage strong { font-size: clamp(1.1rem, 1.8vw, 1.6rem); font-weight: 700; line-height: 1.12; }
+.asset-stage p, .portrait-placeholder p, .phoenix-placeholder p, .community-people-stage p, .contact-conversation-stage p, .coffee-stage p { max-width: 34ch; font-size: .9rem; opacity: .62; }
+.asset-icon { width: 48px; height: 48px; margin-bottom: 10px; opacity: .78; }
+.floating-asset { width: 58px; opacity: .52; }
+.cloud-large { width: min(34vw, 420px); height: 140px; }
+.cloud-medium { width: min(26vw, 300px); height: 108px; }
+
+.dream-orbit { min-height: 330px; }
+.dream-orbit span { width: 112px; font-size: .82rem; }
+.sun-core { width: 138px; font-size: .9rem; }
+.wayfinder { min-height: 380px; }
+.way-cloud { width: min(38vw, 310px); min-height: 160px; padding: 24px; }
+.values-world { min-height: 410px; }
+.value-constellation { min-height: 250px; }
+.community-gathering { min-height: auto; gap: 26px; }
+.community-actions { min-height: 300px; }
+.community-actions a { width: clamp(96px, 11vw, 138px); font-size: .82rem; font-weight: 700; }
+.community-orbit { min-height: 520px; }
+.community-orbit .belonging-island { width: min(29vw, 300px); min-height: 160px; }
+.orbit-heart { width: 150px; font-size: .86rem; }
+.value-flowers span { min-height: 170px; padding: 22px 18px; border-radius: 42px 42px 30px 30px; }
+.values-sun-panel { min-height: 280px; padding: 30px; }
+.creative-orbit { min-height: auto; align-content: flex-start; justify-content: flex-start; }
+.creative-orbit span:nth-child(odd), .parts-constellation span:nth-child(odd) { transform: translateY(-6px); }
+.journey-thread, .mission-river, .lived-values, .reflection-path, .value-triad, .hospitality-cloud, .parts-constellation, .small-orbit, .future-info dl, .welcome-words { margin-top: var(--space-4); margin-bottom: var(--space-4); }
+.mission-river, .lived-values, .reflection-path, .value-triad, .experience-list, .detail-layout, .belonging-pathways, .contact-pathways { gap: clamp(14px, 2vw, 24px); }
+.community-agreements { grid-template-columns: .72fr 1.28fr; gap: clamp(20px, 3vw, 36px); }
+
+.session-journey span, .agreement-clouds span, .tag-cloud span, .creative-orbit span, .journey-thread span, .gentle-list span, .hospitality-cloud span, .welcome-clouds span, .parts-constellation span, .speech-bubbles span, .contact-cloud-path a, .contact-pathways a, .welcome-words span { min-height: 48px; padding: 10px 16px; font-size: .88rem; letter-spacing: 0.02em; }
+.contact-cloud-path a { min-height: 58px; }
+.future-info dl div { padding: 14px; }
+.urgent-panel { padding: clamp(22px, 3vw, 36px); }
+.urgent-grid { gap: 14px; }
+.urgent-card strong { font-size: 1rem; }
+.support-page-main .inner-hero { padding-bottom: var(--space-6); }
+.support-page-main .lead, .support-page-main .section-copy, .support-night-section .section-copy { font-size: var(--type-body); }
+
+.support-request-form, .contact-cloud-form { padding: clamp(22px, 3vw, 34px); }
+.form-row { gap: 14px; margin-bottom: 14px; }
+input, textarea, select { padding: 12px 14px; }
+textarea { min-height: 118px; }
+.check-row { gap: 9px; }
+
+.footer { padding: var(--section-space-sm) 0 var(--space-4); }
+.footer-grid { gap: clamp(20px, 3vw, 32px); }
+.footer h4 { font-size: .88rem; font-weight: 700; letter-spacing: .04em; }
+.footer-bottom { margin-top: var(--space-4); padding-top: var(--space-3); }
+
+.reveal { transform: translateY(12px) scale(.995); transition-duration: var(--reveal-normal); }
+.reveal-delay-1 { transition-delay: 50ms; }
+.reveal-delay-2 { transition-delay: 90ms; }
+.reveal-delay-3 { transition-delay: 130ms; }
+
+@media (min-width: 1440px) {
+  .story-scene { padding-top: var(--section-space); padding-bottom: var(--section-space); }
+  .home-page .dream-hero h1 { font-size: clamp(4rem, 5.7vw, 6.4rem); }
+}
+
+@media (max-width: 1180px) {
+  .nav { gap: 14px; }
+  .nav-links { gap: 12px; font-size: .8rem; }
+  .brand span:last-child { max-width: 170px; }
+  .nav > .btn { padding-inline: 13px; }
+}
+
+@media (max-width: 900px) {
+  :root { --type-h1: clamp(2.45rem, 7vw, 3.9rem); --type-h2: clamp(1.9rem, 5.4vw, 3rem); --type-display: clamp(3rem, 9vw, 5rem); --section-space: clamp(3.2rem, 7vw, 4.7rem); --section-space-sm: clamp(2.6rem, 6vw, 3.8rem); }
+  .storyboard-grid, .founder-layout, .about-hero .storyboard-grid, .community-agreements { grid-template-columns: 1fr; }
+  .about-hero .asset-stage, .about-hero .dream-art { justify-self: start; max-width: 520px; }
+  .nav { min-height: 66px; }
+  .asset-stage, .portrait-placeholder, .phoenix-placeholder, .community-people-stage, .contact-conversation-stage, .hospitality-moment, .coffee-stage { min-height: 240px; }
+  .community-orbit { display: grid; grid-template-columns: 1fr 1fr; min-height: auto; }
+  .community-orbit .belonging-island { width: auto; min-height: auto; }
+}
+
+@media (max-width: 640px) {
+  :root { --type-body: 1rem; --type-body-lg: 1.06rem; --type-h1: clamp(2.25rem, 10.8vw, 3.15rem); --type-h2: clamp(1.75rem, 8vw, 2.35rem); --type-h3: clamp(1.12rem, 5vw, 1.35rem); --type-display: clamp(2.8rem, 14vw, 4rem); --section-space: 2.9rem; --section-space-sm: 2.35rem; }
+  .container { width: min(var(--max-width), calc(100% - 28px)); }
+  .hero, .dream-hero, .inner-hero, .contact-page-main .inner-hero, .coffee-page-main .inner-hero, .support-page-main .inner-hero, .about-page .inner-hero { padding: var(--section-space-sm) 0; }
+  .hero h1, .dream-hero h1, .inner-story-main h1, .page-hero h1, .about-hero h1 { font-size: var(--type-h1); line-height: 1.04; }
+  .home-page .dream-hero h1 { font-size: var(--type-display); }
+  .section-title { font-size: var(--type-h2); }
+  .story-scene { padding: var(--section-space) 0; }
+  .lead, .dreamline, .founder-note, .story-statement { font-size: var(--type-body-lg); }
+  .thought-bubble, .support-cloud, .final-cloud, .vision-cloud, .welcome-moment, .future-info, .community-agreements, .support-request-form, .contact-cloud-form, .urgent-panel { padding: 20px; border-radius: 26px; }
+  .path-panel, .path-gateways .path-panel, .experience-card, .detail-panel, .river-stone, .reflection-cloud, .belonging-island, .urgent-card { padding: 18px; }
+  .path-gateways .path-panel, .experience-card, .detail-panel, .river-stone, .reflection-cloud, .belonging-island, .urgent-card { min-height: auto; }
+  .asset-stage, .portrait-placeholder, .phoenix-placeholder, .community-people-stage, .contact-conversation-stage, .hospitality-moment, .coffee-stage, .dream-art, .dream-art--hero, .dream-art--portrait, .dream-art--object, .dream-art--floating { min-height: 210px; }
+  .session-journey span, .agreement-clouds span, .tag-cloud span, .creative-orbit span, .journey-thread span, .gentle-list span, .hospitality-cloud span, .welcome-clouds span, .parts-constellation span, .speech-bubbles span, .contact-cloud-path a, .contact-pathways a, .welcome-words span { min-height: 46px; width: auto; }
+  .contact-cloud-path a, .contact-pathways a { width: 100%; }
+  .footer { padding-top: var(--section-space); }
+}
