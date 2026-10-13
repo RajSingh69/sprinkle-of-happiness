@@ -22,27 +22,9 @@ if (menuButton && navigation) {
   });
 }
 
-document.querySelectorAll("[data-placeholder]").forEach((button) => {
-  button.addEventListener("click", (event) => {
-    event.preventDefault();
-    alert("This feature will be connected in a later phase of the website.");
-  });
-});
-
-document.querySelectorAll("form[data-demo-form]").forEach((form) => {
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    alert("The frontend form is working. Email/database functionality will be connected later.");
-  });
-});
 
 
-document.querySelectorAll("form[data-support-request]").forEach((form) => {
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    alert("The secure request system is being connected and is not yet available. Your request has not been sent or received. If you may act on suicidal thoughts or cannot keep yourself safe, call 999, go to A&E, or call Samaritans on 116 123.");
-  });
-});
+
 const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const revealItems = document.querySelectorAll(".reveal");
 

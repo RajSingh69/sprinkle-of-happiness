@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin dashboard | Sprinkle of Happiness</title>
+  <meta name="description" content="Sprinkle of Happiness administrator dashboard.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&amp;family=Nunito:ital,wght@0,400..900;1,400..700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="story-page account-page" data-page="admin">
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html"><span class="brand-mark"></span><span>Sprinkle of Happiness</span></a>
+    <button class="menu-toggle" aria-label="Open navigation">Menu</button>
+    <nav class="nav-links">
+      <a data-nav="home" href="index.html">Home</a>
+      <a data-nav="about" href="about.html">About</a>
+      <a data-nav="kaan" href="kaan.html">Meet Kaan</a>
+      <a data-nav="experiences" href="experiences.html">Experiences</a>
+      <a data-nav="values" href="values.html">Our Values</a>
+      <a data-nav="community" href="community.html">Community</a>
+      <a data-nav="support" class="support-nav" href="support.html">Need Support?</a>
+      <a data-nav="contact" href="contact.html">Contact</a>
+    </nav>
+    <a class="account-link" data-account-link href="login.html" hidden>Log in</a><a class="btn" href="community.html">Join Us</a>
+  </div>
+</header>
+<main class="dreamland-main inner-story-main account-main">
+  <section class="story-scene account-scene" aria-labelledby="admin-title">
+    <div class="container account-container">
+      <div class="eyebrow">Administrators only</div>
+      <h1 id="admin-title" class="account-title">Admin dashboard</h1>
+      <div class="account-card" data-accounts-closed><h2 class="section-title">Member accounts are not open yet.</h2><p class="section-copy">We are preparing member accounts carefully. They will open once our privacy, terms and safeguarding policies are published. Our yoga and workshops remain free and open to everyone.</p><div class="actions"><a class="btn" href="membership.html">About membership</a><a class="btn btn-secondary" href="experiences.html">Explore experiences</a></div></div><noscript><p class="reiki-note">Member accounts need JavaScript to be enabled.</p></noscript>
+      <div data-accounts-open hidden>
+        <p class="reiki-note" data-admin-loading>Checking your access…</p>
+        <div class="account-card account-narrow" data-admin-denied hidden>
+          <h2 class="account-card-title">You do not have access to this page.</h2>
+          <p class="section-copy">This area is for authorised administrators with a verified email address.</p>
+          <a class="btn" href="account.html">Go to My Account</a>
+        </div>
+        <div data-admin-panel hidden>
+          <p class="account-welcome">Signed in as <strong data-admin-email></strong> <button class="btn btn-ghost" type="button" data-sign-out>Log out</button></p>
+          <p id="admin-status" class="form-status" role="status" aria-live="polite"></p>
+          <nav class="admin-tabs" aria-label="Admin sections"><a href="#overview">Overview</a><a href="#members">Members</a><a href="#memberships">Memberships</a><a href="#events">Events</a><a href="#bookings">Bookings</a><a href="#payments">Payments</a><a href="#enquiries">Enquiries</a><a href="#settings">Settings</a></nav>
+          <section class="account-card" id="overview" aria-labelledby="overview-heading">
+            <h2 id="overview-heading" class="account-card-title">Overview</h2>
+            <dl class="account-details"><div><dt>Member profiles</dt><dd data-member-count>—</dd></div></dl>
+          </section>
+          <section class="account-card" id="members" aria-labelledby="members-heading">
+            <h2 id="members-heading" class="account-card-title">Members</h2>
+            <p class="programme-small">Most recent 200 profiles. Visible only to verified administrators.</p>
+            <div class="compare-table-wrap" role="region" aria-labelledby="members-heading" tabindex="0">
+              <table class="compare-table"><thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Joined</th></tr></thead><tbody id="members-rows"><tr><td colspan="3">Loading…</td></tr></tbody></table>
+            </div>
+          </section>
+          <div class="admin-placeholders">
+            <section class="account-card" id="memberships" aria-labelledby="memberships-heading"><h2 id="memberships-heading" class="account-card-title">Memberships</h2><p>Not available yet. Requires Stripe subscriptions and trusted backend processing.</p></section>
+            <section class="account-card" id="events" aria-labelledby="events-heading"><h2 id="events-heading" class="account-card-title">Events</h2><p>Not available yet. Event management has not been built.</p></section>
+            <section class="account-card" id="bookings" aria-labelledby="bookings-admin-heading"><h2 id="bookings-admin-heading" class="account-card-title">Bookings</h2><p>Not available yet. There are no live bookings.</p></section>
+            <section class="account-card" id="payments" aria-labelledby="payments-heading"><h2 id="payments-heading" class="account-card-title">Payments</h2><p>Not available yet. Stripe is not integrated.</p></section>
+            <section class="account-card" id="enquiries" aria-labelledby="enquiries-heading"><h2 id="enquiries-heading" class="account-card-title">Enquiries</h2><p>Enquiries currently arrive by email to hello@sprinkleofhappines.org.uk. They are not stored on this website.</p></section>
+            <section class="account-card" id="settings" aria-labelledby="settings-admin-heading"><h2 id="settings-admin-heading" class="account-card-title">Settings</h2><p>Not available yet. Administrator roles are managed with the bootstrap procedure, not from this page.</p></section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="brand"><span class="brand-mark"></span><span>Sprinkle of Happiness</span></div><p>A community-led creative wellbeing space for healing, expression and connection.</p></div>
+      <div><h2 class="footer-heading">Explore</h2><p><a href="about.html">About</a></p><p><a href="curriculum.html">Our Curriculum</a></p><p><a href="experiences.html">Experiences</a></p><p><a href="yoga.html">Yoga</a></p><p><a href="reiki.html">Reiki</a></p><p><a href="values.html">Our Values</a></p></div>
+      <div><h2 class="footer-heading">Community</h2><p><a href="community.html">Community</a></p><p><a href="lgbtq.html">LGBTQ+ Safe Space</a></p><p><a href="rebel-recovery.html">Rebel Recovery</a></p><p><a href="membership.html">Membership</a></p><p><a href="partnerships.html">Partner With Us</a></p><p><a href="coffee.html">Let's Get a Coffee</a></p><p><a href="contact.html">Contact</a></p></div>
+      <div><h2 class="footer-heading">Support</h2><p><a href="support.html">Need Support?</a></p><p class="footer-policy-note">Our privacy, terms and safeguarding policies are being prepared and are not yet published.</p><p><a href="mailto:hello@sprinkleofhappines.org.uk">hello@sprinkleofhappines.org.uk</a></p></div>
+    </div>
+    <div class="notice"><strong>Need urgent help?</strong> If there is immediate danger, call <strong>999</strong> or go to A&amp;E. Samaritans: <a href="tel:116123"><strong>116 123</strong></a>.</div>
+    <div class="footer-bottom"><span>© 2026 Sprinkle of Happiness Holistic Creative Arts Factory CIC.</span><span>All rights reserved.</span></div>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+<script type="module" src="js/auth-nav.js"></script>
+<script type="module" src="js/account-pages.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Log in | Sprinkle of Happiness</title>
+  <meta name="description" content="Log in to your Sprinkle of Happiness member account.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&amp;family=Nunito:ital,wght@0,400..900;1,400..700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="story-page account-page" data-page="login">
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html"><span class="brand-mark"></span><span>Sprinkle of Happiness</span></a>
+    <button class="menu-toggle" aria-label="Open navigation">Menu</button>
+    <nav class="nav-links">
+      <a data-nav="home" href="index.html">Home</a>
+      <a data-nav="about" href="about.html">About</a>
+      <a data-nav="kaan" href="kaan.html">Meet Kaan</a>
+      <a data-nav="experiences" href="experiences.html">Experiences</a>
+      <a data-nav="values" href="values.html">Our Values</a>
+      <a data-nav="community" href="community.html">Community</a>
+      <a data-nav="support" class="support-nav" href="support.html">Need Support?</a>
+      <a data-nav="contact" href="contact.html">Contact</a>
+    </nav>
+    <a class="account-link" data-account-link href="login.html" hidden>Log in</a><a class="btn" href="community.html">Join Us</a>
+  </div>
+</header>
+<main class="dreamland-main inner-story-main account-main">
+  <section class="story-scene account-scene" aria-labelledby="login-title">
+    <div class="container account-container">
+      <div class="eyebrow">Member accounts</div>
+      <h1 id="login-title" class="account-title">Log in</h1>
+      <div class="account-card" data-accounts-closed><h2 class="section-title">Member accounts are not open yet.</h2><p class="section-copy">We are preparing member accounts carefully. They will open once our privacy, terms and safeguarding policies are published. Our yoga and workshops remain free and open to everyone.</p><div class="actions"><a class="btn" href="membership.html">About membership</a><a class="btn btn-secondary" href="experiences.html">Explore experiences</a></div></div><noscript><p class="reiki-note">Member accounts need JavaScript to be enabled.</p></noscript>
+      <div data-accounts-open hidden>
+        <p class="reiki-note" data-signed-in-note hidden>You are already signed in. <a href="account.html">Go to My Account</a>.</p>
+        <div class="account-grid">
+          <form id="login-form" class="support-request-form account-card" novalidate>
+            <h2 class="account-card-title">Welcome back</h2>
+            <label>Email<input type="email" name="email" autocomplete="email" required></label>
+            <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+            <button class="btn" type="submit">Log in</button>
+            <p id="login-status" class="form-status" role="status" aria-live="polite"></p>
+            <p class="programme-small">New here? <a href="register.html">Create an account</a></p>
+          </form>
+          <form id="reset-form" class="support-request-form account-card" novalidate>
+            <h2 class="account-card-title">Forgotten your password?</h2>
+            <p class="programme-small">Enter your email and, if an account exists, we will send you a reset link.</p>
+            <label>Email<input type="email" name="email" autocomplete="email" required></label>
+            <button class="btn btn-secondary" type="submit">Send reset link</button>
+            <p id="reset-status" class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="brand"><span class="brand-mark"></span><span>Sprinkle of Happiness</span></div><p>A community-led creative wellbeing space for healing, expression and connection.</p></div>
+      <div><h2 class="footer-heading">Explore</h2><p><a href="about.html">About</a></p><p><a href="curriculum.html">Our Curriculum</a></p><p><a href="experiences.html">Experiences</a></p><p><a href="yoga.html">Yoga</a></p><p><a href="reiki.html">Reiki</a></p><p><a href="values.html">Our Values</a></p></div>
+      <div><h2 class="footer-heading">Community</h2><p><a href="community.html">Community</a></p><p><a href="lgbtq.html">LGBTQ+ Safe Space</a></p><p><a href="rebel-recovery.html">Rebel Recovery</a></p><p><a href="membership.html">Membership</a></p><p><a href="partnerships.html">Partner With Us</a></p><p><a href="coffee.html">Let's Get a Coffee</a></p><p><a href="contact.html">Contact</a></p></div>
+      <div><h2 class="footer-heading">Support</h2><p><a href="support.html">Need Support?</a></p><p class="footer-policy-note">Our privacy, terms and safeguarding policies are being prepared and are not yet published.</p><p><a href="mailto:hello@sprinkleofhappines.org.uk">hello@sprinkleofhappines.org.uk</a></p></div>
+    </div>
+    <div class="notice"><strong>Need urgent help?</strong> If there is immediate danger, call <strong>999</strong> or go to A&amp;E. Samaritans: <a href="tel:116123"><strong>116 123</strong></a>.</div>
+    <div class="footer-bottom"><span>© 2026 Sprinkle of Happiness Holistic Creative Arts Factory CIC.</span><span>All rights reserved.</span></div>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+<script type="module" src="js/auth-nav.js"></script>
+<script type="module" src="js/account-pages.js"></script>
+</body>
+</html>

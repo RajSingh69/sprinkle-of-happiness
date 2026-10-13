@@ -1,0 +1,9 @@
+{
+  "name": "soh-admin-bootstrap",
+  "private": true,
+  "type": "module",
+  "description": "Manual, one-time administrator custom-claim bootstrap. Not part of the website.",
+  "dependencies": {
+    "firebase-admin": "^14.5.0"
+  }
+}

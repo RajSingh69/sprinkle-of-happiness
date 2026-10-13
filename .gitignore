@@ -1,0 +1,5 @@
+_internal/
+node_modules/
+*-debug.log
+.claude/
+.impeccable/

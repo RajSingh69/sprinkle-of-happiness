@@ -1,0 +1,62 @@
+rules_version = '2';
+
+// Sprinkle of Happiness Firestore rules.
+// - Members can only read and edit their own profile, and only after
+//   verifying their email address.
+// - Admin access comes from the `admin` custom claim, which can only be set
+//   with the Firebase Admin SDK (see _tools/admin-bootstrap). Nothing a user
+//   writes to Firestore can grant admin rights.
+// - Memberships, subscriptions, payments, bookings and every other collection
+//   stay locked until trusted backend logic exists.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function verified() {
+      return signedIn() && request.auth.token.get('email_verified', false) == true;
+    }
+
+    function isAdmin() {
+      return verified() && request.auth.token.get('admin', false) == true;
+    }
+
+    function isVerifiedOwner(uid) {
+      return verified() && request.auth.uid == uid;
+    }
+
+    function validDisplayName(name) {
+      return name is string && name.size() >= 1 && name.size() <= 60;
+    }
+
+    match /users/{uid} {
+      allow get: if isVerifiedOwner(uid) || isAdmin();
+      allow list: if isAdmin();
+
+      // A profile holds exactly these four fields. Protected fields such as
+      // role, membershipTier, subscriptionStatus or stripeCustomerId can
+      // never be written from the browser.
+      allow create: if isVerifiedOwner(uid)
+        && request.resource.data.keys().hasOnly(['displayName', 'email', 'createdAt', 'updatedAt'])
+        && request.resource.data.keys().hasAll(['displayName', 'email', 'createdAt', 'updatedAt'])
+        && validDisplayName(request.resource.data.displayName)
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+
+      allow update: if isVerifiedOwner(uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName', 'updatedAt'])
+        && validDisplayName(request.resource.data.displayName)
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if false;
+    }
+
+    // Everything else is denied by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
