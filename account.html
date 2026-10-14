@@ -64,21 +64,44 @@
             </section>
             <section class="account-card" aria-labelledby="membership-heading">
               <h2 id="membership-heading" class="account-card-title">Membership</h2>
-              <p class="section-copy">Membership is being prepared and is not active yet. No payments are taken on this website.</p>
+              <dl class="account-details">
+                <div><dt>Your membership</dt><dd><strong data-membership-tier>Free</strong> · £0</dd></div>
+              </dl>
+              <p class="section-copy">Thank you for being part of Sprinkle of Happiness. Our yoga and workshops are free for every member.</p>
+              <p class="programme-small"><strong>Paid upgrades coming soon.</strong> Spark, Glow and Radiance are not available to buy yet, and no payments are taken on this website.</p>
               <a class="organic-link" href="membership.html">About membership</a>
             </section>
-            <section class="account-card" aria-labelledby="bookings-heading">
-              <h2 id="bookings-heading" class="account-card-title">Bookings</h2>
-              <p class="section-copy">Online booking is being prepared. You have no bookings on this website.</p>
-              <a class="organic-link" href="experiences.html">Explore experiences</a>
+            <section class="account-card" aria-labelledby="explore-heading">
+              <h2 id="explore-heading" class="account-card-title">Explore and book</h2>
+              <p class="section-copy">You have no bookings on this website. Some time with Kaan can be booked through Calendly.</p>
+              <ul class="account-links">
+                <li><a class="organic-link" href="experiences.html">Experiences</a></li>
+                <li><a class="organic-link" href="community.html">Community</a></li>
+                <li><a class="organic-link" href="https://calendly.com/kaansingh-sprinkleofhappiness" target="_blank" rel="noopener noreferrer">Available appointments<span class="visually-hidden"> (opens Calendly in a new tab)</span></a></li>
+              </ul>
             </section>
             <section class="account-card" aria-labelledby="settings-heading">
               <h2 id="settings-heading" class="account-card-title">Account settings</h2>
               <div class="actions"><button class="btn btn-secondary" type="button" id="account-reset">Send password reset email</button><button class="btn btn-ghost" type="button" data-sign-out>Log out</button></div>
               <p id="settings-status" class="form-status" role="status" aria-live="polite"></p>
-              <p class="programme-small">To close your account, please email <a href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a>.</p>
+            </section>
+            <section class="account-card account-danger" aria-labelledby="delete-heading">
+              <h2 id="delete-heading" class="account-card-title">Delete your account</h2>
+              <p class="section-copy">This permanently deletes your login and your member profile (your name, email and membership details). It cannot be undone.</p>
+              <button class="btn btn-ghost" type="button" id="delete-start" aria-expanded="false" aria-controls="delete-form">Delete my account…</button>
+              <form id="delete-form" class="support-request-form account-inline-form" novalidate hidden>
+                <label>Enter your password to confirm<input type="password" name="password" autocomplete="current-password" required></label>
+                <label class="check-row"><input type="checkbox" name="confirm" required> I understand my account will be permanently deleted.</label>
+                <div class="actions"><button class="btn btn-danger" type="submit">Permanently delete my account</button><button class="btn btn-ghost" type="button" id="delete-cancel">Cancel</button></div>
+                <p id="delete-status" class="form-status" role="status" aria-live="polite"></p>
+              </form>
             </section>
           </div>
+        </div>
+        <div class="account-card account-narrow" data-account-deleted hidden>
+          <h2 class="account-card-title" tabindex="-1">Your account has been deleted</h2>
+          <p class="section-copy">Your login and member profile have been permanently removed. Our yoga and workshops are still free and open to everyone.</p>
+          <a class="btn" href="index.html">Return home</a>
         </div>
       </div>
     </div>

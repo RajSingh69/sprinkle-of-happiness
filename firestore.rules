@@ -27,31 +27,58 @@ service cloud.firestore {
       return verified() && request.auth.uid == uid;
     }
 
+    // Set when a member deletes their account. Firebase never reuses UIDs, so
+    // a tombstone permanently stops that UID from recreating a profile, even
+    // with an ID token issued before deletion (which stays valid until expiry).
+    function isTombstoned(uid) {
+      return exists(/databases/$(database)/documents/deletedAccounts/$(uid));
+    }
+
     function validDisplayName(name) {
       return name is string && name.size() >= 1 && name.size() <= 60;
     }
 
     match /users/{uid} {
-      allow get: if isVerifiedOwner(uid) || isAdmin();
+      allow get: if (isVerifiedOwner(uid) && !isTombstoned(uid)) || isAdmin();
       allow list: if isAdmin();
 
-      // A profile holds exactly these four fields. Protected fields such as
-      // role, membershipTier, subscriptionStatus or stripeCustomerId can
-      // never be written from the browser.
+      // A new profile holds exactly these five fields, and the membership tier
+      // can only ever start as "free". Paid tiers, roles, subscriptionStatus
+      // or stripeCustomerId can only be set by trusted server code (Admin SDK).
       allow create: if isVerifiedOwner(uid)
-        && request.resource.data.keys().hasOnly(['displayName', 'email', 'createdAt', 'updatedAt'])
-        && request.resource.data.keys().hasAll(['displayName', 'email', 'createdAt', 'updatedAt'])
+        && !isTombstoned(uid)
+        && request.resource.data.keys().hasOnly(['displayName', 'email', 'createdAt', 'updatedAt', 'membershipTier'])
+        && request.resource.data.keys().hasAll(['displayName', 'email', 'createdAt', 'updatedAt', 'membershipTier'])
+        && request.resource.data.membershipTier == 'free'
         && validDisplayName(request.resource.data.displayName)
         && request.resource.data.email == request.auth.token.email
         && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time;
 
       allow update: if isVerifiedOwner(uid)
+        && !isTombstoned(uid)
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName', 'updatedAt'])
         && validDisplayName(request.resource.data.displayName)
         && request.resource.data.updatedAt == request.time;
 
-      allow delete: if false;
+      // Members delete their own profile only together with a tombstone, in
+      // the same batch. Admins cannot delete their profile from the browser,
+      // so an administrator cannot remove their own account by accident.
+      allow delete: if isVerifiedOwner(uid)
+        && !isAdmin()
+        && existsAfter(/databases/$(database)/documents/deletedAccounts/$(uid));
+    }
+
+    // Tombstones hold no personal data and can never be read, changed or
+    // removed from the browser. One can only be created alongside deleting
+    // the owner's profile.
+    match /deletedAccounts/{uid} {
+      allow create: if isVerifiedOwner(uid)
+        && !isAdmin()
+        && request.resource.data.keys().hasOnly(['deletedAt'])
+        && request.resource.data.deletedAt == request.time
+        && exists(/databases/$(database)/documents/users/$(uid))
+        && !existsAfter(/databases/$(database)/documents/users/$(uid));
     }
 
     // Everything else is denied by default.

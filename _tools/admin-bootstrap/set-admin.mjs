@@ -31,16 +31,20 @@ const uid = arg("uid")?.trim();
 
 if (!["check", "grant", "revoke"].includes(action)) fail("Usage: set-admin.mjs <check|grant|revoke> --email <email> [--uid <uid>]");
 if (!email) fail("--email is required.");
-if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) fail("Set GOOGLE_APPLICATION_CREDENTIALS to a service-account key stored outside the repository.");
-
+// Credentials come from Application Default Credentials: preferably
+// `gcloud auth application-default login` (no key file), or a key file named
+// in GOOGLE_APPLICATION_CREDENTIALS that is stored outside this repository.
 initializeApp({ credential: applicationDefault(), projectId: PROJECT_ID });
 const auth = getAuth();
 
 let user;
 try {
   user = await auth.getUserByEmail(email);
-} catch {
-  fail(`No Firebase Authentication user found for ${email}. They must register and verify their email first.`);
+} catch (error) {
+  if (error?.code === "auth/user-not-found") {
+    fail(`No Firebase Authentication user found for ${email}. They must register and verify their email first.`);
+  }
+  fail("Could not reach Firebase with your credentials. Run `gcloud auth application-default login` as a project owner (see README.md) and try again.");
 }
 
 console.log(`\nUser:            ${user.email}`);

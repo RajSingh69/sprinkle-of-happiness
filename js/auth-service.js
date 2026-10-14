@@ -6,13 +6,17 @@ import {
   sendPasswordResetEmail,
   sendEmailVerification,
   updateProfile,
-  onAuthStateChanged
+  onAuthStateChanged,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  deleteUser
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 import {
   doc,
   getDoc,
   setDoc,
   updateDoc,
+  writeBatch,
   collection,
   query,
   orderBy,
@@ -92,7 +96,8 @@ export async function ensureProfile(user) {
     displayName: cleanDisplayName(user.displayName || fallback).slice(0, 60) || "Member",
     email: user.email,
     createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp()
+    updatedAt: serverTimestamp(),
+    membershipTier: "free"
   });
   return (await getDoc(ref)).data();
 }
@@ -102,6 +107,34 @@ export async function updateDisplayName(user, displayName) {
   await updateDoc(profileRef(user.uid), { displayName: name, updatedAt: serverTimestamp() });
   await updateProfile(user, { displayName: name });
   return name;
+}
+
+// Permanently deletes the signed-in member's account:
+//   1. Administrators are refused (remove the admin claim first).
+//   2. Re-check the password (Firebase requires a recent sign-in).
+//   3. In one atomic batch, delete the Firestore profile and write a
+//      tombstone, so this UID can never recreate a profile, even with an ID
+//      token issued before deletion.
+//   4. Delete the Firebase Authentication account.
+// Returns which steps completed so the page can report honestly.
+export async function deleteAccount(user, password) {
+  if (await isAdmin(user)) return { blockedAdmin: true, profileDeleted: false, accountDeleted: false };
+  const credential = EmailAuthProvider.credential(user.email, password);
+  await reauthenticateWithCredential(user, credential);
+  try {
+    const batch = writeBatch(db);
+    batch.delete(profileRef(user.uid));
+    batch.set(doc(db, "deletedAccounts", user.uid), { deletedAt: serverTimestamp() });
+    await batch.commit();
+  } catch (error) {
+    return { profileDeleted: false, accountDeleted: false, error };
+  }
+  try {
+    await deleteUser(user);
+  } catch (error) {
+    return { profileDeleted: true, accountDeleted: false, error };
+  }
+  return { profileDeleted: true, accountDeleted: true };
 }
 
 // Admin-only reads. Firestore rules reject these for anyone without a

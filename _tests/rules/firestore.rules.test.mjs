@@ -5,7 +5,7 @@ import {
   assertSucceeds,
   assertFails
 } from "@firebase/rules-unit-testing";
-import { doc, getDoc, setDoc, updateDoc, deleteDoc, getDocs, collection, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, deleteDoc, getDocs, collection, serverTimestamp, writeBatch } from "firebase/firestore";
 
 let env;
 
@@ -21,13 +21,14 @@ const profile = (who, extra = {}) => ({
   email: who.email,
   createdAt: serverTimestamp(),
   updatedAt: serverTimestamp(),
+  membershipTier: "free",
   ...extra
 });
 
 async function seed(who) {
   await env.withSecurityRulesDisabled(async (context) => {
     await setDoc(doc(context.firestore(), "users", who.uid), {
-      displayName: "Seeded", email: who.email, createdAt: new Date(), updatedAt: new Date()
+      displayName: "Seeded", email: who.email, createdAt: new Date(), updatedAt: new Date(), membershipTier: "free"
     });
   });
 }
@@ -97,9 +98,116 @@ test("members can update only their display name", async () => {
   await assertFails(updateDoc(ref, { displayName: "No timestamp" }));
 });
 
-test("members cannot delete profiles", async () => {
+// The account-deletion batch used by js/auth-service.js.
+function deletionBatch(db, uid, tombstoneUid = uid) {
+  const batch = writeBatch(db);
+  batch.delete(doc(db, "users", uid));
+  batch.set(doc(db, "deletedAccounts", tombstoneUid), { deletedAt: serverTimestamp() });
+  return batch.commit();
+}
+
+test("account deletion: a member deletes their profile together with a tombstone", async () => {
   await seed(MEMBER);
-  await assertFails(deleteDoc(doc(ctx(MEMBER), "users", MEMBER.uid)));
+  const db = ctx(MEMBER);
+  await assertSucceeds(deletionBatch(db, MEMBER.uid));
+  await env.withSecurityRulesDisabled(async (context) => {
+    const admin = context.firestore();
+    const profile = await getDoc(doc(admin, "users", MEMBER.uid));
+    const tomb = await getDoc(doc(admin, "deletedAccounts", MEMBER.uid));
+    if (profile.exists()) throw new Error("profile should be gone");
+    if (!tomb.exists() || Object.keys(tomb.data()).join() !== "deletedAt") throw new Error("tombstone should hold only deletedAt");
+  });
+});
+
+test("account deletion: deleting the profile without a tombstone, or a tombstone without deleting, is refused", async () => {
+  await seed(MEMBER);
+  const db = ctx(MEMBER);
+  await assertFails(deleteDoc(doc(db, "users", MEMBER.uid)));
+  await assertFails(setDoc(doc(db, "deletedAccounts", MEMBER.uid), { deletedAt: serverTimestamp() }));
+  await assertSucceeds(getDoc(doc(db, "users", MEMBER.uid)));
+});
+
+test("deleted-account token reuse: a pre-deletion token cannot recreate, read or edit the profile", async () => {
+  await seed(MEMBER);
+  // Same verified token before and after deletion, as a modified client might keep.
+  const staleToken = ctx(MEMBER);
+  await assertSucceeds(deletionBatch(staleToken, MEMBER.uid));
+  await assertFails(setDoc(doc(staleToken, "users", MEMBER.uid), profile(MEMBER)));
+  await assertFails(getDoc(doc(staleToken, "users", MEMBER.uid)));
+  await assertFails(updateDoc(doc(staleToken, "users", MEMBER.uid), { displayName: "Back", updatedAt: serverTimestamp() }));
+  await assertFails(getDoc(doc(staleToken, "deletedAccounts", MEMBER.uid)));
+  await assertFails(deleteDoc(doc(staleToken, "deletedAccounts", MEMBER.uid)));
+  await assertFails(setDoc(doc(staleToken, "deletedAccounts", MEMBER.uid), { deletedAt: serverTimestamp() }));
+});
+
+test("deleted-account token reuse: a deleted member still cannot read other members' data", async () => {
+  await seed(MEMBER);
+  await seed(OTHER);
+  const staleToken = ctx(MEMBER);
+  await assertSucceeds(deletionBatch(staleToken, MEMBER.uid));
+  await assertFails(getDoc(doc(staleToken, "users", OTHER.uid)));
+  await assertFails(getDocs(collection(staleToken, "users")));
+});
+
+test("account deletion: members cannot delete someone else's profile or tombstone them", async () => {
+  await seed(MEMBER);
+  await seed(OTHER);
+  const db = ctx(MEMBER);
+  await assertFails(deletionBatch(db, OTHER.uid));
+  await assertFails(setDoc(doc(db, "deletedAccounts", OTHER.uid), { deletedAt: serverTimestamp() }));
+  await assertSucceeds(getDoc(doc(ctx(OTHER), "users", OTHER.uid)));
+});
+
+test("account deletion: unverified accounts cannot delete or tombstone", async () => {
+  await seed(MEMBER);
+  await assertFails(deletionBatch(ctx(MEMBER, { verified: false }), MEMBER.uid));
+});
+
+test("account deletion is atomic: a batch with any invalid part changes nothing", async () => {
+  await seed(MEMBER);
+  await seed(OTHER);
+  const db = ctx(MEMBER);
+  // Own profile + someone else's tombstone: the whole batch must fail.
+  await assertFails(deletionBatch(db, MEMBER.uid, OTHER.uid));
+  await assertSucceeds(getDoc(doc(db, "users", MEMBER.uid)));
+  // Tombstone with extra data is refused, so the profile survives too.
+  const batch = writeBatch(db);
+  batch.delete(doc(db, "users", MEMBER.uid));
+  batch.set(doc(db, "deletedAccounts", MEMBER.uid), { deletedAt: serverTimestamp(), email: MEMBER.email });
+  await assertFails(batch.commit());
+  await assertSucceeds(getDoc(doc(db, "users", MEMBER.uid)));
+});
+
+test("admin safeguard: administrators cannot delete their own profile from the browser", async () => {
+  await seed(ADMIN);
+  const db = ctx(ADMIN, { admin: true });
+  await assertFails(deletionBatch(db, ADMIN.uid));
+  await assertSucceeds(getDoc(doc(db, "users", ADMIN.uid)));
+});
+
+test("admin safeguard: admins cannot delete or tombstone other members", async () => {
+  await seed(MEMBER);
+  const db = ctx(ADMIN, { admin: true });
+  await assertFails(deletionBatch(db, MEMBER.uid));
+});
+
+test("a new account with a new UID can still register after someone else deleted theirs", async () => {
+  await seed(MEMBER);
+  await assertSucceeds(deletionBatch(ctx(MEMBER), MEMBER.uid));
+  await assertSucceeds(setDoc(doc(ctx(OTHER), "users", OTHER.uid), profile(OTHER)));
+});
+
+test("new profiles must start on the free tier and the tier cannot be changed", async () => {
+  const db = ctx(MEMBER);
+  const ref = doc(db, "users", MEMBER.uid);
+  for (const tier of ["spark", "glow", "radiance", "admin", ""]) {
+    await assertFails(setDoc(ref, profile(MEMBER, { membershipTier: tier })));
+  }
+  const { membershipTier, ...noTier } = profile(MEMBER);
+  await assertFails(setDoc(ref, noTier));
+  await assertSucceeds(setDoc(ref, profile(MEMBER)));
+  await assertFails(updateDoc(ref, { membershipTier: "radiance", updatedAt: serverTimestamp() }));
+  await assertFails(updateDoc(ref, { subscriptionStatus: "active", updatedAt: serverTimestamp() }));
 });
 
 test("only verified admins (custom claim) can list members", async () => {

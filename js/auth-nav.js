@@ -4,6 +4,13 @@ import { accountsEnabled } from "./site-config.js";
 
 const link = document.querySelector("[data-account-link]");
 
+// "Become a member — Free" calls to action only appear once accounts are on;
+// until then the "registration opening soon" wording stays in their place.
+if (accountsEnabled) {
+  document.querySelectorAll("[data-accounts-only]").forEach((el) => { el.hidden = false; });
+  document.querySelectorAll("[data-accounts-hide]").forEach((el) => { el.hidden = true; });
+}
+
 if (link && accountsEnabled) {
   link.hidden = false;
   try {

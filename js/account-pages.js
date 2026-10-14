@@ -53,6 +53,12 @@ function nextPage() {
   return next === "admin" ? url("admin.html") : url("account.html");
 }
 
+// Missing or unknown tiers are shown as Free; paid tiers are only ever set
+// by trusted server code.
+function tierLabel(tier) {
+  return { spark: "Spark", glow: "Glow", radiance: "Radiance" }[tier] ?? "Free";
+}
+
 function formatDate(value) {
   const date = value?.toDate?.();
   return date ? date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "—";
@@ -131,9 +137,13 @@ const controllers = {
   account(svc) {
     const status = $("#account-status");
     let adminChecked = false;
+    // Deleting the login signs the user out; stay on the page so the
+    // "account deleted" confirmation can be shown instead of redirecting.
+    let deletingAccount = false;
 
     svc.watchAuth(async (user) => {
       if (!user) {
+        if (deletingAccount) return;
         location.replace(`${url("login.html")}?next=account`);
         return;
       }
@@ -152,6 +162,7 @@ const controllers = {
         const profile = await svc.ensureProfile(user);
         $("[data-profile-name]").textContent = profile.displayName;
         $("[data-profile-created]").textContent = formatDate(profile.createdAt);
+        $("[data-membership-tier]").textContent = tierLabel(profile.membershipTier);
         $("[data-welcome-name]").textContent = profile.displayName;
         $("#name-form").elements.displayName.value = profile.displayName;
       } catch (error) {
@@ -214,6 +225,52 @@ const controllers = {
       })
     );
 
+    const deleteStart = $("#delete-start");
+    const deleteForm = $("#delete-form");
+    const showDeleteForm = (open) => {
+      deleteForm.hidden = !open;
+      deleteStart.setAttribute("aria-expanded", String(open));
+      if (open) deleteForm.elements.password.focus();
+      else { deleteForm.reset(); clearInvalid(deleteForm); deleteStart.focus(); }
+    };
+    deleteStart.addEventListener("click", () => showDeleteForm(deleteForm.hidden));
+    $("#delete-cancel").addEventListener("click", () => showDeleteForm(false));
+
+    deleteForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearInvalid(deleteForm);
+      const deleteStatus = $("#delete-status");
+      const { password, confirm } = deleteForm.elements;
+      if (!password.value) return markInvalid(password, "Please enter your password.", deleteStatus);
+      if (!confirm.checked) return markInvalid(confirm, "Please tick the box to confirm.", deleteStatus);
+      let result;
+      deletingAccount = true;
+      try {
+        result = await busy(deleteForm.querySelector("button[type=submit]"), () =>
+          svc.deleteAccount(svc.auth.currentUser, password.value)
+        );
+      } catch (error) {
+        // Password check failed: nothing has been deleted.
+        deletingAccount = false;
+        setStatus(deleteStatus, `${friendlyAuthError(error)} Nothing has been deleted.`, "error");
+        return;
+      }
+      if (!result.accountDeleted) deletingAccount = false;
+      if (result.blockedAdmin) {
+        setStatus(deleteStatus, "Administrator accounts cannot be deleted here. Ask another administrator to remove your admin access first. Nothing has been deleted.", "error");
+        return;
+      }
+      if (result.accountDeleted) {
+        toggle("[data-member-panel]", false);
+        toggle("[data-account-deleted]", true);
+        $("[data-account-deleted] h2")?.focus();
+      } else if (result.profileDeleted) {
+        setStatus(deleteStatus, "Your member profile was deleted, but we could not remove your login. Please try again, or email hello@sprinkleofhappiness.co.uk and we will finish deleting it.", "error");
+      } else {
+        setStatus(deleteStatus, "We could not delete your account. Nothing has been deleted. Please try again.", "error");
+      }
+    });
+
     $("#account-reset").addEventListener("click", async (event) => {
       const settingsStatus = $("#settings-status");
       try {
@@ -264,7 +321,7 @@ async function loadMembers(svc, status) {
     if (!members.length) {
       const row = tbody.insertRow();
       const cell = row.insertCell();
-      cell.colSpan = 3;
+      cell.colSpan = 4;
       cell.textContent = "No member profiles yet.";
       return;
     }
@@ -272,6 +329,7 @@ async function loadMembers(svc, status) {
       const row = tbody.insertRow();
       row.insertCell().textContent = member.displayName ?? "—";
       row.insertCell().textContent = member.email ?? "—";
+      row.insertCell().textContent = tierLabel(member.membershipTier);
       row.insertCell().textContent = formatDate(member.createdAt);
     }
   } catch (error) {

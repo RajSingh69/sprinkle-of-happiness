@@ -3942,3 +3942,14 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 .intro-support-link{position:absolute;left:50%;bottom:clamp(20px,5vh,40px);transform:translateX(-50%);z-index:6;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.88);border:1px solid rgba(43,33,64,.12);color:var(--plum);font-weight:700;font-size:.95rem;white-space:nowrap;text-decoration:none}
 .intro-support-link span{color:var(--berry-deep);text-decoration:underline;text-underline-offset:3px}
 .intro-support-link:hover span{color:var(--plum)}
+
+/* Member dashboard additions */
+.account-links{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.account-danger{border-color:rgba(163,18,61,.25)}
+.btn.btn-danger{background:#a3123d!important;color:#fff!important;border:0!important}
+.btn.btn-danger:hover{background:#7f0d2f!important}
+.check-row{display:flex!important;align-items:flex-start;gap:10px;font-weight:600}
+.check-row input{width:auto!important;margin-top:4px}
+.account-welcome:not(:has(button)){display:block}
+/* Forms inside account cards sit flat: no card-within-a-card */
+.account-card .account-inline-form{background:none!important;border:0!important;box-shadow:none!important;padding:16px 0 0!important;margin-top:16px;border-top:1px solid rgba(43,33,64,.1)!important;border-radius:0!important}
