@@ -3881,3 +3881,5 @@ input[aria-invalid="true"]{border-color:#a3123d!important;box-shadow:0 0 0 4px r
 .admin-placeholders p{margin:0;color:var(--plum-soft)}
 .account-page section[id]{scroll-margin-top:100px}
 @media (max-width:760px){.account-grid{grid-template-columns:1fr}.account-details div{grid-template-columns:1fr;gap:2px}.account-link{font-size:.95rem}}
+/* Long email addresses wrap instead of overflowing cards on small screens */
+a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
