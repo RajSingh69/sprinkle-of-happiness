@@ -3883,3 +3883,62 @@ input[aria-invalid="true"]{border-color:#a3123d!important;box-shadow:0 0 0 4px r
 @media (max-width:760px){.account-grid{grid-template-columns:1fr}.account-details div{grid-template-columns:1fr;gap:2px}.account-link{font-size:.95rem}}
 /* Long email addresses wrap instead of overflowing cards on small screens */
 a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
+
+/* =========================
+   PHASE 14D: READABILITY FIXES
+========================= */
+/* Footer: urgent-help notice, brand and copyright readable on dark plum */
+.footer .notice{background:rgba(255,255,255,.08)!important;border:1px solid rgba(255,255,255,.2)!important;box-shadow:none!important;backdrop-filter:none;color:#fff8ee}
+.footer .notice :is(strong,a){color:#fff!important}
+.footer .brand,.footer .brand span{color:#fff}
+.footer-bottom span{color:rgba(246,238,251,.82)}
+/* Support page: header and footer keep their own colours */
+.support-page .site-header :is(a:not(.btn),.brand span){color:var(--plum)}
+.support-page .site-header .nav-links a:is(.active,:hover){color:var(--berry-deep)}
+.support-page .footer a:not(.btn){color:rgba(246,238,251,.85)}
+/* Support page: "what to say" speech bubbles are light with dark text */
+.support-page .speech-bubbles > *{background:#fff8ee!important;color:var(--plum)!important;border:1px solid rgba(255,255,255,.9)!important;box-shadow:0 10px 24px -14px rgba(0,0,0,.5)!important;backdrop-filter:none}
+.support-page .speech-bubbles > :nth-child(3n+2){background:#ffe9d6!important}
+.support-page .speech-bubbles > :nth-child(3n){background:#e2f2fb!important}
+/* Coffee hero: light dawn background so the dark headline text is readable */
+.coffee-hero{background:radial-gradient(45% 40% at 78% 18%,rgba(255,214,107,.4),transparent 70%),radial-gradient(50% 45% at 12% 30%,rgba(197,183,255,.4),transparent 70%),linear-gradient(180deg,#f3eeff,#ffeadc 60%,#fff8ee)!important}
+/* Primary buttons and text links: stronger contrast */
+.btn:not(.btn-secondary):not(.btn-ghost),.intro-button:not(.intro-button-secondary){background:linear-gradient(135deg,#c23466,#a92c5d 60%,#962553)!important}
+.organic-link{color:var(--berry-deep)}
+.contact-cloud-path a[href="support.html"]{background:#2b2140!important;color:#fff!important}
+.support-page .eyebrow{color:#ffe3ee!important}
+.support-page .scene-final .eyebrow{color:var(--berry-deep)!important}
+
+/* Free membership feature */
+.free-tier{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(20px,4vw,48px);align-items:center;padding:clamp(28px,4vw,48px);border-radius:clamp(28px,4vw,44px);background:linear-gradient(160deg,rgba(255,255,255,.95),rgba(214,240,222,.55));border:1px solid rgba(255,255,255,.9);box-shadow:var(--dream-shadow)}
+.free-tier .section-title{margin-top:4px}
+.compare-table{min-width:680px}
+@media (max-width:860px){.free-tier{grid-template-columns:1fr}}
+
+/* Homepage welcome question */
+.welcome-question{padding:clamp(28px,5vw,48px) 0;background:linear-gradient(180deg,#fff0f5,#fff8ee)}
+.welcome-question-card{position:relative;max-width:820px;margin:0 auto;padding:clamp(28px,4vw,44px) clamp(24px,5vw,56px);border-radius:clamp(28px,4vw,40px);background:linear-gradient(160deg,rgba(255,255,255,.96),rgba(236,229,255,.6));border:1px solid rgba(255,255,255,.9);box-shadow:var(--dream-shadow);animation:welcomeIn .7s var(--ease-soft) both}
+.welcome-question-title{margin:0 0 12px;font-size:clamp(1.6rem,3.2vw,2.3rem)!important}
+.welcome-question-text{margin:0 0 10px;font-family:var(--serif);font-style:italic;font-size:clamp(1.1rem,1.9vw,1.3rem);line-height:1.55;color:var(--plum);font-variation-settings:"SOFT" 100}
+.welcome-question-close{position:absolute;top:14px;right:14px;width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(43,33,64,.15);border-radius:50%;background:#fff;color:var(--plum);font-size:1.6rem;line-height:1;cursor:pointer}
+.welcome-question-close:hover{border-color:var(--berry-deep);color:var(--berry-deep)}
+@keyframes welcomeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.welcome-question-card{animation:none}}
+.support-page .worried-section .eyebrow{color:#fff!important}
+/* Solid fallbacks behind gradients, so text stays readable if a gradient fails */
+.btn:not(.btn-secondary):not(.btn-ghost),.intro-button:not(.intro-button-secondary){background-color:#a92c5d!important}
+.footer{background-color:#2b2140!important}
+.footer .notice{background-color:#3a2d55!important}
+
+/* Entrance cursor demonstration (purely visual) */
+.intro-demo-cursor,.intro-demo-ripple{position:absolute;left:0;top:0;pointer-events:none;z-index:5}
+.intro-demo-cursor{width:34px;height:34px;opacity:0;transform-origin:3px 2px;filter:drop-shadow(0 6px 10px rgba(43,33,64,.35))}
+.intro-demo-cursor svg{display:block}
+.intro-demo-ripple{width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;border:3px solid rgba(255,255,255,.95);background:rgba(255,214,107,.35);opacity:0}
+.intro-button.intro-button-primary{transition:transform .45s var(--ease-bounce),scale .14s ease!important}
+.intro-button.intro-button-primary.is-demo-pressed{scale:.95}
+.intro-button.intro-button-primary.is-demo-hint{outline:4px solid rgba(255,214,107,.85);outline-offset:6px}
+/* Support link inside the survivor gate */
+.intro-support-link{position:absolute;left:50%;bottom:clamp(20px,5vh,40px);transform:translateX(-50%);z-index:6;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.88);border:1px solid rgba(43,33,64,.12);color:var(--plum);font-weight:700;font-size:.95rem;white-space:nowrap;text-decoration:none}
+.intro-support-link span{color:var(--berry-deep);text-decoration:underline;text-underline-offset:3px}
+.intro-support-link:hover span{color:var(--plum)}
