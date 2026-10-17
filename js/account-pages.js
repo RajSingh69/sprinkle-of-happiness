@@ -83,6 +83,18 @@ function subscriptionLabel(status) {
   }[status] ?? "—";
 }
 
+// Stores a valid ?tier= from the URL for later, and returns it.
+function rememberTierFromUrl() {
+  const tier = new URLSearchParams(location.search).get("tier");
+  if (!PAID_TIERS.includes(tier)) return null;
+  try {
+    sessionStorage.setItem(SELECTED_TIER_KEY, tier);
+  } catch {
+    // Storage unavailable: the tier still travels in links.
+  }
+  return tier;
+}
+
 function readSelectedTier() {
   try {
     const tier = sessionStorage.getItem(SELECTED_TIER_KEY);
@@ -90,6 +102,60 @@ function readSelectedTier() {
   } catch {
     return null;
   }
+}
+
+// The same benefit wording as membership.html (keep the two in step).
+const BENEFITS = {
+  free: [
+    "Free yoga and workshops, open to everyone",
+    "Stay connected with the Sprinkle community",
+    "Hear about community news and opportunities"
+  ],
+  spark: [
+    "Private member community",
+    "Monthly creative and reflective prompts",
+    "One monthly group check-in call (60 minutes)",
+    "Monthly accountability thread",
+    "Early access to selected events",
+    "Member-only mini-challenges",
+    "Discounts on eligible paid programmes",
+    "A monthly collective poem from Kaan",
+    "The chance to contribute themes or lines to future poems"
+  ],
+  glow: [
+    "Everything in Spark",
+    "Weekly Glow Circle (60–75 minutes)",
+    "Weekly goal setting and accountability",
+    "A monthly rotating creative-feedback opportunity",
+    "Monthly themed workshops for Glow and Radiance members",
+    "One personalised short poem per quarter",
+    "A guided reflection and movement audio library",
+    "Priority booking for selected gatherings",
+    "A monthly creative-business offer clinic",
+    "Occasional guest expert sessions"
+  ],
+  radiance: [
+    "Everything in Spark and Glow",
+    "A weekly 30-minute 1:1 session with Kaan",
+    "An initial 60–90-minute onboarding session",
+    "A personalised 90-day creative roadmap",
+    "One custom poem per month",
+    "An optional recorded poem or voice reflection",
+    "Priority access to eligible programmes",
+    "The option to request bespoke workshops at member rates",
+    "A defined channel or scheduled office hours for questions",
+    "A quarterly 60–90-minute strategy intensive",
+    "Support developing a signature creative offer",
+    "Optional community leadership opportunities",
+    "Optional supporter recognition, only with your consent"
+  ]
+};
+
+function renderBenefits(tier) {
+  const key = PAID_TIERS.includes(tier) ? tier : "free";
+  $("[data-benefits-intro]").textContent = `Included with ${tierLabel(key)} membership:`;
+  const list = $("[data-benefits]");
+  list.replaceChildren(...BENEFITS[key].map((text) => Object.assign(document.createElement("li"), { textContent: text })));
 }
 
 // Shows only billing facts the Stripe webhook has recorded; nothing is guessed.
@@ -116,7 +182,15 @@ async function renderMembership(svc, user, profile) {
   if (new URLSearchParams(location.search).get("checkout") === "success") {
     setStatus(billingStatus, "Thank you. Stripe has your payment details, and your membership will update here once the payment is confirmed, usually within a minute. Refresh this page to check.", "success");
   }
-  if (!paymentsEnabled) return;
+  renderBenefits(profile.membershipTier);
+
+  if (!paymentsEnabled) {
+    const pending = readSelectedTier();
+    if (pending && !svc.isLiveSubscription(sub) && !billingStatus.textContent) {
+      setStatus(billingStatus, `You chose ${tierLabel(pending)}. Paid memberships are not open yet, so you won't be charged. An upgrade option will appear here once they open.`, "info");
+    }
+    return;
+  }
 
   const billing = await import("./billing-service.js");
   const live = svc.isLiveSubscription(sub);
@@ -157,6 +231,10 @@ const controllers = {
     const resetForm = $("#reset-form");
     const resetStatus = $("#reset-status");
 
+    // Keep a chosen paid tier when the visitor creates an account instead.
+    const chosen = rememberTierFromUrl();
+    if (chosen) $("#register-link").href = `${url("register.html")}?tier=${chosen}`;
+
     svc.watchAuth((user) => {
       toggle("[data-signed-in-note]", Boolean(user));
     });
@@ -196,6 +274,15 @@ const controllers = {
   register(svc) {
     const form = $("#register-form");
     const status = $("#register-status");
+
+    const chosen = rememberTierFromUrl() ?? readSelectedTier();
+    if (chosen) {
+      const note = $("[data-selected-tier]");
+      note.hidden = false;
+      note.textContent = paymentsEnabled
+        ? `You've chosen ${tierLabel(chosen)} (${tierPrice(chosen)}). Create your free account and verify your email first; you can then continue to secure checkout from My Account.`
+        : `You've chosen ${tierLabel(chosen)}. Paid memberships are not open yet, so your free account comes first and you won't be charged. We'll show an upgrade option in My Account once they open.`;
+    }
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -402,24 +489,77 @@ const controllers = {
   }
 };
 
+function messageRow(tbody, text) {
+  tbody.replaceChildren();
+  const cell = tbody.insertRow().insertCell();
+  cell.colSpan = 5;
+  cell.textContent = text;
+}
+
+function fillStatusBreakdown(subscriptions) {
+  const counts = {};
+  for (const sub of subscriptions.values()) counts[sub.status] = (counts[sub.status] ?? 0) + 1;
+  const list = $("#status-breakdown");
+  list.replaceChildren();
+  const entries = Object.entries(counts);
+  if (!entries.length) entries.push(["none", 0]);
+  for (const [statusName, n] of entries) {
+    const row = document.createElement("div");
+    const dt = document.createElement("dt");
+    const dd = document.createElement("dd");
+    dt.textContent = statusName === "none" ? "No paid subscriptions yet" : subscriptionLabel(statusName).split(":")[0];
+    dd.textContent = String(n);
+    row.append(dt, dd);
+    list.append(row);
+  }
+}
+
 async function loadMembers(svc, status) {
   const tbody = $("#members-rows");
+  const results = $("#member-results");
+  messageRow(tbody, "Loading members…");
+  let members;
+  let subscriptions;
   try {
-    const [count, members, subscriptions] = await Promise.all([svc.countMembers(), svc.listMembers(), svc.listSubscriptions()]);
+    let count;
+    [count, members, subscriptions] = await Promise.all([svc.countMembers(), svc.listMembers(), svc.listSubscriptions()]);
     $("[data-member-count]").textContent = String(count);
-    const tally = { free: 0, spark: 0, glow: 0, radiance: 0 };
-    for (const member of members) tally[PAID_TIERS.includes(member.membershipTier) ? member.membershipTier : "free"]++;
-    for (const [tier, n] of Object.entries(tally)) $(`[data-tier-count="${tier}"]`).textContent = String(n);
-    $("[data-active-subs]").textContent = String([...subscriptions.values()].filter((s) => svc.isLiveSubscription(s)).length);
-    tbody.replaceChildren();
-    if (!members.length) {
-      const row = tbody.insertRow();
-      const cell = row.insertCell();
-      cell.colSpan = 5;
-      cell.textContent = "No member profiles yet.";
+  } catch (error) {
+    messageRow(tbody, "Members could not be loaded.");
+    setStatus(status, friendlyAuthError(error), "error");
+    return;
+  }
+
+  const isPaid = (m) => PAID_TIERS.includes(m.membershipTier);
+  const tally = { free: 0, spark: 0, glow: 0, radiance: 0 };
+  for (const member of members) tally[isPaid(member) ? member.membershipTier : "free"]++;
+  for (const [tier, n] of Object.entries(tally)) $(`[data-tier-count="${tier}"]`).textContent = String(n);
+  $("[data-paid-count]").textContent = String(members.filter(isPaid).length);
+  $("[data-active-subs]").textContent = String([...subscriptions.values()].filter((s) => svc.isLiveSubscription(s)).length);
+  fillStatusBreakdown(subscriptions);
+
+  if (!members.length) {
+    messageRow(tbody, "No member profiles yet.");
+    results.textContent = "";
+    return;
+  }
+
+  const search = $("#member-search");
+  const filter = $("#member-filter");
+  const render = () => {
+    const term = search.value.trim().toLowerCase();
+    const shown = members.filter((m) => {
+      if (filter.value === "paid" && !isPaid(m)) return false;
+      if (filter.value === "free" && isPaid(m)) return false;
+      return !term || `${m.displayName ?? ""} ${m.email ?? ""}`.toLowerCase().includes(term);
+    });
+    results.textContent = `Showing ${shown.length} of ${members.length} members.`;
+    if (!shown.length) {
+      messageRow(tbody, "No members match this search.");
       return;
     }
-    for (const member of members) {
+    tbody.replaceChildren();
+    for (const member of shown) {
       const row = tbody.insertRow();
       row.insertCell().textContent = member.displayName ?? "—";
       row.insertCell().textContent = member.email ?? "—";
@@ -428,9 +568,10 @@ async function loadMembers(svc, status) {
       row.insertCell().textContent = sub ? subscriptionLabel(sub.status).split(":")[0] : "None";
       row.insertCell().textContent = formatDate(member.createdAt);
     }
-  } catch (error) {
-    setStatus(status, friendlyAuthError(error), "error");
-  }
+  };
+  search.addEventListener("input", render);
+  filter.addEventListener("change", render);
+  render();
 }
 
 if (accountsEnabled) {

@@ -3969,3 +3969,16 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 .tier-join .btn{width:100%;justify-content:center}
 .checkout-status{text-align:center;margin-top:18px}
 .checkout-note{text-align:center;max-width:640px;margin:8px auto 0}
+
+/* Phase 15C completion: admin search, benefits, bookings */
+.admin-controls{display:flex;flex-wrap:wrap;gap:12px 20px;margin:4px 0 8px}
+.admin-controls label{display:grid;gap:6px;font-weight:700;color:var(--plum);flex:1 1 220px}
+.admin-subhead{margin:18px 0 10px;font-size:1.15rem!important}
+.account-benefits{margin:0 0 14px;padding-left:1.2em;display:grid;gap:6px;color:var(--plum-soft)}
+.tier-soon{margin:4px 0 12px;padding:8px 14px;border-radius:14px;background:rgba(255,255,255,.75);border:1px dashed rgba(43,33,64,.2);font-weight:700;font-size:.95rem;color:var(--plum)}
+.bookings-page .inner-hero h1{font-size:clamp(2.2rem,4.4vw,3.6rem)!important;line-height:1.08!important;background:none!important;-webkit-text-fill-color:var(--plum);color:var(--plum)!important}
+.bookings-hero{background:radial-gradient(45% 40% at 82% 16%,rgba(255,214,107,.4),transparent 70%),radial-gradient(50% 45% at 10% 30%,rgba(169,216,242,.45),transparent 70%),linear-gradient(180deg,#eef5fc,#fff8ee)}
+.bookings-page .scene-soft{background:linear-gradient(180deg,#f6f1ff,#fff8ee)}
+.booking-cta{display:grid;justify-items:center;gap:10px;margin-top:26px;text-align:center}
+.booking-cta .programme-small{max-width:640px}
+.curriculum-offers .status-badge{justify-self:start;align-self:flex-start}

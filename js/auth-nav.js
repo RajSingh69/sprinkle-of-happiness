@@ -2,20 +2,21 @@
 // so ordinary visitors on the public site download nothing extra.
 import { accountsEnabled, paymentsEnabled } from "./site-config.js";
 
-// Paid membership controls only appear once the Stripe backend is live.
-if (paymentsEnabled) {
-  document.querySelectorAll("[data-payments-only]").forEach((el) => { el.hidden = false; });
-  document.querySelectorAll("[data-payments-hide]").forEach((el) => { el.hidden = true; });
-}
-
-const link = document.querySelector("[data-account-link]");
-
 // "Become a member — Free" calls to action only appear once accounts are on;
 // until then the "registration opening soon" wording stays in their place.
 if (accountsEnabled) {
   document.querySelectorAll("[data-accounts-only]").forEach((el) => { el.hidden = false; });
   document.querySelectorAll("[data-accounts-hide]").forEach((el) => { el.hidden = true; });
 }
+
+// Paid membership controls only appear once the Stripe backend is live.
+// Applied after the accounts rules so payment state always wins.
+if (paymentsEnabled) {
+  document.querySelectorAll("[data-payments-only]").forEach((el) => { el.hidden = false; });
+  document.querySelectorAll("[data-payments-hide]").forEach((el) => { el.hidden = true; });
+}
+
+const link = document.querySelector("[data-account-link]");
 
 if (link && accountsEnabled) {
   link.hidden = false;
