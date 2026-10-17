@@ -120,7 +120,15 @@ export async function updateDisplayName(user, displayName) {
 export async function deleteAccount(user, password) {
   if (await isAdmin(user)) return { blockedAdmin: true, profileDeleted: false, accountDeleted: false };
   // Never delete an account while a paid subscription could still charge it.
-  if (isLiveSubscription(await getSubscription(user.uid))) {
+  // If the subscription can't be checked, stop: never risk deleting an account
+  // that might still be paying.
+  let subscription;
+  try {
+    subscription = await getSubscription(user.uid);
+  } catch {
+    return { checkFailed: true, profileDeleted: false, accountDeleted: false };
+  }
+  if (isLiveSubscription(subscription)) {
     return { blockedSubscription: true, profileDeleted: false, accountDeleted: false };
   }
   const credential = EmailAuthProvider.credential(user.email, password);

@@ -429,6 +429,10 @@ const controllers = {
         return;
       }
       if (!result.accountDeleted) deletingAccount = false;
+      if (result.checkFailed) {
+        setStatus(deleteStatus, "We couldn't check your membership status, so nothing has been deleted. Please try again later, or email hello@sprinkleofhappiness.co.uk.", "error");
+        return;
+      }
       if (result.blockedSubscription) {
         setStatus(deleteStatus, "You have a paid membership that is still active. Please cancel it in Manage billing first. Once it has ended you can delete your account. Nothing has been deleted.", "error");
         return;
@@ -522,8 +526,17 @@ async function loadMembers(svc, status) {
   let subscriptions;
   try {
     let count;
-    [count, members, subscriptions] = await Promise.all([svc.countMembers(), svc.listMembers(), svc.listSubscriptions()]);
+    [count, members, subscriptions] = await Promise.all([
+      svc.countMembers(),
+      svc.listMembers(),
+      // Members still load if billing records can't be read.
+      svc.listSubscriptions().catch(() => null)
+    ]);
     $("[data-member-count]").textContent = String(count);
+    if (!subscriptions) {
+      subscriptions = new Map();
+      setStatus(status, "Subscription records could not be loaded, so subscription columns show None.", "info");
+    }
   } catch (error) {
     messageRow(tbody, "Members could not be loaded.");
     setStatus(status, friendlyAuthError(error), "error");
