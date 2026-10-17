@@ -3953,3 +3953,13 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 .account-welcome:not(:has(button)){display:block}
 /* Forms inside account cards sit flat: no card-within-a-card */
 .account-card .account-inline-form{background:none!important;border:0!important;box-shadow:none!important;padding:16px 0 0!important;margin-top:16px;border-top:1px solid rgba(43,33,64,.1)!important;border-radius:0!important}
+
+/* Official logo (artwork shown unaltered; rounded corners stay clear of the lettering) */
+.brand-logo{display:block;flex:none;width:44px;height:44px;border-radius:18%;box-shadow:0 4px 12px -6px rgba(43,33,64,.45)}
+.footer-brand{align-items:center;gap:14px}
+.footer-logo{width:88px;height:88px;border-radius:16%;box-shadow:0 8px 20px -10px rgba(0,0,0,.6)}
+@media (max-width:760px){.site-header .brand-logo{width:40px;height:40px}.footer-logo{width:72px;height:72px}}
+
+/* Planned / coming-soon status for unconfirmed circles */
+.status-badge{display:inline-block;margin:4px 0 8px;padding:4px 12px;border-radius:999px;background:var(--butter);border:1px solid rgba(43,33,64,.15);color:var(--plum);font-size:.85rem;font-weight:800;letter-spacing:.01em}
+.status-note{max-width:640px;margin:10px 0 0;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.75);border:1px solid rgba(43,33,64,.1);color:var(--plum)!important;font-weight:600}
