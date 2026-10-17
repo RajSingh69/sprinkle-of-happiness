@@ -287,13 +287,14 @@ const controllers = {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       clearInvalid(form);
-      const { displayName, email, password, confirm } = form.elements;
+      const { displayName, email, password, confirm, agree } = form.elements;
       const nameError = validateDisplayName(displayName.value);
       if (nameError) return markInvalid(displayName, nameError, status);
       const emailError = validateEmail(email.value);
       if (emailError) return markInvalid(email, emailError, status);
       const passwordError = validatePassword(password.value, confirm.value);
       if (passwordError) return markInvalid(passwordError.includes("match") ? confirm : password, passwordError, status);
+      if (!agree.checked) return markInvalid(agree, "Please confirm you agree to the Terms and have read the Privacy Notice.", status);
       try {
         await busy(form.querySelector("button[type=submit]"), () =>
           svc.registerMember({ displayName: displayName.value, email: email.value, password: password.value })

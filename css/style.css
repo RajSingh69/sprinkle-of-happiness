@@ -3982,3 +3982,17 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 .booking-cta{display:grid;justify-items:center;gap:10px;margin-top:26px;text-align:center}
 .booking-cta .programme-small{max-width:640px}
 .curriculum-offers .status-badge{justify-self:start;align-self:flex-start}
+
+/* Privacy Notice and Terms pages */
+.policy-scene{padding-top:clamp(40px,7vw,80px)!important;background:linear-gradient(180deg,#f6f1ff,#fff8ee 50%)}
+.policy-container{max-width:860px}
+.policy-title{font-size:clamp(2.2rem,4.4vw,3.2rem)!important;margin:0 0 8px;background:none!important;-webkit-text-fill-color:var(--plum);color:var(--plum)!important}
+.policy-meta{margin:0 0 22px;color:var(--plum-soft);font-size:.95rem}
+.policy-card{padding:clamp(24px,4vw,44px);border-radius:28px;background:rgba(255,255,255,.92);border:1px solid rgba(43,33,64,.08);box-shadow:var(--dream-shadow)}
+.policy-card h2{margin:28px 0 10px;font-size:1.35rem!important}
+.policy-card h2:first-child{margin-top:0}
+.policy-card p,.policy-card li{color:var(--plum-soft)}
+.policy-card ul{padding-left:1.2em;display:grid;gap:6px}
+.policy-card a{color:var(--berry-deep);text-decoration:underline;text-underline-offset:3px}
+.policy-pending{padding:10px 14px;border-radius:14px;background:var(--butter);color:var(--plum)!important;font-weight:600}
+.policy-links{margin-top:20px;text-align:center}

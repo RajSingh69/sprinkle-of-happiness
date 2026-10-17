@@ -1,9 +1,9 @@
-// Account features are switched off on the public site until the Privacy,
-// Terms and Safeguarding policies are approved and sign-up is enabled in the
-// Firebase Console. Local development hosts can use them for testing.
+// Free member accounts are live. Paid memberships stay off until the Stripe
+// backend is deployed (see PAYMENTS_LIVE below). Local development hosts use
+// the Firebase emulators unless ?production is added.
 const DEV_HOSTS = ["localhost", "127.0.0.1", "[::1]"];
 
-export const ACCOUNTS_LIVE = false;
+export const ACCOUNTS_LIVE = true;
 
 export const isDevHost = DEV_HOSTS.includes(location.hostname);
 
