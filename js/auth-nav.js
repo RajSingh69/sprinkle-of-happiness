@@ -1,6 +1,12 @@
 // Header account link. Firebase is only loaded when accounts are enabled,
 // so ordinary visitors on the public site download nothing extra.
-import { accountsEnabled } from "./site-config.js";
+import { accountsEnabled, paymentsEnabled } from "./site-config.js";
+
+// Paid membership controls only appear once the Stripe backend is live.
+if (paymentsEnabled) {
+  document.querySelectorAll("[data-payments-only]").forEach((el) => { el.hidden = false; });
+  document.querySelectorAll("[data-payments-hide]").forEach((el) => { el.hidden = true; });
+}
 
 const link = document.querySelector("[data-account-link]");
 

@@ -3963,3 +3963,9 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 /* Planned / coming-soon status for unconfirmed circles */
 .status-badge{display:inline-block;margin:4px 0 8px;padding:4px 12px;border-radius:999px;background:var(--butter);border:1px solid rgba(43,33,64,.15);color:var(--plum);font-size:.85rem;font-weight:800;letter-spacing:.01em}
 .status-note{max-width:640px;margin:10px 0 0;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.75);border:1px solid rgba(43,33,64,.1);color:var(--plum)!important;font-weight:600}
+
+/* Paid membership checkout controls */
+.tier-join{margin:4px 0 14px}
+.tier-join .btn{width:100%;justify-content:center}
+.checkout-status{text-align:center;margin-top:18px}
+.checkout-note{text-align:center;max-width:640px;margin:8px auto 0}

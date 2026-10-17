@@ -1,7 +1,7 @@
 // Controllers for login.html, register.html, account.html and admin.html.
 // Each page sets <body data-page="..."> and keeps its forms hidden until
 // this script confirms accounts are enabled, so the safe default is "closed".
-import { accountsEnabled } from "./site-config.js";
+import { accountsEnabled, paymentsEnabled } from "./site-config.js";
 import {
   validateDisplayName,
   validateEmail,
@@ -47,16 +47,102 @@ async function busy(button, task) {
   }
 }
 
+const PAID_TIERS = ["spark", "glow", "radiance"];
+const SELECTED_TIER_KEY = "soh-selected-tier";
+
 // Only internal destinations are allowed after sign-in.
 function nextPage() {
-  const next = new URLSearchParams(location.search).get("next");
-  return next === "admin" ? url("admin.html") : url("account.html");
+  const params = new URLSearchParams(location.search);
+  const next = params.get("next");
+  if (next === "admin") return url("admin.html");
+  const tier = params.get("tier");
+  if (next === "membership" && PAID_TIERS.includes(tier)) return `${url("membership.html")}?tier=${tier}#tiers`;
+  return url("account.html");
 }
 
 // Missing or unknown tiers are shown as Free; paid tiers are only ever set
 // by trusted server code.
 function tierLabel(tier) {
   return { spark: "Spark", glow: "Glow", radiance: "Radiance" }[tier] ?? "Free";
+}
+
+function tierPrice(tier) {
+  return { spark: "£27/month", glow: "£97/month", radiance: "£497/month" }[tier] ?? "£0";
+}
+
+function subscriptionLabel(status) {
+  return {
+    active: "Active",
+    trialing: "Trial",
+    past_due: "Payment overdue: please update your payment method in Manage billing",
+    unpaid: "Unpaid: paid benefits are paused",
+    incomplete: "Payment not completed",
+    paused: "Paused",
+    canceled: "Cancelled",
+    incomplete_expired: "Checkout expired"
+  }[status] ?? "—";
+}
+
+function readSelectedTier() {
+  try {
+    const tier = sessionStorage.getItem(SELECTED_TIER_KEY);
+    return PAID_TIERS.includes(tier) ? tier : null;
+  } catch {
+    return null;
+  }
+}
+
+// Shows only billing facts the Stripe webhook has recorded; nothing is guessed.
+async function renderMembership(svc, user, profile) {
+  $("[data-membership-tier]").textContent = tierLabel(profile.membershipTier);
+  $("[data-membership-price]").textContent = tierPrice(profile.membershipTier);
+  const billingStatus = $("#billing-status");
+  let sub = null;
+  try {
+    sub = await svc.getSubscription(user.uid);
+  } catch {
+    sub = null;
+  }
+  if (sub) {
+    $("[data-sub-row]").hidden = false;
+    $("[data-sub-status]").textContent = subscriptionLabel(sub.status);
+    const live = svc.isLiveSubscription(sub);
+    if (live && sub.currentPeriodEnd) {
+      $("[data-renewal-row]").hidden = false;
+      $("[data-renewal-label]").textContent = sub.cancelAtPeriodEnd ? "Membership ends on" : "Renews on";
+      $("[data-renewal-date]").textContent = formatDate(sub.currentPeriodEnd);
+    }
+  }
+  if (new URLSearchParams(location.search).get("checkout") === "success") {
+    setStatus(billingStatus, "Thank you. Stripe has your payment details, and your membership will update here once the payment is confirmed, usually within a minute. Refresh this page to check.", "success");
+  }
+  if (!paymentsEnabled) return;
+
+  const billing = await import("./billing-service.js");
+  const live = svc.isLiveSubscription(sub);
+  const manage = $("#manage-billing");
+  manage.hidden = !sub;
+  $("#choose-plan").hidden = live;
+  manage.onclick = async () => {
+    try {
+      await busy(manage, () => billing.openBillingPortal());
+    } catch (error) {
+      setStatus(billingStatus, billing.friendlyBillingError(error), "error");
+    }
+  };
+  const pending = readSelectedTier();
+  const resume = $("#resume-checkout");
+  if (pending && !live) {
+    resume.hidden = false;
+    resume.textContent = `Continue to ${tierLabel(pending)} checkout (${tierPrice(pending)})`;
+    resume.onclick = async () => {
+      try {
+        await busy(resume, () => billing.startCheckout(pending));
+      } catch (error) {
+        setStatus(billingStatus, billing.friendlyBillingError(error), "error");
+      }
+    };
+  }
 }
 
 function formatDate(value) {
@@ -162,7 +248,7 @@ const controllers = {
         const profile = await svc.ensureProfile(user);
         $("[data-profile-name]").textContent = profile.displayName;
         $("[data-profile-created]").textContent = formatDate(profile.createdAt);
-        $("[data-membership-tier]").textContent = tierLabel(profile.membershipTier);
+        await renderMembership(svc, user, profile);
         $("[data-welcome-name]").textContent = profile.displayName;
         $("#name-form").elements.displayName.value = profile.displayName;
       } catch (error) {
@@ -256,6 +342,10 @@ const controllers = {
         return;
       }
       if (!result.accountDeleted) deletingAccount = false;
+      if (result.blockedSubscription) {
+        setStatus(deleteStatus, "You have a paid membership that is still active. Please cancel it in Manage billing first. Once it has ended you can delete your account. Nothing has been deleted.", "error");
+        return;
+      }
       if (result.blockedAdmin) {
         setStatus(deleteStatus, "Administrator accounts cannot be deleted here. Ask another administrator to remove your admin access first. Nothing has been deleted.", "error");
         return;
@@ -315,13 +405,17 @@ const controllers = {
 async function loadMembers(svc, status) {
   const tbody = $("#members-rows");
   try {
-    const [count, members] = await Promise.all([svc.countMembers(), svc.listMembers()]);
+    const [count, members, subscriptions] = await Promise.all([svc.countMembers(), svc.listMembers(), svc.listSubscriptions()]);
     $("[data-member-count]").textContent = String(count);
+    const tally = { free: 0, spark: 0, glow: 0, radiance: 0 };
+    for (const member of members) tally[PAID_TIERS.includes(member.membershipTier) ? member.membershipTier : "free"]++;
+    for (const [tier, n] of Object.entries(tally)) $(`[data-tier-count="${tier}"]`).textContent = String(n);
+    $("[data-active-subs]").textContent = String([...subscriptions.values()].filter((s) => svc.isLiveSubscription(s)).length);
     tbody.replaceChildren();
     if (!members.length) {
       const row = tbody.insertRow();
       const cell = row.insertCell();
-      cell.colSpan = 4;
+      cell.colSpan = 5;
       cell.textContent = "No member profiles yet.";
       return;
     }
@@ -330,6 +424,8 @@ async function loadMembers(svc, status) {
       row.insertCell().textContent = member.displayName ?? "—";
       row.insertCell().textContent = member.email ?? "—";
       row.insertCell().textContent = tierLabel(member.membershipTier);
+      const sub = subscriptions.get(member.uid);
+      row.insertCell().textContent = sub ? subscriptionLabel(sub.status).split(":")[0] : "None";
       row.insertCell().textContent = formatDate(member.createdAt);
     }
   } catch (error) {

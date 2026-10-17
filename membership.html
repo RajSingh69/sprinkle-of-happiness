@@ -45,7 +45,7 @@
         <h1 id="membership-title">Sprinkle of Happiness Membership</h1>
         <p class="dreamline">Become a member. It's free.</p>
         <p class="lead">Joining the Sprinkle of Happiness community is free, and so are our yoga and workshops. If you would like more support, optional paid memberships offer extra community, accountability and creative guidance.</p>
-        <p class="membership-status">Free registration opening soon.</p>
+        <p class="membership-status" data-accounts-hide>Free registration opening soon.</p>
         <div class="actions"><a class="btn" href="register.html" data-accounts-only hidden>Become a member — Free</a><a class="btn" href="#free" data-accounts-hide>Free membership</a><a class="btn btn-secondary" href="#tiers">Optional paid memberships</a></div>
       </div>
     </div>
@@ -96,7 +96,7 @@
             <li>A monthly collective poem from Kaan</li>
             <li>The chance to contribute themes or lines to future poems</li>
           </ul>
-          <p class="tier-for"><strong>For</strong> people seeking connection, light accountability and a supportive creative community.</p>
+          <p class="tier-join" data-payments-only hidden><button class="btn" type="button" data-checkout-tier="spark">Join Spark · £27/month</button></p><p class="tier-for"><strong>For</strong> people seeking connection, light accountability and a supportive creative community.</p>
         </article>
         <article class="tier-card tier-glow reveal reveal-delay-1" id="glow">
           <span class="path-label">Glow</span>
@@ -115,7 +115,7 @@
             <li>A monthly creative-business offer clinic</li>
             <li>Occasional guest expert sessions</li>
           </ul>
-          <p class="tier-for"><strong>For</strong> people wanting regular creative development, structure and accountability.</p>
+          <p class="tier-join" data-payments-only hidden><button class="btn" type="button" data-checkout-tier="glow">Join Glow · £97/month</button></p><p class="tier-for"><strong>For</strong> people wanting regular creative development, structure and accountability.</p>
         </article>
         <article class="tier-card tier-radiance reveal reveal-delay-2" id="radiance">
           <span class="path-label">Radiance · limited capacity</span>
@@ -137,9 +137,11 @@
             <li>Optional community leadership opportunities</li>
             <li>Optional supporter recognition, only with your consent</li>
           </ul>
-          <p class="tier-for"><strong>For</strong> people wanting close, personalised creative guidance. Places are limited.</p>
+          <p class="tier-join" data-payments-only hidden><button class="btn" type="button" data-checkout-tier="radiance">Join Radiance · £497/month</button></p><p class="tier-for"><strong>For</strong> people wanting close, personalised creative guidance. Places are limited.</p>
         </article>
       </div>
+      <p id="checkout-status" class="form-status checkout-status" role="status" aria-live="polite"></p>
+      <p class="programme-small checkout-note" data-payments-only hidden>Paid memberships need a free account with a verified email. Payments are handled securely by Stripe; we never see or store your card details.</p></div>
       <p class="reiki-note reveal">Membership offers community, creative support and accountability. It is not clinical treatment or therapy, and no particular personal outcome is promised.</p>
     </div>
   </section>
@@ -230,5 +232,6 @@
 </footer>
 <script src="js/main.js"></script>
 <script type="module" src="js/auth-nav.js"></script>
+<script type="module" src="js/membership-page.js"></script>
 </body>
 </html>

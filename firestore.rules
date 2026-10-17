@@ -34,6 +34,14 @@ service cloud.firestore {
       return exists(/databases/$(database)/documents/deletedAccounts/$(uid));
     }
 
+    // True while a Stripe subscription could still charge the member. The
+    // status is written only by the trusted Stripe webhook (Cloud Functions).
+    function hasLiveSubscription(uid) {
+      let path = /databases/$(database)/documents/subscriptions/$(uid);
+      return exists(path)
+        && get(path).data.status in ['active', 'trialing', 'past_due', 'unpaid', 'incomplete', 'paused'];
+    }
+
     function validDisplayName(name) {
       return name is string && name.size() >= 1 && name.size() <= 60;
     }
@@ -66,6 +74,7 @@ service cloud.firestore {
       // so an administrator cannot remove their own account by accident.
       allow delete: if isVerifiedOwner(uid)
         && !isAdmin()
+        && !hasLiveSubscription(uid)
         && existsAfter(/databases/$(database)/documents/deletedAccounts/$(uid));
     }
 
@@ -80,6 +89,17 @@ service cloud.firestore {
         && exists(/databases/$(database)/documents/users/$(uid))
         && !existsAfter(/databases/$(database)/documents/users/$(uid));
     }
+
+    // Billing state written by the Stripe webhook. Members can read their own;
+    // admins can read all. Nobody can write it from the browser.
+    match /subscriptions/{uid} {
+      allow get: if (isVerifiedOwner(uid) && !isTombstoned(uid)) || isAdmin();
+      allow list: if isAdmin();
+    }
+
+    // billing/{uid}, stripeCustomers/{id} and stripeEvents/{id} hold Stripe
+    // customer links and webhook markers. They are server-only and fall
+    // through to the default deny below.
 
     // Everything else is denied by default.
     match /{document=**} {

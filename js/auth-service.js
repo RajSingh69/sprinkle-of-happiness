@@ -119,6 +119,10 @@ export async function updateDisplayName(user, displayName) {
 // Returns which steps completed so the page can report honestly.
 export async function deleteAccount(user, password) {
   if (await isAdmin(user)) return { blockedAdmin: true, profileDeleted: false, accountDeleted: false };
+  // Never delete an account while a paid subscription could still charge it.
+  if (isLiveSubscription(await getSubscription(user.uid))) {
+    return { blockedSubscription: true, profileDeleted: false, accountDeleted: false };
+  }
   const credential = EmailAuthProvider.credential(user.email, password);
   await reauthenticateWithCredential(user, credential);
   try {
@@ -135,6 +139,23 @@ export async function deleteAccount(user, password) {
     return { profileDeleted: true, accountDeleted: false, error };
   }
   return { profileDeleted: true, accountDeleted: true };
+}
+
+// Billing state written by the Stripe webhook (read-only for members).
+const LIVE_SUBSCRIPTION = ["active", "trialing", "past_due", "unpaid", "incomplete", "paused"];
+
+export async function getSubscription(uid) {
+  const snap = await getDoc(doc(db, "subscriptions", uid));
+  return snap.exists() ? snap.data() : null;
+}
+
+export function isLiveSubscription(sub) {
+  return Boolean(sub && LIVE_SUBSCRIPTION.includes(sub.status));
+}
+
+export async function listSubscriptions() {
+  const snap = await getDocs(collection(db, "subscriptions"));
+  return new Map(snap.docs.map((d) => [d.id, d.data()]));
 }
 
 // Admin-only reads. Firestore rules reject these for anyone without a

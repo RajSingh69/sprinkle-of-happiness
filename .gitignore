@@ -3,3 +3,7 @@ node_modules/
 *-debug.log
 .claude/
 .impeccable/
+functions/.secret.local
+functions/.env.local
+functions/.env.*.local
+.runtimeconfig.json

@@ -72,10 +72,19 @@
             <section class="account-card" aria-labelledby="membership-heading">
               <h2 id="membership-heading" class="account-card-title">Membership</h2>
               <dl class="account-details">
-                <div><dt>Your membership</dt><dd><strong data-membership-tier>Free</strong> · £0</dd></div>
+                <div><dt>Your membership</dt><dd><strong data-membership-tier>Free</strong> · <span data-membership-price>£0</span></dd></div>
+                <div data-sub-row hidden><dt>Subscription</dt><dd data-sub-status>—</dd></div>
+                <div data-renewal-row hidden><dt data-renewal-label>Renews on</dt><dd data-renewal-date>—</dd></div>
               </dl>
+              <p id="billing-status" class="form-status" role="status" aria-live="polite"></p>
               <p class="section-copy">Thank you for being part of Sprinkle of Happiness. Our yoga and workshops are free for every member.</p>
-              <p class="programme-small"><strong>Paid upgrades coming soon.</strong> Spark, Glow and Radiance are not available to buy yet, and no payments are taken on this website.</p>
+              <p class="programme-small" data-payments-hide><strong>Paid upgrades coming soon.</strong> Spark, Glow and Radiance are not available to buy yet, and no payments are taken on this website.</p>
+              <div class="actions" data-payments-only hidden>
+                <button class="btn" type="button" id="resume-checkout" hidden>Continue to checkout</button>
+                <button class="btn" type="button" id="manage-billing" hidden>Manage billing</button>
+                <a class="btn btn-secondary" href="membership.html#tiers" id="choose-plan">Explore paid memberships</a>
+              </div>
+              <p class="programme-small" data-payments-only hidden>Payments, plan changes and cancellations are handled securely by Stripe. Use Manage billing to upgrade, downgrade, update your card or cancel.</p>
               <a class="organic-link" href="membership.html">About membership</a>
             </section>
             <section class="account-card" aria-labelledby="explore-heading">

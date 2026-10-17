@@ -1,0 +1,14 @@
+# GitHub Pages (Jekyll) publishing settings.
+# The website is plain HTML/CSS/JS. These files are development, deployment or
+# internal planning material and must not be served as part of the site.
+# (Folders starting with "_" and dotfiles are already excluded by Jekyll.)
+exclude:
+  - functions
+  - firebase.json
+  - firestore.rules
+  - .firebaserc
+  - PLATFORM_BLUEPRINT.md
+  - ASSET_MANIFEST.md
+  - assets/README.md
+  - node_modules
+  - "*.log"

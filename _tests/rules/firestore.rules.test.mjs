@@ -232,10 +232,54 @@ test("admins cannot write other members' profiles from the browser", async () =>
 });
 
 test("all other collections are locked, including for admins", async () => {
-  for (const name of ["bookings", "payments", "subscriptions", "memberships", "enquiries", "events"]) {
+  for (const name of ["bookings", "payments", "memberships", "enquiries", "events", "billing", "stripeCustomers", "stripeEvents"]) {
     for (const db of [ctx(MEMBER), ctx(ADMIN, { admin: true })]) {
       await assertFails(getDoc(doc(db, name, "x")));
       await assertFails(setDoc(doc(db, name, "x"), { a: 1 }));
     }
   }
+});
+
+// ---------- Phase 15B: billing collections ----------
+async function seedSubscription(who, status) {
+  await env.withSecurityRulesDisabled(async (context) => {
+    await setDoc(doc(context.firestore(), "subscriptions", who.uid), { status, tier: "spark", entitled: status === "active" });
+  });
+}
+
+test("billing: members can read only their own subscription; admins can list", async () => {
+  await seedSubscription(MEMBER, "active");
+  await seedSubscription(OTHER, "active");
+  await assertSucceeds(getDoc(doc(ctx(MEMBER), "subscriptions", MEMBER.uid)));
+  await assertFails(getDoc(doc(ctx(MEMBER), "subscriptions", OTHER.uid)));
+  await assertFails(getDoc(doc(ctx(MEMBER, { verified: false }), "subscriptions", MEMBER.uid)));
+  await assertFails(getDocs(collection(ctx(MEMBER), "subscriptions")));
+  await assertSucceeds(getDocs(collection(ctx(ADMIN, { admin: true }), "subscriptions")));
+});
+
+test("billing: nobody can write subscription, billing, customer or event records from the browser", async () => {
+  await seedSubscription(MEMBER, "canceled");
+  for (const db of [ctx(MEMBER), ctx(ADMIN, { admin: true })]) {
+    await assertFails(setDoc(doc(db, "subscriptions", MEMBER.uid), { status: "active", tier: "radiance", entitled: true }));
+    await assertFails(updateDoc(doc(db, "subscriptions", MEMBER.uid), { status: "active" }));
+    await assertFails(deleteDoc(doc(db, "subscriptions", MEMBER.uid)));
+    await assertFails(setDoc(doc(db, "billing", MEMBER.uid), { stripeCustomerId: "cus_evil" }));
+    await assertFails(getDoc(doc(db, "billing", MEMBER.uid)));
+    await assertFails(setDoc(doc(db, "stripeCustomers", "cus_1"), { uid: MEMBER.uid }));
+    await assertFails(setDoc(doc(db, "stripeEvents", "evt_1"), { type: "x" }));
+  }
+});
+
+test("billing: a member with a live subscription cannot delete their account from the browser", async () => {
+  await seed(MEMBER);
+  for (const status of ["active", "trialing", "past_due", "unpaid", "incomplete", "paused"]) {
+    await seedSubscription(MEMBER, status);
+    await assertFails(deletionBatch(ctx(MEMBER), MEMBER.uid));
+  }
+});
+
+test("billing: once the subscription has ended, the member can delete their account", async () => {
+  await seed(MEMBER);
+  await seedSubscription(MEMBER, "canceled");
+  await assertSucceeds(deletionBatch(ctx(MEMBER), MEMBER.uid));
 });
