@@ -158,6 +158,31 @@ function renderBenefits(tier) {
   list.replaceChildren(...BENEFITS[key].map((text) => Object.assign(document.createElement("li"), { textContent: text })));
 }
 
+async function renderConsent(svc, user) {
+  const form = $("#consent-form");
+  const status = $("#consent-status");
+  let current = null;
+  try {
+    current = await svc.getConsent(user.uid);
+  } catch {
+    setStatus(status, "Your email preferences could not be loaded. Please try again later.", "error");
+    return;
+  }
+  form.elements.marketing.checked = current?.marketing === true;
+  if (current?.updatedAt) setStatus(status, `Last updated ${formatDate(current.updatedAt)}.`, "info");
+  form.onsubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await busy(form.querySelector("button[type=submit]"), () => svc.saveConsent(user.uid, form.elements.marketing.checked, "account"));
+      setStatus(status, form.elements.marketing.checked
+        ? "Saved. You'll receive membership updates and community news. You can unsubscribe at any time."
+        : "Saved. You won't receive membership updates or community news.", "success");
+    } catch (error) {
+      setStatus(status, friendlyAuthError(error), "error");
+    }
+  };
+}
+
 // Shows only billing facts the Stripe webhook has recorded; nothing is guessed.
 async function renderMembership(svc, user, profile) {
   $("[data-membership-tier]").textContent = tierLabel(profile.membershipTier);
@@ -295,6 +320,7 @@ const controllers = {
       const passwordError = validatePassword(password.value, confirm.value);
       if (passwordError) return markInvalid(passwordError.includes("match") ? confirm : password, passwordError, status);
       if (!agree.checked) return markInvalid(agree, "Please confirm you agree to the Terms and have read the Privacy Notice.", status);
+      svc.rememberConsentChoice(form.elements.marketing.checked);
       try {
         await busy(form.querySelector("button[type=submit]"), () =>
           svc.registerMember({ displayName: displayName.value, email: email.value, password: password.value })
@@ -337,6 +363,8 @@ const controllers = {
         $("[data-profile-name]").textContent = profile.displayName;
         $("[data-profile-created]").textContent = formatDate(profile.createdAt);
         await renderMembership(svc, user, profile);
+        await svc.savePendingConsent(user.uid).catch(() => {});
+        await renderConsent(svc, user);
         $("[data-welcome-name]").textContent = profile.displayName;
         $("#name-form").elements.displayName.value = profile.displayName;
       } catch (error) {
@@ -497,7 +525,7 @@ const controllers = {
 function messageRow(tbody, text) {
   tbody.replaceChildren();
   const cell = tbody.insertRow().insertCell();
-  cell.colSpan = 5;
+  cell.colSpan = 6;
   cell.textContent = text;
 }
 
@@ -519,19 +547,46 @@ function fillStatusBreakdown(subscriptions) {
   }
 }
 
+function fillDonationStats(donations) {
+  const list = $("#donation-stats");
+  const rows = [];
+  if (!donations) {
+    rows.push(["Donation records", "Could not be loaded"]);
+  } else {
+    const paid = donations.filter((d) => d.paymentStatus === "paid");
+    const pounds = (items) => `£${(items.reduce((sum, d) => sum + (d.amount || 0), 0) / 100).toFixed(2)}`;
+    const once = paid.filter((d) => d.frequency === "once");
+    const monthly = paid.filter((d) => d.frequency === "monthly");
+    if (!paid.length) rows.push(["Donations", "None recorded yet"]);
+    else {
+      rows.push(["One-off donations", `${once.length} · ${pounds(once)}`]);
+      rows.push(["Monthly donations started", `${monthly.length} · ${pounds(monthly)} per month`]);
+    }
+  }
+  list.replaceChildren(...rows.map(([label, value]) => {
+    const row = document.createElement("div");
+    row.append(Object.assign(document.createElement("dt"), { textContent: label }), Object.assign(document.createElement("dd"), { textContent: value }));
+    return row;
+  }));
+}
+
 async function loadMembers(svc, status) {
   const tbody = $("#members-rows");
   const results = $("#member-results");
   messageRow(tbody, "Loading members…");
   let members;
   let subscriptions;
+  let consents;
+  let donations;
   try {
     let count;
-    [count, members, subscriptions] = await Promise.all([
+    [count, members, subscriptions, consents, donations] = await Promise.all([
       svc.countMembers(),
       svc.listMembers(),
-      // Members still load if billing records can't be read.
-      svc.listSubscriptions().catch(() => null)
+      // Members still load if billing, consent or donation records can't be read.
+      svc.listSubscriptions().catch(() => null),
+      svc.listConsents().catch(() => new Map()),
+      svc.listDonations().catch(() => null)
     ]);
     $("[data-member-count]").textContent = String(count);
     if (!subscriptions) {
@@ -543,6 +598,9 @@ async function loadMembers(svc, status) {
     setStatus(status, friendlyAuthError(error), "error");
     return;
   }
+
+  $("[data-consent-count]").textContent = String([...consents.values()].filter((c) => c.marketing === true).length);
+  fillDonationStats(donations);
 
   const isPaid = (m) => PAID_TIERS.includes(m.membershipTier);
   const tally = { free: 0, spark: 0, glow: 0, radiance: 0 };
@@ -580,6 +638,7 @@ async function loadMembers(svc, status) {
       row.insertCell().textContent = tierLabel(member.membershipTier);
       const sub = subscriptions.get(member.uid);
       row.insertCell().textContent = sub ? subscriptionLabel(sub.status).split(":")[0] : "None";
+      row.insertCell().textContent = consents.get(member.uid)?.marketing === true ? "Yes" : "No";
       row.insertCell().textContent = formatDate(member.createdAt);
     }
   };

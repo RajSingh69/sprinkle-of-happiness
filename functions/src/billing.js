@@ -17,6 +17,10 @@ export const ENTITLED_STATUSES = new Set(["active", "trialing", "past_due"]);
 // be deleted while one of these is in place.
 export const LIVE_STATUSES = new Set(["active", "trialing", "past_due", "unpaid", "incomplete", "paused"]);
 
+export const DONATION_MIN = 3;
+export const DONATION_MAX = 1000;
+export const MONTHLY_DONATIONS = [5, 10, 25];
+
 export function createBilling({ stripe, db, FieldValue, Timestamp, prices, siteUrl, allowedOrigins = [], webhookSecret, error, log = console }) {
   const tierForPrice = (priceId) => Object.keys(prices).find((tier) => prices[tier] === priceId) ?? null;
   const toTimestamp = (seconds) => (seconds ? Timestamp.fromMillis(seconds * 1000) : null);
@@ -116,6 +120,8 @@ export function createBilling({ stripe, db, FieldValue, Timestamp, prices, siteU
   // matter what order webhooks arrive in, and replays are harmless.
   async function syncSubscription(subscriptionId) {
     const sub = await stripe.subscriptions.retrieve(subscriptionId);
+    // Monthly donations are Stripe subscriptions too, but never memberships.
+    if (sub.metadata?.kind === "donation") return null;
     const customerId = typeof sub.customer === "string" ? sub.customer : sub.customer?.id;
     const uid = await uidForCustomer(customerId, sub.metadata?.firebaseUID);
     if (!uid) {
@@ -177,6 +183,18 @@ export function createBilling({ stripe, db, FieldValue, Timestamp, prices, siteU
     const obj = event.data.object;
     switch (event.type) {
       case "checkout.session.completed": {
+        if (obj.metadata?.kind === "donation") {
+          // Record only what admins need for reporting; no donor details.
+          await doc(`donations/${obj.id}`).set({
+            frequency: obj.metadata.frequency === "monthly" ? "monthly" : "once",
+            amount: obj.amount_total ?? 0,
+            currency: obj.currency ?? "gbp",
+            paymentStatus: obj.payment_status ?? "unknown",
+            stripeCreated: event.created,
+            recordedAt: FieldValue.serverTimestamp()
+          });
+          break;
+        }
         if (obj.mode === "subscription" && obj.subscription) {
           const uid = obj.client_reference_id ?? obj.metadata?.firebaseUID;
           const customerId = typeof obj.customer === "string" ? obj.customer : obj.customer?.id;
@@ -237,11 +255,48 @@ export function createBilling({ stripe, db, FieldValue, Timestamp, prices, siteU
     if (customerId) batch.delete(doc(`stripeCustomers/${customerId}`));
     batch.delete(doc(`billing/${uid}`));
     batch.delete(doc(`subscriptions/${uid}`));
+    batch.delete(doc(`consents/${uid}`));
     batch.delete(doc(`users/${uid}`));
     batch.set(doc(`deletedAccounts/${uid}`), { deletedAt: FieldValue.serverTimestamp() }, { merge: true });
     await batch.commit();
     return { cancelled, customerDeleted: Boolean(customerId) };
   }
 
-  return { createCheckoutSession, createPortalSession, handleWebhook, syncSubscription, onAuthUserDeleted, tierForPrice };
+  // Donations need no account. Amounts are checked here, never trusted from
+  // the browser: one-off £3–£1,000 in whole pounds, monthly from a fixed list.
+  async function createDonationSession({ data, origin }) {
+    const frequency = data?.frequency;
+    const amount = data?.amount;
+    if (!["once", "monthly"].includes(frequency) || !Number.isInteger(amount)) {
+      throw error("invalid-argument", "Please choose a valid donation.");
+    }
+    if (frequency === "once" && (amount < DONATION_MIN || amount > DONATION_MAX)) {
+      throw error("invalid-argument", "Please choose an amount between £3 and £1,000.");
+    }
+    if (frequency === "monthly" && !MONTHLY_DONATIONS.includes(amount)) {
+      throw error("invalid-argument", "Please choose a valid monthly amount.");
+    }
+    const base = returnBase(origin);
+    const monthly = frequency === "monthly";
+    const session = await stripe.checkout.sessions.create({
+      mode: monthly ? "subscription" : "payment",
+      ...(monthly ? {} : { submit_type: "donate" }),
+      line_items: [{
+        quantity: 1,
+        price_data: {
+          currency: "gbp",
+          unit_amount: amount * 100,
+          product_data: { name: monthly ? "Monthly donation to Sprinkle of Happiness" : "Donation to Sprinkle of Happiness" },
+          ...(monthly ? { recurring: { interval: "month" } } : {})
+        }
+      }],
+      metadata: { kind: "donation", frequency },
+      ...(monthly ? { subscription_data: { metadata: { kind: "donation", frequency } } } : {}),
+      success_url: `${base}/donate.html?donation=success`,
+      cancel_url: `${base}/donate.html?donation=cancelled`
+    });
+    return { url: session.url };
+  }
+
+  return { createCheckoutSession, createPortalSession, createDonationSession, handleWebhook, syncSubscription, onAuthUserDeleted, tierForPrice };
 }

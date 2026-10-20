@@ -21,18 +21,18 @@
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="index.html"><img class="brand-logo" src="assets/images/logo/soh-logo-96.webp" srcset="assets/images/logo/soh-logo-96.webp 1x, assets/images/logo/soh-logo-192.webp 2x" width="44" height="44" alt=""><span>Sprinkle of Happiness</span></a>
-    <button class="menu-toggle" aria-label="Open navigation">Menu</button>
-    <nav class="nav-links">
-      <a data-nav="home" href="index.html">Home</a>
+    <button class="menu-toggle" aria-label="Open navigation" aria-controls="site-nav">Menu</button>
+    <nav class="nav-links" id="site-nav" aria-label="Main">
       <a data-nav="about" href="about.html">About</a>
       <a data-nav="kaan" href="kaan.html">Meet Kaan</a>
       <a data-nav="experiences" href="experiences.html">Experiences</a>
-      <a data-nav="values" href="values.html">Our Values</a>
       <a data-nav="community" href="community.html">Community</a>
+      <a data-nav="membership" href="membership.html">Membership</a>
+      <a data-nav="donate" class="nav-donate" href="donate.html">Donate</a>
       <a data-nav="support" class="support-nav" href="support.html">Need Support?</a>
       <a data-nav="contact" href="contact.html">Contact</a>
     </nav>
-    <a class="account-link" data-account-link href="login.html" hidden>Log in</a><a class="btn" href="community.html">Join Us</a>
+    <a class="account-link" data-account-link href="login.html" hidden>Log in</a><a class="btn header-join" data-join-free href="register.html">Join free</a>
   </div>
 </header>
 <main class="dreamland-main inner-story-main policy-main">
@@ -62,12 +62,19 @@
           <li>To provide your account and member dashboard (to perform our agreement with you).</li>
           <li>To send essential account emails, such as email verification and password reset (to perform our agreement with you).</li>
           <li>To keep accounts secure and prevent misuse (our legitimate interests).</li>
+          <li>If you choose to, to send you membership updates and community news by email (your consent).</li>
         </ul>
-        <p>We do not send marketing emails from your account. If we offer a newsletter in future, joining it will be optional and separate.</p>
+
+        <h2>Email updates (optional)</h2>
+        <p>Email updates are optional and separate from your account. The box is unticked unless you tick it. When you choose, we record your choice, the wording you saw, its version and the time. You can change your mind at any time in My Account, or with the unsubscribe link in any update email. Withdrawing consent does not affect your account. If we send a welcome email when your account is created, it is part of setting up your membership, not marketing.</p>
+
+        <h2>Donations</h2>
+        <p>If you donate online, your payment is handled by our payment provider, Stripe, which processes your card and billing details under its own privacy notice. We only keep the amount, whether it is one-off or monthly, and the date. We never see or store your card details.</p>
 
         <h2>Who processes it for us</h2>
         <ul>
           <li><strong>Google Firebase</strong> (Firebase Authentication and Cloud Firestore) stores and secures member accounts on our behalf. Google may process data outside the UK under its contractual safeguards for international transfers.</li>
+          <li><strong>Stripe</strong> processes donations and any future paid membership payments.</li>
           <li><strong>GitHub Pages</strong> hosts the website itself. No account data is stored there.</li>
         </ul>
         <p>We do not sell your data.</p>
@@ -75,7 +82,7 @@
         <h2>How long we keep it</h2>
         <ul>
           <li>We keep your account data while your account is open.</li>
-          <li>When you delete your account in My Account, your profile and login are deleted. We keep a minimal deletion record (your account ID and the time of deletion, with no name or email) so the deleted account cannot be recreated.</li>
+          <li>When you delete your account in My Account, your profile, email preferences and login are deleted. We keep a minimal deletion record (your account ID and the time of deletion, with no name or email) so the deleted account cannot be recreated.</li>
           <li>If an account is never verified, it is kept until you ask us to delete it. We will review how long unverified accounts are kept.</li>
         </ul>
 
@@ -96,7 +103,7 @@
     <div class="footer-grid">
       <div><div class="brand footer-brand"><img class="brand-logo footer-logo" src="assets/images/logo/soh-logo-192.webp" srcset="assets/images/logo/soh-logo-192.webp 1x, assets/images/logo/soh-logo-400.webp 2x" width="88" height="88" alt="Sprinkle of Happiness Holistic Wellness logo: a figure with arms raised beneath colourful hearts" loading="lazy"><span>Sprinkle of Happiness</span></div><p>A community-led creative wellbeing space for healing, expression and connection.</p></div>
       <div><h2 class="footer-heading">Explore</h2><p><a href="about.html">About</a></p><p><a href="curriculum.html">Our Curriculum</a></p><p><a href="experiences.html">Experiences</a></p><p><a href="bookings.html">Book a Session</a></p><p><a href="yoga.html">Yoga</a></p><p><a href="reiki.html">Reiki</a></p><p><a href="values.html">Our Values</a></p></div>
-      <div><h2 class="footer-heading">Community</h2><p><a href="community.html">Community</a></p><p><a href="lgbtq.html">LGBTQ+ Safe Space</a></p><p><a href="rebel-recovery.html">Rebel Recovery</a></p><p><a href="membership.html">Membership</a></p><p><a href="partnerships.html">Partner With Us</a></p><p><a href="coffee.html">Let's Get a Coffee</a></p><p><a href="contact.html">Contact</a></p></div>
+      <div><h2 class="footer-heading">Community</h2><p><a href="community.html">Community</a></p><p><a href="lgbtq.html">LGBTQ+ Safe Space</a></p><p><a href="rebel-recovery.html">Rebel Recovery</a></p><p><a href="membership.html">Membership</a></p><p><a href="donate.html">Donate</a></p><p><a href="partnerships.html">Partner With Us</a></p><p><a href="coffee.html">Let's Get a Coffee</a></p><p><a href="contact.html">Contact</a></p></div>
       <div><h2 class="footer-heading">Support</h2><p><a href="support.html">Need Support?</a></p><p><a href="privacy.html">Privacy Notice</a></p><p><a href="terms.html">Member Account Terms</a></p><p class="footer-policy-note">Our safeguarding policy is being prepared.</p><p><a href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a></p></div>
     </div>
     <div class="notice"><strong>Need urgent help?</strong> If there is immediate danger, call <strong>999</strong> or go to A&amp;E. Samaritans: <a href="tel:116123"><strong>116 123</strong></a>.</div>

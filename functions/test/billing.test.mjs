@@ -18,7 +18,7 @@ before(() => {
 });
 
 async function clearAll() {
-  for (const c of ["users", "subscriptions", "billing", "stripeCustomers", "stripeEvents", "deletedAccounts"]) {
+  for (const c of ["users", "subscriptions", "billing", "stripeCustomers", "stripeEvents", "deletedAccounts", "donations", "consents", "mail"]) {
     const snap = await db.collection(c).get();
     await Promise.all(snap.docs.map((d) => d.ref.delete()));
   }
@@ -241,4 +241,51 @@ test("deleting a login cancels live subscriptions and removes billing data", asy
     assert.equal((await db.doc(path).get()).exists, false, `${path} removed`);
   }
   assert.equal((await db.doc("deletedAccounts/u1").get()).exists, true);
+});
+
+// ---------- Donations ----------
+test("donations: amounts are validated on the server", async () => {
+  const { billing, stripe } = setup();
+  for (const data of [{}, { frequency: "weekly", amount: 10 }, { frequency: "once", amount: 2 }, { frequency: "once", amount: 1001 },
+    { frequency: "once", amount: 5.5 }, { frequency: "once", amount: "10" }, { frequency: "monthly", amount: 7 }]) {
+    await assert.rejects(billing.createDonationSession({ data }), { code: "invalid-argument" });
+  }
+  assert.equal(stripe.state.sessions.length, 0);
+});
+
+test("donations: one-off and monthly sessions use server-built prices and need no login", async () => {
+  const { billing, stripe } = setup();
+  await billing.createDonationSession({ data: { frequency: "once", amount: 25 }, origin: "https://evil.example" });
+  const once = stripe.state.sessions[0];
+  assert.equal(once.mode, "payment");
+  assert.equal(once.submit_type, "donate");
+  assert.equal(once.line_items[0].price_data.unit_amount, 2500);
+  assert.equal(once.line_items[0].price_data.currency, "gbp");
+  assert.equal(once.metadata.kind, "donation");
+  assert.ok(once.success_url.startsWith("https://areyouasurvivor.com/donate.html"));
+  await billing.createDonationSession({ data: { frequency: "monthly", amount: 10 } });
+  const monthly = stripe.state.sessions[1];
+  assert.equal(monthly.mode, "subscription");
+  assert.deepEqual(monthly.line_items[0].price_data.recurring, { interval: "month" });
+  assert.equal(monthly.subscription_data.metadata.kind, "donation");
+});
+
+test("donations: completed checkout is recorded without donor details; donation subscriptions never become memberships", async () => {
+  const { billing, stripe } = setup();
+  await seedProfile();
+  await db.doc("stripeCustomers/cus_1").set({ uid: "u1" });
+  await billing.handleWebhook(signed(evt("e_don", "checkout.session.completed", {
+    id: "cs_don_1", mode: "payment", amount_total: 2500, currency: "gbp", payment_status: "paid",
+    metadata: { kind: "donation", frequency: "once" }, customer_details: { email: "donor@example.com", name: "Donor" }
+  })));
+  const d = (await db.doc("donations/cs_don_1").get()).data();
+  assert.equal(d.amount, 2500);
+  assert.equal(d.frequency, "once");
+  assert.equal(JSON.stringify(d).includes("donor@example.com"), false, "no donor email stored");
+  const donationSub = sub("sub_don", { price: PRICES.radiance });
+  donationSub.metadata = { kind: "donation", firebaseUID: "u1" };
+  stripe.state.subs.set("sub_don", donationSub);
+  await billing.handleWebhook(signed(evt("e_don_sub", "customer.subscription.created", { id: "sub_don" })));
+  assert.equal((await db.doc("users/u1").get()).data().membershipTier, "free");
+  assert.equal((await db.doc("subscriptions/u1").get()).exists, false);
 });

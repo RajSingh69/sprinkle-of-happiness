@@ -42,3 +42,8 @@ function readEmulatorFlag() {
 }
 
 export const useEmulators = readEmulatorFlag();
+
+// Online donations stay off until the Stripe backend is deployed and tested.
+// Locally, ?payments also turns on the donation buttons for emulator testing.
+export const DONATIONS_LIVE = false;
+export const donationsEnabled = DONATIONS_LIVE || (isDevHost && readPaymentsFlag());

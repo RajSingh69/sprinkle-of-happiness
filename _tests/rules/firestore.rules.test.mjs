@@ -283,3 +283,51 @@ test("billing: once the subscription has ended, the member can delete their acco
   await seedSubscription(MEMBER, "canceled");
   await assertSucceeds(deletionBatch(ctx(MEMBER), MEMBER.uid));
 });
+
+// ---------- Marketing consent and donations ----------
+const consent = (extra = {}) => ({ marketing: true, version: "marketing-v1-2026-10-20", wording: "Send me updates", source: "registration", updatedAt: serverTimestamp(), ...extra });
+
+test("consent: members record and withdraw only their own choice", async () => {
+  const db = ctx(MEMBER);
+  await assertSucceeds(setDoc(doc(db, "consents", MEMBER.uid), consent()));
+  await assertSucceeds(setDoc(doc(db, "consents", MEMBER.uid), consent({ marketing: false, source: "account" })));
+  await assertSucceeds(getDoc(doc(db, "consents", MEMBER.uid)));
+  await assertFails(setDoc(doc(db, "consents", OTHER.uid), consent()));
+  await assertFails(getDoc(doc(db, "consents", OTHER.uid)));
+  await assertFails(setDoc(doc(ctx(MEMBER, { verified: false }), "consents", MEMBER.uid), consent()));
+});
+
+test("consent: must be a real true/false choice with server time and no extra fields", async () => {
+  const ref = doc(ctx(MEMBER), "consents", MEMBER.uid);
+  await assertFails(setDoc(ref, consent({ marketing: "yes" })));
+  await assertFails(setDoc(ref, consent({ updatedAt: new Date(2000, 0, 1) })));
+  await assertFails(setDoc(ref, consent({ source: "admin" })));
+  await assertFails(setDoc(ref, consent({ email: "x@example.com" })));
+  await assertFails(setDoc(ref, { marketing: true }));
+});
+
+test("consent and donations: admins can read, nobody can write donations or mail", async () => {
+  await assertSucceeds(setDoc(doc(ctx(MEMBER), "consents", MEMBER.uid), consent()));
+  const admin = ctx(ADMIN, { admin: true });
+  await assertSucceeds(getDocs(collection(admin, "consents")));
+  await assertFails(getDocs(collection(ctx(MEMBER), "consents")));
+  await assertSucceeds(getDocs(collection(admin, "donations")));
+  await assertFails(getDocs(collection(ctx(MEMBER), "donations")));
+  for (const db of [ctx(MEMBER), admin]) {
+    await assertFails(setDoc(doc(db, "donations", "d1"), { amount: 1 }));
+    await assertFails(setDoc(doc(db, "mail", "m1"), { to: "x@example.com" }));
+    await assertFails(getDoc(doc(db, "mail", "welcome-x")));
+  }
+});
+
+test("consent: deleting an account can remove the consent record", async () => {
+  await seed(MEMBER);
+  await assertSucceeds(setDoc(doc(ctx(MEMBER), "consents", MEMBER.uid), consent()));
+  const db = ctx(MEMBER);
+  const batch = writeBatch(db);
+  batch.delete(doc(db, "users", MEMBER.uid));
+  batch.delete(doc(db, "consents", MEMBER.uid));
+  batch.set(doc(db, "deletedAccounts", MEMBER.uid), { deletedAt: serverTimestamp() });
+  await assertSucceeds(batch.commit());
+  await assertFails(setDoc(doc(db, "consents", MEMBER.uid), consent()));
+});

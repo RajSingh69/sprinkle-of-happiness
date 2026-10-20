@@ -22,18 +22,18 @@
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="index.html"><img class="brand-logo" src="assets/images/logo/soh-logo-96.webp" srcset="assets/images/logo/soh-logo-96.webp 1x, assets/images/logo/soh-logo-192.webp 2x" width="44" height="44" alt=""><span>Sprinkle of Happiness</span></a>
-    <button class="menu-toggle" aria-label="Open navigation">Menu</button>
-    <nav class="nav-links">
-      <a data-nav="home" href="index.html">Home</a>
+    <button class="menu-toggle" aria-label="Open navigation" aria-controls="site-nav">Menu</button>
+    <nav class="nav-links" id="site-nav" aria-label="Main">
       <a data-nav="about" href="about.html">About</a>
       <a data-nav="kaan" href="kaan.html">Meet Kaan</a>
       <a data-nav="experiences" href="experiences.html">Experiences</a>
-      <a data-nav="values" href="values.html">Our Values</a>
       <a data-nav="community" href="community.html">Community</a>
+      <a data-nav="membership" href="membership.html">Membership</a>
+      <a data-nav="donate" class="nav-donate" href="donate.html">Donate</a>
       <a data-nav="support" class="support-nav" href="support.html">Need Support?</a>
       <a data-nav="contact" href="contact.html">Contact</a>
     </nav>
-    <a class="account-link" data-account-link href="login.html" hidden>Log in</a><a class="btn" href="community.html">Join Us</a>
+    <a class="account-link" data-account-link href="login.html" hidden>Log in</a><a class="btn header-join" data-join-free href="register.html">Join free</a>
   </div>
 </header>
 <main class="dreamland-main inner-story-main account-main">
@@ -55,7 +55,7 @@
           <nav class="admin-tabs" aria-label="Admin sections"><a href="#overview">Overview</a><a href="#members">Members</a><a href="#memberships">Memberships</a><a href="#events">Events</a><a href="#bookings">Bookings</a><a href="#payments">Payments</a><a href="#enquiries">Enquiries</a><a href="#settings">Settings</a></nav>
           <section class="account-card" id="overview" aria-labelledby="overview-heading">
             <h2 id="overview-heading" class="account-card-title">Overview</h2>
-            <dl class="account-details"><div><dt>Paid members</dt><dd data-paid-count>—</dd></div><div><dt>Member profiles</dt><dd data-member-count>—</dd></div><div><dt>Free</dt><dd data-tier-count="free">—</dd></div><div><dt>Spark</dt><dd data-tier-count="spark">—</dd></div><div><dt>Glow</dt><dd data-tier-count="glow">—</dd></div><div><dt>Radiance</dt><dd data-tier-count="radiance">—</dd></div><div><dt>Live paid subscriptions</dt><dd data-active-subs>—</dd></div></dl>
+            <dl class="account-details"><div><dt>Paid members</dt><dd data-paid-count>—</dd></div><div><dt>Member profiles</dt><dd data-member-count>—</dd></div><div><dt>Free</dt><dd data-tier-count="free">—</dd></div><div><dt>Spark</dt><dd data-tier-count="spark">—</dd></div><div><dt>Glow</dt><dd data-tier-count="glow">—</dd></div><div><dt>Radiance</dt><dd data-tier-count="radiance">—</dd></div><div><dt>Live paid subscriptions</dt><dd data-active-subs>—</dd></div><div><dt>Opted in to email updates</dt><dd data-consent-count>—</dd></div></dl>
             <h3 class="admin-subhead">Subscription status</h3>
             <dl class="account-details" id="status-breakdown"><div><dt>Loading…</dt><dd>—</dd></div></dl>
           </section>
@@ -68,14 +68,14 @@
             </div>
             <p id="member-results" class="programme-small" role="status" aria-live="polite"></p>
             <div class="compare-table-wrap" role="region" aria-labelledby="members-heading" tabindex="0">
-              <table class="compare-table"><thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Membership</th><th scope="col">Subscription</th><th scope="col">Joined</th></tr></thead><tbody id="members-rows"><tr><td colspan="5">Loading…</td></tr></tbody></table>
+              <table class="compare-table"><thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Membership</th><th scope="col">Subscription</th><th scope="col">Email updates</th><th scope="col">Joined</th></tr></thead><tbody id="members-rows"><tr><td colspan="6">Loading…</td></tr></tbody></table>
             </div>
           </section>
           <div class="admin-placeholders">
             <section class="account-card" id="memberships" aria-labelledby="memberships-heading"><h2 id="memberships-heading" class="account-card-title">Memberships</h2><p>Tier counts and subscription statuses are shown in the Overview and Members sections. Refunds and plan changes are managed in the Stripe Dashboard.</p></section>
             <section class="account-card" id="events" aria-labelledby="events-heading"><h2 id="events-heading" class="account-card-title">Events</h2><p>Not available yet. Event management has not been built.</p></section>
             <section class="account-card" id="bookings" aria-labelledby="bookings-admin-heading"><h2 id="bookings-admin-heading" class="account-card-title">Bookings</h2><p>Appointments with Kaan are currently booked through Calendly, so they appear in the Calendly account rather than here. Group workshops, circles, walks and yoga have no booking system yet. Bookings will appear here once online booking is built.</p></section>
-            <section class="account-card" id="payments" aria-labelledby="payments-heading"><h2 id="payments-heading" class="account-card-title">Payments</h2><p>Payments are processed by Stripe. View invoices, refunds and disputes in the Stripe Dashboard; card details are never stored on this website.</p></section>
+            <section class="account-card" id="payments" aria-labelledby="payments-heading"><h2 id="payments-heading" class="account-card-title">Donations</h2><dl class="account-details" id="donation-stats"><div><dt>Loading…</dt><dd>—</dd></div></dl><p class="programme-small">Totals of completed Stripe checkouts recorded by the webhook. Donor details stay in Stripe. Card details are never stored on this website.</p></section>
             <section class="account-card" id="enquiries" aria-labelledby="enquiries-heading"><h2 id="enquiries-heading" class="account-card-title">Enquiries</h2><p>Enquiries currently arrive by email to hello@sprinkleofhappiness.co.uk. They are not stored on this website.</p></section>
             <section class="account-card" id="settings" aria-labelledby="settings-admin-heading"><h2 id="settings-admin-heading" class="account-card-title">Settings</h2><p>Not available yet. Administrator roles are managed with the bootstrap procedure, not from this page.</p></section>
           </div>
@@ -89,7 +89,7 @@
     <div class="footer-grid">
       <div><div class="brand footer-brand"><img class="brand-logo footer-logo" src="assets/images/logo/soh-logo-192.webp" srcset="assets/images/logo/soh-logo-192.webp 1x, assets/images/logo/soh-logo-400.webp 2x" width="88" height="88" alt="Sprinkle of Happiness Holistic Wellness logo: a figure with arms raised beneath colourful hearts" loading="lazy"><span>Sprinkle of Happiness</span></div><p>A community-led creative wellbeing space for healing, expression and connection.</p></div>
       <div><h2 class="footer-heading">Explore</h2><p><a href="about.html">About</a></p><p><a href="curriculum.html">Our Curriculum</a></p><p><a href="experiences.html">Experiences</a></p><p><a href="bookings.html">Book a Session</a></p><p><a href="yoga.html">Yoga</a></p><p><a href="reiki.html">Reiki</a></p><p><a href="values.html">Our Values</a></p></div>
-      <div><h2 class="footer-heading">Community</h2><p><a href="community.html">Community</a></p><p><a href="lgbtq.html">LGBTQ+ Safe Space</a></p><p><a href="rebel-recovery.html">Rebel Recovery</a></p><p><a href="membership.html">Membership</a></p><p><a href="partnerships.html">Partner With Us</a></p><p><a href="coffee.html">Let's Get a Coffee</a></p><p><a href="contact.html">Contact</a></p></div>
+      <div><h2 class="footer-heading">Community</h2><p><a href="community.html">Community</a></p><p><a href="lgbtq.html">LGBTQ+ Safe Space</a></p><p><a href="rebel-recovery.html">Rebel Recovery</a></p><p><a href="membership.html">Membership</a></p><p><a href="donate.html">Donate</a></p><p><a href="partnerships.html">Partner With Us</a></p><p><a href="coffee.html">Let's Get a Coffee</a></p><p><a href="contact.html">Contact</a></p></div>
       <div><h2 class="footer-heading">Support</h2><p><a href="support.html">Need Support?</a></p><p><a href="privacy.html">Privacy Notice</a></p><p><a href="terms.html">Member Account Terms</a></p><p class="footer-policy-note">Our safeguarding policy is being prepared.</p><p><a href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a></p></div>
     </div>
     <div class="notice"><strong>Need urgent help?</strong> If there is immediate danger, call <strong>999</strong> or go to A&amp;E. Samaritans: <a href="tel:116123"><strong>116 123</strong></a>.</div>

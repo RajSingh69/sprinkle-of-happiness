@@ -21,18 +21,18 @@
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="index.html"><img class="brand-logo" src="assets/images/logo/soh-logo-96.webp" srcset="assets/images/logo/soh-logo-96.webp 1x, assets/images/logo/soh-logo-192.webp 2x" width="44" height="44" alt=""><span>Sprinkle of Happiness</span></a>
-    <button class="menu-toggle" aria-label="Open navigation">Menu</button>
-    <nav class="nav-links">
-      <a data-nav="home" href="index.html">Home</a>
+    <button class="menu-toggle" aria-label="Open navigation" aria-controls="site-nav">Menu</button>
+    <nav class="nav-links" id="site-nav" aria-label="Main">
       <a data-nav="about" href="about.html">About</a>
       <a data-nav="kaan" href="kaan.html">Meet Kaan</a>
       <a data-nav="experiences" href="experiences.html">Experiences</a>
-      <a data-nav="values" href="values.html">Our Values</a>
-      <a data-nav="community" class="active" href="community.html">Community</a>
+      <a data-nav="community" href="community.html">Community</a>
+      <a data-nav="membership" class="active" aria-current="page" href="membership.html">Membership</a>
+      <a data-nav="donate" class="nav-donate" href="donate.html">Donate</a>
       <a data-nav="support" class="support-nav" href="support.html">Need Support?</a>
       <a data-nav="contact" href="contact.html">Contact</a>
     </nav>
-    <a class="account-link" data-account-link href="login.html" hidden>Log in</a><a class="btn" href="community.html">Join Us</a>
+    <a class="account-link" data-account-link href="login.html" hidden>Log in</a><a class="btn header-join" data-join-free href="register.html">Join free</a>
   </div>
 </header>
 <main class="dreamland-main inner-story-main membership-main">
@@ -45,8 +45,7 @@
         <h1 id="membership-title">Sprinkle of Happiness Membership</h1>
         <p class="dreamline">Become a member. It's free.</p>
         <p class="lead">Joining the Sprinkle of Happiness community is free, and so are our yoga and workshops. If you would like more support, optional paid memberships offer extra community, accountability and creative guidance.</p>
-        <p class="membership-status" data-accounts-hide>Free registration opening soon.</p>
-        <div class="actions"><a class="btn" href="register.html" data-accounts-only hidden>Become a member — Free</a><a class="btn" href="#free" data-accounts-hide>Free membership</a><a class="btn btn-secondary" href="#tiers">Optional paid memberships</a></div>
+        <div class="actions"><a class="btn" href="register.html">Become a member — Free</a><a class="btn btn-secondary" href="#tiers">Optional paid memberships</a></div>
       </div>
     </div>
   </section>
@@ -59,8 +58,7 @@
           <h2 id="free-title" class="section-title">Become a member. It's free.</h2>
           <p class="price-meta"><span class="price">£0</span><span class="duration">free to join</span></p>
           <p class="section-copy">Free membership is the way into the Sprinkle of Happiness community: a simple way to stay connected and hear about community news and opportunities. You never need a paid membership to join our free yoga and workshops.</p>
-          <p class="membership-status" data-accounts-hide>Free registration opening soon.</p>
-          <p data-accounts-only hidden><a class="btn" href="register.html">Become a member — Free</a></p>
+          <p><a class="btn" href="register.html">Become a member — Free</a></p>
         </div>
         <ul class="reiki-assurances" aria-label="Free membership">
           <li>Free to join, with no payment needed</li>
@@ -178,13 +176,13 @@
         <h2 id="how-title" class="section-title">Join free, and add support if you want it.</h2>
       </div>
       <ol class="reiki-steps">
-        <li class="reveal"><h3>Join for free</h3><p>Become a free member once registration opens.</p></li>
+        <li class="reveal"><h3>Join for free</h3><p>Create your free account and verify your email.</p></li>
         <li class="reveal reveal-delay-1"><h3>Choose a paid tier, if you like</h3><p>Spark, Glow or Radiance are optional.</p></li>
         <li class="reveal reveal-delay-2"><h3>Pay securely</h3><p>Paid tiers will be paid through Stripe.</p></li>
         <li class="reveal"><h3>Receive onboarding</h3><p>You will be sent instructions for getting started.</p></li>
         <li class="reveal reveal-delay-1"><h3>Manage or cancel</h3><p>Change or cancel a paid tier at any time.</p></li>
       </ol>
-      <p class="reiki-note reveal">Free registration is opening soon. No payments are being taken yet. To ask about membership, email <a href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a>.</p>
+      <p class="reiki-note reveal">Free registration is open now. Paid memberships are not open yet, and no payments are taken. To ask about membership, email <a href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a>.</p>
     </div>
   </section>
 
@@ -205,7 +203,7 @@
         <details><summary>What if I miss a session?</summary><p>Our approach to missed sessions, including whether any sessions are recorded or can be rescheduled, will be confirmed before launch.</p></details>
         <details><summary>Why is Radiance limited?</summary><p>Radiance includes weekly 1:1 time with Kaan, so only a limited number of places can be offered at any one time.</p></details>
         <details><summary>Are there reduced-rate places or scholarships?</summary><p>We would love to make membership more accessible. Whether reduced-rate places or scholarships will be offered has not yet been decided. Free yoga and workshops remain open to all.</p></details>
-        <details><summary>How will I get access after joining?</summary><p>Once the membership system is ready, new members will receive a welcome email with access instructions. Instant access is not available yet.</p></details>
+        <details><summary>How will I get access after joining?</summary><p>Free members can use My Account as soon as their email is verified. Access details for paid memberships will be shared when they open.</p></details>
       </div>
     </div>
   </section>
@@ -213,8 +211,8 @@
   <section class="story-scene scene-final" aria-labelledby="membership-closing">
     <div class="container final-cloud reveal">
       <h2 id="membership-closing" class="section-title">Become a member. It's free.</h2>
-      <p class="lead">Free registration is opening soon. Questions about membership? Email <a href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a>. In the meantime, our yoga and workshops are free for everyone.</p>
-      <div class="actions"><a class="btn" href="experiences.html">Explore free experiences</a><a class="btn btn-secondary" href="community.html">Our Community</a></div>
+      <p class="lead">Free registration is open now. Questions about membership? Email <a href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a>. In the meantime, our yoga and workshops are free for everyone.</p>
+      <div class="actions"><a class="btn" href="register.html">Become a member — Free</a><a class="btn btn-secondary" href="experiences.html">Explore free experiences</a><a class="btn btn-secondary" href="community.html">Our Community</a></div>
     </div>
   </section>
 </main>
@@ -223,7 +221,7 @@
     <div class="footer-grid">
       <div><div class="brand footer-brand"><img class="brand-logo footer-logo" src="assets/images/logo/soh-logo-192.webp" srcset="assets/images/logo/soh-logo-192.webp 1x, assets/images/logo/soh-logo-400.webp 2x" width="88" height="88" alt="Sprinkle of Happiness Holistic Wellness logo: a figure with arms raised beneath colourful hearts" loading="lazy"><span>Sprinkle of Happiness</span></div><p>A community-led creative wellbeing space for healing, expression and connection.</p></div>
       <div><h2 class="footer-heading">Explore</h2><p><a href="about.html">About</a></p><p><a href="curriculum.html">Our Curriculum</a></p><p><a href="experiences.html">Experiences</a></p><p><a href="bookings.html">Book a Session</a></p><p><a href="yoga.html">Yoga</a></p><p><a href="reiki.html">Reiki</a></p><p><a href="values.html">Our Values</a></p></div>
-      <div><h2 class="footer-heading">Community</h2><p><a href="community.html">Community</a></p><p><a href="lgbtq.html">LGBTQ+ Safe Space</a></p><p><a href="rebel-recovery.html">Rebel Recovery</a></p><p><a href="membership.html">Membership</a></p><p><a href="partnerships.html">Partner With Us</a></p><p><a href="coffee.html">Let's Get a Coffee</a></p><p><a href="contact.html">Contact</a></p></div>
+      <div><h2 class="footer-heading">Community</h2><p><a href="community.html">Community</a></p><p><a href="lgbtq.html">LGBTQ+ Safe Space</a></p><p><a href="rebel-recovery.html">Rebel Recovery</a></p><p><a href="membership.html">Membership</a></p><p><a href="donate.html">Donate</a></p><p><a href="partnerships.html">Partner With Us</a></p><p><a href="coffee.html">Let's Get a Coffee</a></p><p><a href="contact.html">Contact</a></p></div>
       <div><h2 class="footer-heading">Support</h2><p><a href="support.html">Need Support?</a></p><p><a href="privacy.html">Privacy Notice</a></p><p><a href="terms.html">Member Account Terms</a></p><p class="footer-policy-note">Our safeguarding policy is being prepared.</p><p><a href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a></p></div>
     </div>
     <div class="notice"><strong>Need urgent help?</strong> If there is immediate danger, call <strong>999</strong> or go to A&amp;E. Samaritans: <a href="tel:116123"><strong>116 123</strong></a>.</div>

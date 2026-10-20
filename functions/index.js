@@ -9,12 +9,15 @@ import * as functionsV1 from "firebase-functions/v1";
 import { logger } from "firebase-functions";
 import Stripe from "stripe";
 import { createBilling } from "./src/billing.js";
+import { createEmails } from "./src/emails.js";
+import { onDocumentCreated } from "firebase-functions/v2/firestore";
 
 initializeApp();
 setGlobalOptions({ region: "europe-west2", maxInstances: 5 });
 
 const STRIPE_SECRET_KEY = defineSecret("STRIPE_SECRET_KEY");
 const STRIPE_WEBHOOK_SECRET = defineSecret("STRIPE_WEBHOOK_SECRET");
+const UNSUBSCRIBE_SECRET = defineSecret("UNSUBSCRIBE_SECRET");
 
 // Server-side price allowlist. Test-mode and live-mode prices have different
 // IDs, so these can be overridden per environment in functions/.env.<project>.
@@ -75,3 +78,32 @@ export const cleanUpDeletedUser = functionsV1
   .runWith({ secrets: ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"] })
   .auth.user()
   .onDelete((user) => billing().onAuthUserDeleted(user.uid));
+
+// Donations: open to everyone (no login), amount validated on the server.
+export const createDonationSession = onCall(callableOptions, (request) =>
+  billing().createDonationSession({ data: request.data, origin: request.rawRequest?.headers?.origin })
+);
+
+function emails() {
+  return createEmails({
+    db: getFirestore(),
+    FieldValue,
+    siteUrl: SITE_URL.value(),
+    functionsBaseUrl: "https://europe-west2-sprinkle-of-happiness.cloudfunctions.net",
+    unsubscribeSecret: UNSUBSCRIBE_SECRET.value(),
+    log: logger
+  });
+}
+
+// Welcome email when a member profile is first created (after email
+// verification). Queued once per member for the Trigger Email extension.
+export const sendWelcomeEmail = onDocumentCreated(
+  { document: "users/{uid}", secrets: [UNSUBSCRIBE_SECRET] },
+  (event) => emails().queueWelcomeEmail(event.params.uid, event.data?.data())
+);
+
+// One-click unsubscribe from marketing emails (signed link).
+export const unsubscribe = onRequest({ secrets: [UNSUBSCRIBE_SECRET], invoker: "public" }, async (req, res) => {
+  const result = await emails().handleUnsubscribe({ uid: req.query.uid, token: req.query.token });
+  res.status(result.status).type("html").send(result.body);
+});

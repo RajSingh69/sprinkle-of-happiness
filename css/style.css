@@ -3996,3 +3996,57 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 .policy-card a{color:var(--berry-deep);text-decoration:underline;text-underline-offset:3px}
 .policy-pending{padding:10px 14px;border-radius:14px;background:var(--butter);color:var(--plum)!important;font-weight:600}
 .policy-links{margin-top:20px;text-align:center}
+
+/* ===== Kaan's change list: header, invitation, donate, consent ===== */
+/* Header "Join free" button stays visible on phones and tablets */
+@media (max-width:900px){
+  .nav > .btn.header-join{display:inline-flex;min-height:38px;padding:8px 12px;font-size:.85rem;white-space:nowrap}
+}
+@media (max-width:420px){
+  .site-header .brand > span{font-size:.95rem;line-height:1.1}
+  .nav{gap:10px}
+  .account-link{font-size:.9rem}
+}
+.nav-links a.nav-donate{color:var(--berry-deep);font-weight:800}
+.nav-links a[aria-current="page"]{color:var(--berry-deep)}
+
+/* Membership invitation (non-modal) */
+.member-invite{position:fixed;right:20px;bottom:20px;z-index:900;width:min(360px,calc(100vw - 32px));padding:22px 22px 18px;border-radius:24px;background:#fff;border:1px solid rgba(43,33,64,.12);box-shadow:0 24px 60px -20px rgba(43,33,64,.45);animation:welcomeIn .5s var(--ease-soft) both}
+.member-invite h2{margin:2px 0 6px;font-size:1.35rem!important;padding-right:30px}
+.member-invite p{margin:0 0 12px;color:var(--plum-soft)}
+.member-invite-eyebrow{margin:0!important;font-weight:800;font-size:.85rem;color:var(--berry-deep)!important}
+.member-invite-actions{display:flex;flex-wrap:wrap;gap:10px}
+.member-invite-actions .btn{min-height:40px;padding:8px 16px}
+.member-invite-close{position:absolute;top:10px;right:10px;width:40px;height:40px;display:grid;place-items:center;border:1px solid rgba(43,33,64,.15);border-radius:50%;background:#fff;color:var(--plum);font-size:1.4rem;cursor:pointer}
+@media (max-width:540px){.member-invite{right:16px;left:16px;bottom:16px;width:auto}}
+@media (prefers-reduced-motion:reduce){.member-invite{animation:none}}
+
+/* Donate page */
+.donate-page .inner-hero h1{font-size:clamp(2.2rem,4.4vw,3.6rem)!important;line-height:1.08!important;background:none!important;-webkit-text-fill-color:var(--plum);color:var(--plum)!important}
+.donate-hero{background:radial-gradient(45% 40% at 82% 16%,rgba(255,214,107,.42),transparent 70%),radial-gradient(50% 45% at 10% 30%,rgba(255,179,205,.45),transparent 70%),linear-gradient(180deg,#fff8ee,#fff0f5 60%,#f6f1ff)}
+.donate-page .scene-soft{background:linear-gradient(180deg,#fff0f5,#fff8ee)}
+.donate-card{padding:clamp(24px,4vw,44px);border-radius:28px;background:rgba(255,255,255,.94);border:1px solid rgba(43,33,64,.08);box-shadow:var(--dream-shadow)}
+.donate-card .section-title{font-size:clamp(1.6rem,3vw,2.2rem)}
+.donate-form{display:grid;gap:18px}
+.donate-form fieldset{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.donate-form legend{font-weight:800;color:var(--plum);margin-bottom:8px;width:100%}
+.donate-frequency label,.donate-amount{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:1.5px solid rgba(43,33,64,.15);background:#fff;font-weight:700;color:var(--plum);cursor:pointer}
+.donate-frequency label:has(input:checked),.donate-amount:has(input:checked){border-color:var(--berry-deep);background:#fff0f5}
+.donate-amount-options{display:flex;flex-wrap:wrap;gap:10px;width:100%}
+.donate-custom{display:grid;gap:6px;font-weight:700;color:var(--plum);width:100%}
+.donate-custom-input{display:flex;align-items:center;gap:8px;max-width:220px}
+.donation-status{text-align:center}
+.donate-legal{text-align:center;margin-top:22px}
+
+/* Optional consent tickbox reads as clearly optional */
+.check-optional span{font-weight:600;color:var(--plum-soft)}
+.header-join{white-space:nowrap}
+@media (min-width:901px) and (max-width:1180px){
+  .site-header .nav{gap:12px}
+  .site-header .nav-links{gap:2px}
+  .site-header .nav-links a{padding-left:7px;padding-right:7px;font-size:.84rem}
+  .site-header .brand > span{font-size:1rem}
+  .nav > .btn.header-join{padding:8px 14px;font-size:.85rem}
+}
+.donate-frequency label,.donate-amount{white-space:nowrap;min-height:44px}
+.donate-frequency input,.donate-amount input{width:18px!important;height:18px!important;min-height:0!important;margin:0!important;padding:0!important;flex:none;accent-color:var(--berry-deep);box-shadow:none!important}

@@ -136,6 +136,7 @@ export async function deleteAccount(user, password) {
   try {
     const batch = writeBatch(db);
     batch.delete(profileRef(user.uid));
+    batch.delete(doc(db, "consents", user.uid));
     batch.set(doc(db, "deletedAccounts", user.uid), { deletedAt: serverTimestamp() });
     await batch.commit();
   } catch (error) {
@@ -147,6 +148,64 @@ export async function deleteAccount(user, password) {
     return { profileDeleted: true, accountDeleted: false, error };
   }
   return { profileDeleted: true, accountDeleted: true };
+}
+
+// ---------- Optional marketing consent ----------
+// Kept separate from the account Terms. The exact wording and version shown
+// are stored with a server timestamp so the choice can be evidenced.
+export const CONSENT_VERSION = "marketing-v1-2026-10-20";
+export const CONSENT_WORDING = "Optional: send me membership updates and community news by email. You can unsubscribe at any time.";
+const PENDING_CONSENT_KEY = "soh-pending-consent";
+
+// Registration happens before email verification, and only verified members
+// can write to Firestore, so the choice waits on this device until then.
+export function rememberConsentChoice(marketing) {
+  try {
+    localStorage.setItem(PENDING_CONSENT_KEY, JSON.stringify({ marketing: Boolean(marketing) }));
+  } catch {
+    // Without storage no consent is recorded, which is the safe default.
+  }
+}
+
+export async function getConsent(uid) {
+  const snap = await getDoc(doc(db, "consents", uid));
+  return snap.exists() ? snap.data() : null;
+}
+
+export async function saveConsent(uid, marketing, source) {
+  await setDoc(doc(db, "consents", uid), {
+    marketing: Boolean(marketing),
+    version: CONSENT_VERSION,
+    wording: CONSENT_WORDING,
+    source,
+    updatedAt: serverTimestamp()
+  });
+}
+
+export async function savePendingConsent(uid) {
+  let pending = null;
+  try {
+    pending = JSON.parse(localStorage.getItem(PENDING_CONSENT_KEY) ?? "null");
+  } catch {
+    pending = null;
+  }
+  if (!pending) return;
+  if (!(await getConsent(uid))) await saveConsent(uid, pending.marketing, "registration");
+  try {
+    localStorage.removeItem(PENDING_CONSENT_KEY);
+  } catch {
+    // Nothing else to do.
+  }
+}
+
+export async function listConsents() {
+  const snap = await getDocs(collection(db, "consents"));
+  return new Map(snap.docs.map((d) => [d.id, d.data()]));
+}
+
+export async function listDonations() {
+  const snap = await getDocs(collection(db, "donations"));
+  return snap.docs.map((d) => d.data());
 }
 
 // Billing state written by the Stripe webhook (read-only for members).

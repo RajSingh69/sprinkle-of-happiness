@@ -91,6 +91,7 @@ function enterWebsite() {
   window.setTimeout(() => {
     intro.remove();
     setGateBackgroundInert(false);
+    document.dispatchEvent(new CustomEvent("soh:gate-closed"));
     document.body.classList.remove("intro-active");
 
     const firstHeading = document.querySelector("#home-title");

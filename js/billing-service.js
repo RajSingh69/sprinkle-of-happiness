@@ -42,3 +42,12 @@ export function friendlyBillingError(error) {
   }
   return "We could not reach the payment service. Please try again in a moment.";
 }
+
+// Donations: anyone can donate (no account needed). The server checks the
+// amount against its own allowlist and limits before creating a Checkout.
+export const DONATION_AMOUNTS = { once: [5, 10, 25, 50], monthly: [5, 10, 25] };
+
+export async function startDonation(frequency, amountPounds) {
+  const { data } = await httpsCallable(functions, "createDonationSession")({ frequency, amount: amountPounds });
+  goToStripe(data.url);
+}
