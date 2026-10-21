@@ -26,7 +26,9 @@
         "node_modules",
         ".git",
         "test",
-        "*.log"
+        "*.log",
+        ".secret.local",
+        ".env.local"
       ]
     }
   ]
