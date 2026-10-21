@@ -108,7 +108,7 @@ function readSelectedTier() {
 const BENEFITS = {
   free: [
     "Free yoga and workshops, open to everyone",
-    "Stay connected with the Sprinkle community",
+    "Stay connected with the Sprinkle of Happiness community",
     "Hear about community news and opportunities"
   ],
   spark: [

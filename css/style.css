@@ -4050,3 +4050,12 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 }
 .donate-frequency label,.donate-amount{white-space:nowrap;min-height:44px}
 .donate-frequency input,.donate-amount input{width:18px!important;height:18px!important;min-height:0!important;margin:0!important;padding:0!important;flex:none;accent-color:var(--berry-deep);box-shadow:none!important}
+/* Phones: keep "Sprinkle of / Happiness" on two lines beside the header controls */
+@media (max-width:420px){
+  .site-header .brand{gap:8px}
+  .site-header .brand img{width:36px;height:36px}
+  .site-header .brand > span{font-size:.9rem;line-height:1.08;min-width:5.6em}
+  .nav{gap:8px}
+  .menu-toggle{padding-left:6px;padding-right:6px}
+  .nav > .btn.header-join{padding:8px 10px}
+}

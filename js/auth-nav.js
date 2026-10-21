@@ -68,6 +68,12 @@ function showMembershipInvite() {
     if (event.key === "Escape") dismiss();
   });
   document.body.append(card);
+  // Showing it once counts: it won't come back this session.
+  try {
+    sessionStorage.setItem(INVITE_KEY, "1");
+  } catch {
+    // Without storage it may show again next visit.
+  }
 }
 
 const isHomepage = Boolean(document.querySelector("[data-site-intro]"));
