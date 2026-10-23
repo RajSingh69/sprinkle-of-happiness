@@ -85,6 +85,8 @@ export function createBilling({ stripe, db, FieldValue, Timestamp, prices, siteU
       customer,
       client_reference_id: uid,
       line_items: [{ price: priceId, quantity: 1 }],
+      // Private, single-use codes created in Stripe; the price itself never changes.
+      allow_promotion_codes: true,
       subscription_data: { metadata: { firebaseUID: uid, tier } },
       metadata: { firebaseUID: uid, tier },
       success_url: `${base}/account.html?checkout=success`,

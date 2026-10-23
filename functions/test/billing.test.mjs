@@ -106,6 +106,7 @@ test("checkout: creates one customer and a subscription session using the allowl
   assert.equal(s.mode, "subscription");
   assert.deepEqual(s.line_items, [{ price: PRICES.glow, quantity: 1 }]);
   assert.equal(s.client_reference_id, "u1");
+  assert.equal(s.allow_promotion_codes, true);
   assert.equal(s.subscription_data.metadata.firebaseUID, "u1");
   assert.ok(s.success_url.startsWith("https://areyouasurvivor.com/"), "untrusted origins fall back to the site URL");
   assert.equal((await db.doc("billing/u1").get()).data().stripeCustomerId, "cus_1");
