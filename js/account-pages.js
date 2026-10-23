@@ -198,11 +198,15 @@ async function renderMembership(svc, user, profile) {
     $("[data-sub-row]").hidden = false;
     $("[data-sub-status]").textContent = subscriptionLabel(sub.status);
     const live = svc.isLiveSubscription(sub);
-    if (live && sub.currentPeriodEnd) {
+    // Newer Stripe API versions record a portal cancellation as a cancelAt
+    // date rather than cancelAtPeriodEnd, so treat either as "ending".
+    const ending = sub.cancelAtPeriodEnd || Boolean(sub.cancelAt);
+    if (live && (sub.currentPeriodEnd || sub.cancelAt)) {
       $("[data-renewal-row]").hidden = false;
-      $("[data-renewal-label]").textContent = sub.cancelAtPeriodEnd ? "Membership ends on" : "Renews on";
-      $("[data-renewal-date]").textContent = formatDate(sub.currentPeriodEnd);
+      $("[data-renewal-label]").textContent = ending ? "Membership ends on" : "Renews on";
+      $("[data-renewal-date]").textContent = formatDate(sub.cancelAt || sub.currentPeriodEnd);
     }
+    if (live && ending) $("[data-sub-status]").textContent = "Cancelled (active until it ends)";
   }
   if (new URLSearchParams(location.search).get("checkout") === "success") {
     setStatus(billingStatus, "Thank you. Stripe has your payment details, and your membership will update here once the payment is confirmed, usually within a minute. Refresh this page to check.", "success");

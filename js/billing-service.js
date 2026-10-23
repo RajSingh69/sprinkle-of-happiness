@@ -38,7 +38,8 @@ export async function openBillingPortal() {
 export function friendlyBillingError(error) {
   const code = String(error?.code ?? "").replace("functions/", "");
   if (["unauthenticated", "failed-precondition", "invalid-argument", "permission-denied"].includes(code) && error.message) {
-    return error.message;
+    // The SDK can append the HTTP status, e.g. "… [400]"; members don't need it.
+    return error.message.replace(/\s*\[\d{3}\]$/, "");
   }
   return "We could not reach the payment service. Please try again in a moment.";
 }

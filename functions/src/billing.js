@@ -258,6 +258,8 @@ export function createBilling({ stripe, db, FieldValue, Timestamp, prices, siteU
     batch.delete(doc(`billing/${uid}`));
     batch.delete(doc(`subscriptions/${uid}`));
     batch.delete(doc(`consents/${uid}`));
+    // The queued welcome email holds the member's address.
+    batch.delete(doc(`mail/welcome-${uid}`));
     batch.delete(doc(`users/${uid}`));
     batch.set(doc(`deletedAccounts/${uid}`), { deletedAt: FieldValue.serverTimestamp() }, { merge: true });
     await batch.commit();

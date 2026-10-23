@@ -4059,3 +4059,5 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
   .menu-toggle{padding-left:6px;padding-right:6px}
   .nav > .btn.header-join{padding:8px 10px}
 }
+/* Anything switched off with the hidden attribute must stay hidden, even where a component sets its own display */
+[hidden]{display:none!important}

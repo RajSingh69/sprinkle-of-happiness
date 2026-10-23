@@ -233,12 +233,14 @@ test("deleting a login cancels live subscriptions and removes billing data", asy
   await db.doc("billing/u1").set({ stripeCustomerId: "cus_1" });
   await db.doc("stripeCustomers/cus_1").set({ uid: "u1" });
   await db.doc("subscriptions/u1").set({ status: "active" });
+  await db.doc("consents/u1").set({ marketing: true });
+  await db.doc("mail/welcome-u1").set({ to: "amy@example.com" });
   stripe.state.subs.set("sub_live", sub("sub_live"));
   stripe.state.subs.set("sub_old", sub("sub_old", { status: "canceled" }));
   const result = await billing.onAuthUserDeleted("u1");
   assert.deepEqual(result.cancelled, ["sub_live"]);
   assert.deepEqual(stripe.state.deletedCustomers, ["cus_1"]);
-  for (const path of ["users/u1", "billing/u1", "subscriptions/u1", "stripeCustomers/cus_1"]) {
+  for (const path of ["users/u1", "billing/u1", "subscriptions/u1", "stripeCustomers/cus_1", "consents/u1", "mail/welcome-u1"]) {
     assert.equal((await db.doc(path).get()).exists, false, `${path} removed`);
   }
   assert.equal((await db.doc("deletedAccounts/u1").get()).exists, true);
