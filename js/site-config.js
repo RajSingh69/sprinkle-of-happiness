@@ -12,7 +12,7 @@ export const accountsEnabled = ACCOUNTS_LIVE || isDevHost;
 // Paid membership buttons stay hidden until the Stripe backend (Cloud
 // Functions) is deployed and tested. Locally, add ?payments to a URL once to
 // show them for testing against the Functions emulator.
-export const PAYMENTS_LIVE = false;
+export const PAYMENTS_LIVE = true;
 
 function readPaymentsFlag() {
   if (!isDevHost) return false;
