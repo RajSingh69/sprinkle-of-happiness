@@ -4061,3 +4061,61 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 }
 /* Anything switched off with the hidden attribute must stay hidden, even where a component sets its own display */
 [hidden]{display:none!important}
+
+/* ===== December launch update: nav, social, What's On, book, booking ===== */
+/* "Home" lives in the collapsed menu only; the logo is Home on wide screens */
+.nav-links a.nav-home{display:none}
+/* Collapse the main nav into the menu until it comfortably fits */
+@media (min-width:1361px){
+  .site-header .nav{gap:16px}
+  .site-header .nav-links{gap:14px;flex-wrap:nowrap}
+  .site-header .nav-links a{white-space:nowrap;font-size:.9rem}
+}
+@media (max-width:1360px){
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;padding:18px 20px 22px;flex-direction:column;align-items:flex-start;gap:4px;background:rgba(255,244,216,.97);box-shadow:0 24px 50px rgba(17,21,47,.14);border-bottom:1px solid rgba(17,21,47,.1);max-height:calc(100vh - 70px);overflow-y:auto}
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:1rem;padding:8px 4px;opacity:1}
+  .nav-links a.nav-home{display:block}
+  .menu-toggle{display:block}
+  .site-header .nav{position:relative}
+  .nav > .btn.header-join{display:inline-flex}
+}
+.launch-note{margin-top:18px;font-size:.98rem;color:var(--plum)}
+.launch-note a{font-weight:800;color:var(--berry-deep)}
+.footer-launch{font-weight:700;margin-top:8px}
+
+/* Instagram links */
+.social-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.social-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;border-radius:999px;border:1.5px solid rgba(43,33,64,.18);background:#fff;color:var(--plum);font-weight:700;font-size:.92rem;text-decoration:none}
+.social-link:hover,.social-link:focus-visible{border-color:var(--berry-deep);color:var(--berry-deep)}
+.social-icon{flex:none}
+.footer .social-link{background:rgba(255,255,255,.9);font-size:.85rem;padding:6px 12px;min-height:40px;word-break:break-all}
+.social-links-large{margin:18px 0}
+
+/* What's On */
+.event-intro{margin-bottom:22px}
+.event-list{display:grid;gap:18px}
+.event-card{padding:clamp(20px,3vw,32px);border-radius:26px;background:rgba(255,255,255,.95);border:1px solid rgba(43,33,64,.08);box-shadow:var(--dream-shadow)}
+.event-card h3{margin:6px 0 12px}
+.event-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 18px;margin:0 0 14px}
+.event-meta dt{font-weight:800;font-size:.85rem;color:var(--berry-deep)}
+.event-meta dd{margin:2px 0 0;color:var(--plum)}
+.event-status{display:inline-block;margin:0;padding:4px 12px;border-radius:999px;font-weight:800;font-size:.82rem;background:#fff0f5;color:var(--berry-deep)}
+.event-status--full{background:#eee;color:#444}
+.event-empty{padding:22px;border-radius:22px;background:rgba(255,255,255,.85);border:1.5px dashed rgba(43,33,64,.2);text-align:center;font-weight:700;color:var(--plum)}
+.whats-on-page .inner-hero h1{background:none!important;-webkit-text-fill-color:var(--plum);color:var(--plum)!important}
+.whats-on-safety{margin-top:22px}
+
+/* Kaan's book */
+.book-scene{background:radial-gradient(40% 50% at 15% 30%,rgba(255,179,205,.35),transparent 70%),linear-gradient(180deg,#fff8ee,#fff0f5)}
+.book-layout{display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:clamp(24px,5vw,64px);align-items:center}
+.book-cover{margin:0;justify-self:center;transform:rotate(-2.5deg)}
+.book-cover img{display:block;width:100%;max-width:320px;height:auto;border-radius:6px 14px 14px 6px;box-shadow:0 30px 60px -24px rgba(43,33,64,.55),inset 0 0 0 1px rgba(0,0,0,.05);background:#f3e8ef}
+.book-author{font-size:1.1rem;color:var(--plum);margin:4px 0 12px}
+.book-details{font-weight:700;color:var(--plum-soft);font-size:.92rem}
+@media (max-width:700px){.book-layout{grid-template-columns:1fr}.book-cover img{max-width:220px}}
+@media (prefers-reduced-motion:reduce){.book-cover{transform:none}}
+
+/* Book a Session: on-page Calendly */
+.calendly-embed{margin-top:18px;border-radius:22px;overflow:hidden;background:#fff}
+.calendly-embed .calendly-inline-widget{min-width:300px;height:720px}
