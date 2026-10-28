@@ -42,12 +42,18 @@ export function friendlyAuthError(error) {
     case "auth/user-not-found":
       return "That email and password combination did not work. Please try again.";
     case "auth/invalid-email":
+    case "auth/missing-email":
       return "Please enter a valid email address.";
+    case "auth/missing-password":
+      return "Please enter your password.";
+    case "auth/requires-recent-login":
+      return "For your security, please log out, log back in and try again.";
     case "auth/email-already-in-use":
       return "We could not create an account with that email. If you already have one, try logging in or resetting your password.";
     case "auth/weak-password":
       return `Please choose a stronger password of at least ${PASSWORD_MIN} characters.`;
     case "auth/too-many-requests":
+    case "auth/quota-exceeded":
       return "Too many attempts. Please wait a few minutes and try again.";
     case "auth/network-request-failed":
       return "We could not reach the server. Please check your connection and try again.";

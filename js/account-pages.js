@@ -326,10 +326,13 @@ const controllers = {
       if (!agree.checked) return markInvalid(agree, "Please confirm you agree to the Terms and have read the Privacy Notice.", status);
       svc.rememberConsentChoice(form.elements.marketing.checked);
       try {
-        await busy(form.querySelector("button[type=submit]"), () =>
+        const { verificationSent } = await busy(form.querySelector("button[type=submit]"), () =>
           svc.registerMember({ displayName: displayName.value, email: email.value, password: password.value })
         );
         form.hidden = true;
+        $("[data-register-email]").textContent = email.value.trim();
+        toggle("[data-verify-sent]", verificationSent);
+        toggle("[data-verify-failed]", !verificationSent);
         toggle("[data-register-done]", true);
         $("[data-register-done] h2")?.focus();
       } catch (error) {
@@ -345,11 +348,31 @@ const controllers = {
     // "account deleted" confirmation can be shown instead of redirecting.
     let deletingAccount = false;
 
+    let verificationRechecked = false;
+    let loadedFor = null;
+
+    async function loadMember(user) {
+      const profile = await svc.ensureProfile(user);
+      $("[data-profile-name]").textContent = profile.displayName;
+      $("[data-profile-created]").textContent = formatDate(profile.createdAt);
+      await renderMembership(svc, user, profile);
+      await svc.savePendingConsent(user.uid).catch(() => {});
+      await renderConsent(svc, user);
+      $("[data-welcome-name]").textContent = profile.displayName;
+      $("#name-form").elements.displayName.value = profile.displayName;
+    }
+
     svc.watchAuth(async (user) => {
       if (!user) {
         if (deletingAccount) return;
         location.replace(`${url("login.html")}?next=account`);
         return;
+      }
+      // Someone returning from the verification link still has a cached
+      // "unverified" session; refresh it once so they aren't asked again.
+      if (!user.emailVerified && !verificationRechecked) {
+        verificationRechecked = true;
+        user = (await svc.refreshUser(user).catch(() => null)) ?? user;
       }
       toggle("[data-account-loading]", false);
       document.querySelectorAll("[data-account-email]").forEach((el) => { el.textContent = user.email; });
@@ -362,17 +385,25 @@ const controllers = {
 
       toggle("[data-verify-panel]", false);
       toggle("[data-member-panel]", true);
+      // Refreshing the session can fire this listener again; load once.
+      if (loadedFor === user.uid) return;
+      loadedFor = user.uid;
       try {
-        const profile = await svc.ensureProfile(user);
-        $("[data-profile-name]").textContent = profile.displayName;
-        $("[data-profile-created]").textContent = formatDate(profile.createdAt);
-        await renderMembership(svc, user, profile);
-        await svc.savePendingConsent(user.uid).catch(() => {});
-        await renderConsent(svc, user);
-        $("[data-welcome-name]").textContent = profile.displayName;
-        $("#name-form").elements.displayName.value = profile.displayName;
+        await loadMember(user);
       } catch (error) {
-        setStatus(status, friendlyAuthError(error), "error");
+        // Just after verifying, Firestore can briefly still hold the old
+        // "unverified" token. Refresh it and try once more before reporting.
+        if (error?.code !== "permission-denied") {
+          setStatus(status, friendlyAuthError(error), "error");
+        } else {
+          try {
+            await svc.refreshUser(user);
+            await new Promise((resolve) => setTimeout(resolve, 800));
+            await loadMember(user);
+          } catch (retryError) {
+            setStatus(status, friendlyAuthError(retryError), "error");
+          }
+        }
       }
       if (!adminChecked) {
         adminChecked = true;

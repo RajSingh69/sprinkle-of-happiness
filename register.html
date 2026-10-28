@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&amp;family=Nunito:ital,wght@0,400..900;1,400..700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261029b">
+  <link rel="stylesheet" href="css/style.css?v=20261030">
 </head>
 <body class="story-page account-page" data-page="register">
 <header class="site-header">
@@ -61,7 +61,9 @@
         </form>
         <div class="account-card account-narrow" data-register-done hidden>
           <h2 class="account-card-title" tabindex="-1">Please check your email</h2>
-          <p class="section-copy">We have sent you a link to verify your email address. Once verified, you can use your account.</p>
+          <p class="section-copy" data-verify-sent>We've sent a link to <strong data-register-email></strong>. Click it to verify your email, then come back and log in.</p>
+          <p class="section-copy" data-verify-failed hidden>Your account has been created, but we couldn't send the verification email just now. Go to My Account and press <strong>Resend verification email</strong>.</p>
+          <p class="programme-small">Can't find it? Check your spam or junk folder. It comes from Sprinkle of Happiness via Firebase (noreply@sprinkle-of-happiness.firebaseapp.com).</p>
           <a class="btn" href="account.html">Go to My Account</a>
         </div>
       </div>
@@ -80,8 +82,8 @@
     <div class="footer-bottom"><span>&copy; 2026 Sprinkle of Happiness Holistic Creative Arts Factory CIC.</span><span>All rights reserved.</span></div>
   </div>
 </footer>
-<script src="js/main.js?v=20261029b"></script>
-<script type="module" src="js/auth-nav.js?v=20261029b"></script>
-<script type="module" src="js/account-pages.js?v=20261029b"></script>
+<script src="js/main.js?v=20261030"></script>
+<script type="module" src="js/auth-nav.js?v=20261030"></script>
+<script type="module" src="js/account-pages.js?v=20261030"></script>
 </body>
 </html>

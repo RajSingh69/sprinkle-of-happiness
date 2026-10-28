@@ -36,12 +36,24 @@ export function watchAuth(callback) {
   return onAuthStateChanged(auth, callback);
 }
 
+// Once the login exists, later steps must not turn into a registration error:
+// retrying would only hit "email already in use". A failed name or
+// verification email is reported so the page can point to "Resend".
 export async function registerMember({ displayName, email, password }) {
   await authReady;
   const { user } = await createUserWithEmailAndPassword(auth, email.trim(), password);
-  await updateProfile(user, { displayName: cleanDisplayName(displayName) });
-  await sendEmailVerification(user, { url: pageUrl("account.html") });
-  return user;
+  let verificationSent = true;
+  try {
+    await updateProfile(user, { displayName: cleanDisplayName(displayName) });
+  } catch {
+    // The profile name falls back to the email prefix on first sign-in.
+  }
+  try {
+    await sendEmailVerification(user, { url: pageUrl("account.html") });
+  } catch {
+    verificationSent = false;
+  }
+  return { user, verificationSent };
 }
 
 export async function signInMember(email, password) {

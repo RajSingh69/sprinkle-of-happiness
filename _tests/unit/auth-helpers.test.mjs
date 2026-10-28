@@ -40,3 +40,11 @@ test("unknown errors fall back to a generic message", () => {
   assert.equal(friendlyAuthError({ code: "auth/internal-error", message: "secret details" }), "Something went wrong. Please try again.");
   assert.equal(friendlyAuthError(undefined), "Something went wrong. Please try again.");
 });
+
+test("sign-up and account errors have calm, specific messages", () => {
+  assert.equal(friendlyAuthError({ code: "auth/missing-password" }), "Please enter your password.");
+  assert.match(friendlyAuthError({ code: "auth/requires-recent-login" }), /log out, log back in/);
+  assert.match(friendlyAuthError({ code: "auth/quota-exceeded" }), /Too many attempts/);
+  assert.match(friendlyAuthError({ code: "auth/email-already-in-use" }), /try logging in or resetting your password/);
+  assert.doesNotMatch(friendlyAuthError({ code: "auth/user-not-found" }), /no account|not found|doesn't exist/i, "never reveals whether an account exists");
+});

@@ -2,11 +2,12 @@
   "name": "soh-tests",
   "private": true,
   "type": "module",
-  "description": "Firestore rules tests (run against the local emulator) and unit tests for auth helpers.",
+  "description": "Unit tests, Firestore rules tests and the membership journey (Auth + Firestore emulators).",
   "scripts": {
     "test:unit": "node --test unit/*.test.mjs",
     "test:rules": "firebase emulators:exec --only firestore --project demo-sprinkle --config ../firebase.json \"node --test rules/*.test.mjs\"",
-    "test": "npm run test:unit && npm run test:rules"
+    "test": "npm run test:unit && npm run test:rules && npm run test:journey",
+    "test:journey": "firebase emulators:exec --only auth,firestore --project demo-sprinkle --config ../firebase.json \"node --test journey/*.test.mjs\""
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^6.0.0",
