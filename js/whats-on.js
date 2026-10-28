@@ -2,7 +2,7 @@
 // Everything renders from events-data.js; the static weekly schedule further
 // down the page stays as the no-JavaScript fallback.
 import {
-  decemberEvents, PROGRAMMES, KINDS, WEEK_THEMES, VENUE_TBC, MONTH,
+  decemberEvents, PROGRAMMES, KINDS, WEEK_THEMES, VENUE_TBC, MONTH, NO_MEMBERSHIP,
   weekThemeFor, formatDate, interestMailto, isoDate
 } from "./events-data.js";
 
@@ -32,6 +32,9 @@ if (root) {
     node.append(...children.filter((c) => c != null));
     return node;
   };
+
+  // replaceChildren() would print "null" for optional parts that are absent.
+  const fill = (node, ...children) => node.replaceChildren(...children.filter((c) => c != null));
 
   const visible = (event) =>
     (state.kind === "all" || event.programme.kind === state.kind || (state.kind === "special" && event.programme.kind === "launch")) &&
@@ -92,9 +95,10 @@ if (root) {
   function renderDayPanel() {
     const dayEvents = allEvents.filter((e) => e.date === state.selected && visible(e));
     const theme = weekThemeFor(state.selected);
-    dayPanel.replaceChildren(
+    fill(dayPanel,
       el("h3", { class: "day-panel-title", text: formatDate(state.selected) }),
       theme ? el("p", { class: "day-panel-theme", text: `Year of Becoming · Week ${theme.week}: ${theme.title}` }) : null,
+      theme ? el("p", { class: "reflection-question" }, el("span", { class: "visually-hidden", text: "This week's reflection: " }), `“${theme.question}”`) : null,
       dayEvents.length
         ? el("ul", { class: "day-panel-list" }, ...dayEvents.map((e) => el("li", {}, card(e))))
         : el("p", { class: "day-panel-empty", text: "Nothing listed on this day for the current filters." })
@@ -112,7 +116,8 @@ if (root) {
         p.time ? ` · ${p.time}` : " · Time to be confirmed",
         event.label ? ` · ${event.label}` : ""),
       el("p", { class: "wo-card-summary", text: p.summary }),
-      el("p", { class: "wo-card-price", text: p.price }),
+      el("p", { class: "wo-card-price", text: `${p.price} ${NO_MEMBERSHIP}.` }),
+      el("p", { class: `booking-pill ${event.booking ? "is-open" : "is-soon"}`, text: event.booking ? `Booking open on ${event.booking.provider}` : "Booking not open yet" }),
       el("button", { type: "button", class: "btn btn-secondary wo-card-more", "data-key": event.key, "aria-label": `Details: ${p.title}, ${formatDate(event.date)}` }, "Details"));
   }
 
@@ -126,6 +131,7 @@ if (root) {
       list.append(el("section", { class: "wo-week", "aria-label": `Week ${theme.week}: ${theme.title}` },
         el("h3", { class: "wo-week-title" }, el("span", { class: "wo-week-num", text: `Week ${theme.week}` }), ` ${theme.title}`,
           el("span", { class: "wo-week-dates", text: ` ${formatDate(theme.start, { day: "numeric", month: "long" })} to ${endDay}` })),
+        el("p", { class: "reflection-question" }, el("span", { class: "visually-hidden", text: "This week's reflection: " }), `“${theme.question}”`),
         el("ul", { class: "wo-week-list" }, ...weekEvents.map((e) => el("li", {}, card(e))))));
     });
     if (!list.children.length) list.append(el("p", { class: "day-panel-empty", text: "No events match these filters." }));
@@ -138,7 +144,7 @@ if (root) {
     const p = event.programme;
     const theme = weekThemeFor(event.date);
     dialog.dataset.colour = p.colour;
-    dialogBody.replaceChildren(
+    fill(dialogBody,
       el("p", { class: "wo-dialog-kind", text: KINDS[p.kind].label }),
       el("h2", { id: "wo-dialog-title", class: "wo-dialog-title", text: p.title }),
       el("p", { class: "wo-dialog-summary", text: p.summary }),
@@ -152,18 +158,37 @@ if (root) {
         fact("Time", p.time ?? "Time to be confirmed"),
         fact("Where", VENUE_TBC),
         fact("Who it's for", p.audience),
-        fact("Price", p.price),
+        fact("Price", `${p.price} ${NO_MEMBERSHIP}.`),
         theme ? fact("Year of Becoming", `Week ${theme.week}: ${theme.title}`) : null),
-      el("div", { class: "wo-dialog-booking" },
-        el("p", {}, el("strong", { text: "Booking details coming soon." }), " Registering interest by email doesn't book a place, but we'll let you know when booking opens."),
-        el("div", { class: "actions" },
-          el("a", { class: "btn", href: interestMailto(p.title) }, "Register interest by email"),
-          p.page ? el("a", { class: "btn btn-secondary", href: p.page }, "About this programme") : null)),
+      theme ? el("p", { class: "reflection-question" }, el("span", { class: "visually-hidden", text: "This week's reflection: " }), `“${theme.question}”`) : null,
+      bookingBlock(event),
       el("p", { class: "wo-dialog-safety" }, "A community, peer-led space: not therapy, clinical treatment or crisis support. If you need help now, see ", el("a", { href: "support.html", text: "Need Support?" }), ".")
     );
     opener = trigger;
     dialog.showModal();
     dialog.querySelector(".wo-dialog-close").focus();
+  }
+
+  // A real registration link only appears once Kaan has confirmed one for this
+  // programme; until then the status says so plainly and offers an enquiry.
+  function bookingBlock(event) {
+    const p = event.programme;
+    const about = p.page ? el("a", { class: "btn btn-secondary", href: p.page }, "About this programme") : null;
+    if (event.booking) {
+      return el("div", { class: "wo-dialog-booking" },
+        el("p", { class: "booking-pill is-open", text: `Booking open on ${event.booking.provider}` }),
+        el("p", { text: `You'll register with ${event.booking.provider}. Your place is confirmed when they email you.` }),
+        el("div", { class: "actions" },
+          el("a", { class: "btn", href: event.booking.url, rel: "noopener", target: "_blank" }, `Register on ${event.booking.provider}`, el("span", { class: "visually-hidden", text: " (opens in a new tab)" })),
+          about));
+    }
+    return el("div", { class: "wo-dialog-booking" },
+      el("p", { class: "booking-pill is-soon", text: "Booking not open yet" }),
+      el("p", {}, "Times, venue and booking are still being confirmed. Send us an email and we'll tell you when booking opens. ",
+        el("strong", { text: "An email isn't a booked place." })),
+      el("div", { class: "actions" },
+        el("a", { class: "btn", href: interestMailto(p.title, event.date, event.label) }, "Email to register interest"),
+        about));
   }
 
   function fact(term, value) {

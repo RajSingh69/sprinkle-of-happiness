@@ -4321,3 +4321,15 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 .home-specials a{display:inline-flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;padding:10px 16px;border-radius:22px;background:var(--c-soft);border:2px solid var(--c);color:var(--plum);font-weight:700;text-decoration:none}
 .home-specials strong{color:var(--c)}
 @media (max-width:860px){.home-december-grid{grid-template-columns:1fr}}
+
+/* ===== Reflection questions and booking status ===== */
+.reflection-question{margin:6px 0 14px;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.35;color:var(--plum)}
+.wo-dialog .reflection-question{padding:12px 16px;border-radius:16px;background:linear-gradient(120deg,#fff3c4,#ffe3ee)}
+.booking-pill{display:inline-block;margin:2px 0;padding:4px 12px;border-radius:999px;font-weight:900;font-size:.78rem;letter-spacing:.02em}
+.booking-pill.is-soon{background:#f3eefc;color:#4b3a6e;border:1.5px dashed rgba(75,58,110,.45)}
+.booking-pill.is-open{background:#e1f5e8;color:#1f6a3d;border:1.5px solid #1f7a46}
+.wo-card .booking-pill{align-self:flex-start}
+.yob-week-list li{grid-template-columns:auto 1fr}
+.yob-week-num{grid-row:span 3}
+.yob-question{grid-column:2;display:block;margin-top:2px;font-family:var(--serif);font-style:italic;font-weight:600;color:var(--s);quotes:"\201C" "\201D"}
+.yob-weeks-intro{margin:-4px 0 16px;font-weight:700;color:var(--plum-soft)}
