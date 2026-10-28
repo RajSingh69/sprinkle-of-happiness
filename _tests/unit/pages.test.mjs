@@ -48,3 +48,10 @@ test("key features are still on their pages", () => {
     for (const needle of needles) assert.ok(html.includes(needle), `${page} is missing ${needle}`);
   }
 });
+
+test("modules import the event data with a version stamp, so stale caches can't break pages", () => {
+  for (const file of ["js/whats-on.js", "js/home-events.js"]) {
+    const src = readFileSync(join(root, file), "utf8");
+    assert.match(src, /from "\.\/events-data\.js\?v=[0-9a-z]+"/, `${file} must version its events-data import`);
+  }
+});

@@ -4,7 +4,7 @@
 import {
   decemberEvents, PROGRAMMES, KINDS, WEEK_THEMES, VENUE_TBC, MONTH, NO_MEMBERSHIP,
   weekThemeFor, formatDate, interestMailto, isoDate
-} from "./events-data.js";
+} from "./events-data.js?v=20261029b";
 
 const root = document.querySelector("[data-whats-on]");
 

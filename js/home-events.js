@@ -1,5 +1,5 @@
 // Homepage: a December preview drawn from the shared event data.
-import { PROGRAMMES } from "./events-data.js";
+import { PROGRAMMES } from "./events-data.js?v=20261029b";
 
 const mount = document.querySelector("[data-december-preview]");
 
