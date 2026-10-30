@@ -48,3 +48,9 @@ test("sign-up and account errors have calm, specific messages", () => {
   assert.match(friendlyAuthError({ code: "auth/email-already-in-use" }), /try logging in or resetting your password/);
   assert.doesNotMatch(friendlyAuthError({ code: "auth/user-not-found" }), /no account|not found|doesn't exist/i, "never reveals whether an account exists");
 });
+
+test("a disabled Firebase sign-up shows an honest message with a way to get help", () => {
+  const message = friendlyAuthError({ code: "auth/admin-restricted-operation" });
+  assert.doesNotMatch(message, /not open yet/);
+  assert.match(message, /hello@sprinkleofhappiness\.co\.uk/);
+});

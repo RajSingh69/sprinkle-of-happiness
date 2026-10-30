@@ -57,9 +57,11 @@ export function friendlyAuthError(error) {
       return "Too many attempts. Please wait a few minutes and try again.";
     case "auth/network-request-failed":
       return "We could not reach the server. Please check your connection and try again.";
+    // Firebase refuses new accounts when sign-up is switched off in the
+    // project settings (Authentication > Settings > User actions).
     case "auth/operation-not-allowed":
     case "auth/admin-restricted-operation":
-      return "New accounts are not open yet.";
+      return "We can't create new accounts right now. Please try again later, or email hello@sprinkleofhappiness.co.uk and we'll help.";
     case "auth/user-disabled":
       return "This account is not available. Please contact us for help.";
     case "permission-denied":

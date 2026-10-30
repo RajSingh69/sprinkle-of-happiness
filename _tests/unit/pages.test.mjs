@@ -55,3 +55,17 @@ test("modules import the event data with a version stamp, so stale caches can't 
     assert.match(src, /from "\.\/events-data\.js\?v=[0-9a-z]+"/, `${file} must version its events-data import`);
   }
 });
+
+test("every page has the top-bar navigation with all destinations and the Explore menu", () => {
+  const primary = ["whats-on.html", "workshops.html", "community.html", "membership.html", "bookings.html", "donate.html", "support.html"];
+  const explore = ["about.html", "kaan.html", "year-of-becoming.html", "experiences.html", "curriculum.html", "lgbtq.html", "rebel-recovery.html", "partnerships.html", "contact.html"];
+  for (const page of pages) {
+    const html = read(page);
+    const nav = html.match(/<nav class="nav-links" id="site-nav"[\s\S]*?<\/nav>/)?.[0];
+    assert.ok(nav, `${page} has the main nav`);
+    assert.match(nav, /class="nav-more-toggle" aria-expanded="false" aria-controls="nav-more-menu"/, `${page} Explore button`);
+    for (const link of [...primary, ...explore]) assert.ok(nav.includes(`${link}"`), `${page} nav links to ${link}`);
+    assert.match(html, /data-account-link/, `${page} keeps Log in / My Account`);
+    assert.match(html, /data-join-free/, `${page} keeps Join free`);
+  }
+});

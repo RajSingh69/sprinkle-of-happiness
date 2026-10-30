@@ -4063,23 +4063,7 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 [hidden]{display:none!important}
 
 /* ===== December launch update: nav, social, What's On, book, booking ===== */
-/* "Home" lives in the collapsed menu only; the logo is Home on wide screens */
-.nav-links a.nav-home{display:none}
-/* Collapse the main nav into the menu until it comfortably fits */
-@media (min-width:1361px){
-  .site-header .nav{gap:16px}
-  .site-header .nav-links{gap:14px;flex-wrap:nowrap}
-  .site-header .nav-links a{white-space:nowrap;font-size:.9rem}
-}
-@media (max-width:1360px){
-  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;padding:18px 20px 22px;flex-direction:column;align-items:flex-start;gap:4px;background:rgba(255,244,216,.97);box-shadow:0 24px 50px rgba(17,21,47,.14);border-bottom:1px solid rgba(17,21,47,.1);max-height:calc(100vh - 70px);overflow-y:auto}
-  .nav-links.open{display:flex}
-  .nav-links a{font-size:1rem;padding:8px 4px;opacity:1}
-  .nav-links a.nav-home{display:block}
-  .menu-toggle{display:block}
-  .site-header .nav{position:relative}
-  .nav > .btn.header-join{display:inline-flex}
-}
+/* Header navigation: see "Top-bar navigation" at the end of this file */
 .launch-note{margin-top:18px;font-size:.98rem;color:var(--plum)}
 .launch-note a{font-weight:800;color:var(--berry-deep)}
 .footer-launch{font-weight:700;margin-top:8px}
@@ -4333,3 +4317,58 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 .yob-week-num{grid-row:span 3}
 .yob-question{grid-column:2;display:block;margin-top:2px;font-family:var(--serif);font-style:italic;font-weight:600;color:var(--s);quotes:"\201C" "\201D"}
 .yob-weeks-intro{margin:-4px 0 16px;font-weight:700;color:var(--plum-soft)}
+
+/* Footer Instagram pills: the general ".footer a" colour (pale lilac) out-ranked
+   the pill's own colour and left pale text on a white pill. Use light text on a
+   translucent pill that suits the dark footer. */
+.footer .social-link,.footer a.social-link{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.55);color:#fff;max-width:none}
+.footer .social-link span{color:inherit}
+.footer .social-link:hover{background:#ffb3cd;border-color:#ffb3cd;color:#2b2140}
+.footer .social-link:focus-visible{outline:3px solid #ffd95a;outline-offset:3px;background:#ffb3cd;border-color:#ffb3cd;color:#2b2140}
+
+/* ===== Top-bar navigation =====
+   Wide screens: main destinations in the header, secondary pages under
+   "Explore". Narrower screens: a compact Menu button that opens a dropdown
+   panel directly beneath the header. */
+.site-header .nav{position:relative}
+.nav-more{position:relative}
+.nav-more-toggle{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0;border:0;background:none;font:inherit;font-family:var(--sans);font-weight:700;color:var(--plum);cursor:pointer}
+.nav-more-caret{width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+.nav-more.open .nav-more-caret{transform:translateY(1px) rotate(-135deg)}
+.nav-more.has-active .nav-more-toggle,.nav-more-toggle:hover{color:var(--berry)}
+.nav-more-toggle:focus-visible{outline:3px solid var(--midnight);outline-offset:3px;border-radius:8px}
+.nav-more-heading{display:none}
+.nav-links .nav-more-menu a::after{display:none}
+.nav-links .nav-more-menu a{display:block;padding:9px 12px;border-radius:12px;font-size:.95rem;opacity:1;white-space:nowrap}
+.nav-links .nav-more-menu a:hover,.nav-links .nav-more-menu a:focus-visible{background:#fff0f5;color:var(--berry-deep)}
+.nav-links .nav-more-menu a[aria-current="page"]{background:#fff0f5;color:var(--berry-deep)}
+
+@media (min-width:1201px){
+  .site-header .nav{gap:16px}
+  .site-header .nav-links{display:flex;align-items:center;gap:16px;flex-wrap:nowrap}
+  .site-header .nav-links>a{white-space:nowrap;font-size:.9rem;opacity:1}
+  .nav-links a.nav-home{display:none}
+  .menu-toggle{display:none}
+  .nav-more-menu{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);z-index:1000;display:none;min-width:250px;padding:10px;border-radius:20px;background:#fff;border:1px solid rgba(43,33,64,.1);box-shadow:0 24px 50px -18px rgba(17,21,47,.35)}
+  .nav-more.open .nav-more-menu{display:grid;gap:2px}
+}
+
+@media (max-width:1200px){
+  .menu-toggle{display:inline-flex;align-items:center;justify-content:center}
+  .site-header .nav-links{display:none;position:absolute;top:calc(100% + 6px);right:0;left:auto;z-index:1000;width:min(440px,calc(100vw - 32px));max-height:calc(100vh - 96px);max-height:calc(100dvh - 96px);overflow-y:auto;overscroll-behavior:contain;padding:12px;flex-direction:column;align-items:stretch;gap:2px;background:#fffaf2;border:1px solid rgba(43,33,64,.1);border-radius:22px;box-shadow:0 30px 60px -20px rgba(17,21,47,.4)}
+  .site-header .nav-links.open{display:flex}
+  .site-header .nav-links>a{display:block;padding:11px 14px;border-radius:14px;font-size:1rem;opacity:1;color:var(--plum)}
+  .site-header .nav-links>a::after{display:none}
+  .site-header .nav-links>a:hover,.site-header .nav-links>a:focus-visible,.site-header .nav-links>a[aria-current="page"]{background:#fff0f5;color:var(--berry-deep)}
+  .nav-links a.nav-home{display:block}
+  .site-header .nav-links .support-nav{align-self:flex-start;margin:4px 14px 0}
+  .nav-more{order:3;margin-top:8px;padding-top:10px;border-top:1px solid rgba(43,33,64,.12)}
+  .nav-more-toggle{display:none}
+  .nav-more-heading{display:block;margin:0 14px 4px;font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:var(--plum-soft)}
+  .nav-more-menu{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+  .nav-more-heading{grid-column:1/-1}
+  .nav-links .nav-more-menu a{white-space:normal}
+}
+@media (max-width:420px){
+  .nav-more-menu{grid-template-columns:1fr}
+}

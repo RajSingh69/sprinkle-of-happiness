@@ -1,24 +1,63 @@
 ﻿const menuButton = document.querySelector(".menu-toggle");
 const navigation = document.querySelector(".nav-links");
 
+const moreMenu = navigation?.querySelector(".nav-more");
+const moreButton = moreMenu?.querySelector(".nav-more-toggle");
+
+function setMenu(open) {
+  if (!menuButton || !navigation) return;
+  navigation.classList.toggle("open", open);
+  menuButton.setAttribute("aria-expanded", String(open));
+  menuButton.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+}
+
+function setMore(open) {
+  if (!moreMenu || !moreButton) return;
+  moreMenu.classList.toggle("open", open);
+  moreButton.setAttribute("aria-expanded", String(open));
+}
+
 if (menuButton && navigation) {
-  menuButton.setAttribute("aria-expanded", "false");
+  setMenu(false);
+  menuButton.addEventListener("click", () => setMenu(!navigation.classList.contains("open")));
 
-  menuButton.addEventListener("click", () => {
-    const isOpen = navigation.classList.toggle("open");
-    menuButton.setAttribute("aria-expanded", String(isOpen));
-    menuButton.setAttribute(
-      "aria-label",
-      isOpen ? "Close navigation" : "Open navigation"
-    );
-  });
-
+  // Choosing a destination closes everything.
   navigation.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
-      navigation.classList.remove("open");
-      menuButton.setAttribute("aria-expanded", "false");
-      menuButton.setAttribute("aria-label", "Open navigation");
+      setMenu(false);
+      setMore(false);
     });
+  });
+
+  // Clicking anywhere outside the menus closes them.
+  document.addEventListener("pointerdown", (event) => {
+    if (navigation.classList.contains("open") && !navigation.contains(event.target) && !menuButton.contains(event.target)) setMenu(false);
+    if (moreMenu?.classList.contains("open") && !moreMenu.contains(event.target)) setMore(false);
+  });
+
+  // Escape closes the open menu and returns focus to its button.
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    if (moreMenu?.classList.contains("open")) {
+      setMore(false);
+      moreButton.focus();
+    } else if (navigation.classList.contains("open")) {
+      setMenu(false);
+      menuButton.focus();
+    }
+  });
+
+  // Leaving the wide layout closes the small-screen panel.
+  window.matchMedia("(min-width: 1201px)").addEventListener("change", (event) => {
+    if (event.matches) setMenu(false);
+  });
+}
+
+if (moreMenu && moreButton) {
+  moreButton.addEventListener("click", () => setMore(!moreMenu.classList.contains("open")));
+  // Tabbing out of the Explore list closes it.
+  moreMenu.addEventListener("focusout", (event) => {
+    if (!moreMenu.contains(event.relatedTarget)) setMore(false);
   });
 }
 
