@@ -4372,3 +4372,12 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 @media (max-width:420px){
   .nav-more-menu{grid-template-columns:1fr}
 }
+
+/* Contact form and accessibility section */
+.contact-message-scene .contact-cloud-form{display:grid;gap:14px;max-width:640px;margin:0 auto}
+.contact-cloud-form textarea{min-height:150px;resize:vertical}
+.contact-cloud-form select{min-height:48px}
+.contact-cloud-form [aria-invalid="true"]{border-color:#b3122e;box-shadow:0 0 0 3px rgba(179,18,46,.18)}
+.contact-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.access-list{margin:0 0 18px;padding-left:1.2em;display:grid;gap:8px;color:var(--plum)}
+.contact-access-scene h3{margin:22px 0 8px}

@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&amp;family=Nunito:ital,wght@0,400..900;1,400..700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261030b">
+  <link rel="stylesheet" href="css/style.css?v=20261102">
 </head><body class="story-page contact-page">
 <header class="site-header">
   <div class="container nav">
@@ -51,8 +51,48 @@
 </header>
 <main class="dreamland-main inner-story-main contact-page-main">
 <section class="story-scene inner-hero contact-hero"><div class="dream-sky" aria-hidden="true"><span class="cloud cloud-large cloud-left"></span><span class="cloud cloud-medium cloud-right"></span><span class="floating-asset asset-paper asset-one"></span><span class="floating-asset asset-envelope asset-two"></span><span class="floating-asset asset-cup asset-three"></span></div><div class="container storyboard-grid"><div class="story-copy reveal"><div class="eyebrow">Contact</div><h1>Say hello.</h1><p class="dreamline">Whether you want to collaborate, volunteer, attend something or simply ask a question, we'd love to hear from you.</p></div><div class="contact-conversation-stage css-art contact-art dream-art dream-art--object reveal reveal-delay-1" aria-label="Tea, envelope and conversation motifs"><span class="asset-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9z"/><path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3c-.8 1 .8 2 0 3M12 3c-.8 1 .8 2 0 3"/></svg></span><strong>Conversation floating through the dreamland</strong><p>Messages, cups of tea and new beginnings, kept simple and welcoming.</p></div></div></section>
-<section class="story-scene contact-pathways-scene"><div class="container"><div class="contact-cloud-path reveal" aria-label="Contact pathways"><a href="#contact-email">General enquiry</a><a href="#contact-email">Volunteering</a><a href="#contact-email">Collaboration</a><a href="partnerships.html">Partnerships</a><a href="#contact-email">Funders</a><a href="#contact-email">Media / Creative</a><a href="community.html">Community</a><a href="experiences.html">Experiences</a><a href="support.html">Need Support</a></div></div></section>
+<section class="story-scene contact-pathways-scene"><div class="container"><div class="contact-cloud-path reveal" aria-label="Contact pathways"><a href="#contact-form-section" data-enquiry="General enquiry">General enquiry</a><a href="#contact-form-section" data-enquiry="Volunteering">Volunteering</a><a href="#contact-form-section" data-enquiry="Collaboration or partnership">Collaboration</a><a href="partnerships.html">Partnerships</a><a href="#contact-form-section" data-enquiry="Funding">Funders</a><a href="#contact-form-section" data-enquiry="Media or creative project">Media / Creative</a><a href="community.html">Community</a><a href="experiences.html">Experiences</a><a href="support.html">Need Support</a></div></div></section>
 <section class="story-scene contact-form-scene" id="contact-email" aria-labelledby="contact-email-title"><div class="container storyboard-grid"><div class="contact-email-card reveal"><div class="eyebrow">Email us</div><h2 id="contact-email-title" class="section-title">Get in touch</h2><p><a class="contact-email-link" href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a></p><p class="section-copy">You are welcome to email us about general enquiries, volunteering, collaboration and partnerships, funding, experiences and workshops, yoga, membership, or media and creative projects.</p><p class="programme-small">This inbox is not monitored for emergencies. We will reply when we can.</p><p class="section-copy">Want to book time with Kaan?</p><a class="btn btn-secondary" href="https://calendly.com/kaansingh-sprinkleofhappiness" target="_blank" rel="noopener noreferrer">Explore available appointments<span class="visually-hidden"> (opens Calendly in a new tab)</span></a><p class="programme-small">Appointments are booked through Calendly, an external booking service. Please check each appointment's details and any price before booking. Your appointment is only confirmed once Calendly confirms it.</p></div><div class="story-copy reveal reveal-delay-1"><div class="eyebrow">Need urgent help?</div><h2 class="section-title">Please contact emergency or crisis services.</h2><p class="section-copy">Sprinkle of Happiness is not a crisis or emergency service, and email is for general enquiries only. If you may be in danger, call 999 or go to A&amp;E. You can call Samaritans any time on <a href="tel:116123">116 123</a>.</p><a class="btn" href="support.html">Need Support</a></div></div></section>
+<section class="story-scene contact-message-scene" id="contact-form-section" aria-labelledby="contact-form-title"><div class="container narrow-story">
+<form id="contact-form" class="support-request-form contact-cloud-form account-card reveal" novalidate>
+  <div class="eyebrow">Send us a message</div>
+  <h2 id="contact-form-title" class="section-title">Contact form</h2>
+  <p class="programme-small">All fields are required. Please don't include health details or anything private you'd rather not put in an email. This form isn't monitored for emergencies.</p>
+  <label>Your name<input type="text" name="name" autocomplete="name" maxlength="60" required></label>
+  <label>Your email<input type="email" name="email" autocomplete="email" required></label>
+  <label>What is it about?<select name="topic" required><option value="">Please choose</option><option value="General enquiry">General enquiry</option><option value="Volunteering">Volunteering</option><option value="Collaboration or partnership">Collaboration or partnership</option><option value="Funding">Funding</option><option value="Workshops and events">Workshops and events</option><option value="Membership">Membership</option><option value="Media or creative project">Media or creative project</option><option value="Accessibility">Accessibility</option><option value="Something else">Something else</option></select></label>
+  <label>Your message <span class="field-hint" data-message-count>0 / 3000</span><textarea name="message" rows="6" maxlength="3000" required></textarea></label>
+  <div class="contact-hp" aria-hidden="true"><label>Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+  <button class="btn" type="submit">Send message</button>
+  <p id="contact-status" class="form-status" role="status" aria-live="polite"></p>
+  <p class="programme-small" data-delivery="mailto">Pressing Send message opens your email app with your message ready to send to hello@sprinkleofhappiness.co.uk. Nothing is sent until you press Send there. We use your details only to reply to you; see our <a href="privacy.html#contact">Privacy Notice</a>.</p>
+  <p class="programme-small" data-delivery="direct" hidden>Your message is sent to hello@sprinkleofhappiness.co.uk through our form provider, Web3Forms. We use your details only to reply to you; see our <a href="privacy.html#contact">Privacy Notice</a>.</p>
+</form>
+</div></section>
+<section class="story-scene contact-access-scene scene-soft" id="accessibility" aria-labelledby="accessibility-title"><div class="container narrow-story reveal">
+<div class="eyebrow">Accessibility</div>
+<h2 id="accessibility-title" class="section-title">Accessibility</h2>
+<p class="section-copy">We want everyone to be able to use this website and take part in our community. Here is what we've done so far, what we know still needs work, and how to tell us about any difficulty.</p>
+<h3>On this website</h3>
+<ul class="access-list">
+<li>Pages are built to work on phones, tablets and computers, from small 360px screens upwards.</li>
+<li>You can move around with a keyboard. Menus open and close with Enter and Escape, and the item you're on is clearly outlined.</li>
+<li>Images have text descriptions for screen readers, and decorative images are hidden from them.</li>
+<li>If your device is set to reduce motion, animations are switched off or kept to a minimum.</li>
+<li>Crisis-support details are available from every page.</li>
+</ul>
+<h3>What we know still needs work</h3>
+<ul class="access-list">
+<li>There is no "skip to main content" link yet.</li>
+<li>Some pages use soft colours and decorative backgrounds, and we haven't yet checked the colour contrast of every page.</li>
+<li>Booking and payment pages provided by other services, such as Calendly and Stripe, are outside our control.</li>
+</ul>
+<p class="section-copy">We haven't had this website formally audited against the Web Content Accessibility Guidelines (WCAG), so we don't claim it meets them.</p>
+<h3>At our sessions and events</h3>
+<p class="section-copy">Accessibility details for each session, such as venue access, will be shared as they are confirmed. If you have access needs, or would like information in another format, please tell us before you come and we'll do our best to help.</p>
+<h3>Tell us about a problem</h3>
+<p class="section-copy">If something on this website doesn't work for you, please email <a href="mailto:hello@sprinkleofhappiness.co.uk?subject=Accessibility">hello@sprinkleofhappiness.co.uk</a> or use the contact form above and choose <strong>Accessibility</strong>. Tell us which page and what happened, and we'll reply when we can.</p>
+</div></section>
 <section class="story-scene contact-hospitality-scene scene-final"><div class="dream-sky" aria-hidden="true"><span class="floating-asset asset-cup asset-one"></span><span class="floating-asset asset-envelope asset-two"></span></div><div class="container hospitality-moment dream-art dream-art--foreground reveal"><span class="asset-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9z"/><path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3c-.8 1 .8 2 0 3M12 3c-.8 1 .8 2 0 3"/></svg></span><h2 class="section-title">Sometimes something meaningful begins with a conversation and a cup of tea.</h2><div class="actions"><a class="btn" href="community.html">Community</a><a class="btn btn-secondary" href="coffee.html">Let's Get a Coffee</a></div></div></section>
 </main>
 <footer class="footer">
@@ -61,14 +101,15 @@
       <div><div class="brand footer-brand"><img class="brand-logo footer-logo" src="assets/images/logo/soh-logo-192.webp" srcset="assets/images/logo/soh-logo-192.webp 1x, assets/images/logo/soh-logo-400.webp 2x" width="88" height="88" alt="Sprinkle of Happiness Holistic Wellness logo: a figure with arms raised beneath colourful hearts" loading="lazy"><span>Sprinkle of Happiness</span></div><p>A community-led creative wellbeing space for healing, expression and connection.</p><p class="footer-launch">Pilot events in November 2026. Official launch 1 December 2026.</p><div class="social-links" aria-label="Instagram"><a class="social-link" href="https://www.instagram.com/areyouasurvivorcom/" rel="noopener" target="_blank" aria-label="Are You a Survivor? on Instagram (opens in a new tab)"><svg class="social-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></svg><span>@areyouasurvivorcom</span></a><a class="social-link" href="https://www.instagram.com/sprinkleofhappinesslondon/" rel="noopener" target="_blank" aria-label="Sprinkle of Happiness London on Instagram (opens in a new tab)"><svg class="social-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></svg><span>@sprinkleofhappinesslondon</span></a></div></div>
       <div><h2 class="footer-heading">Explore</h2><p><a href="about.html">About</a></p><p><a href="kaan.html">Meet Kaan</a></p><p><a href="whats-on.html">What's On</a></p><p><a href="year-of-becoming.html">Year of Becoming</a></p><p><a href="workshops.html">Workshops</a></p><p><a href="experiences.html">Experiences</a></p><p><a href="curriculum.html">Our Curriculum</a></p><p><a href="yoga.html">Yoga</a></p><p><a href="reiki.html">Reiki</a></p><p><a href="values.html">Our Values</a></p></div>
       <div><h2 class="footer-heading">Community</h2><p><a href="community.html">Community</a></p><p><a href="lgbtq.html">LGBTQ+ Safe Space</a></p><p><a href="rebel-recovery.html">Rebel Recovery</a></p><p><a href="membership.html">Membership</a></p><p><a href="bookings.html">Book a Session</a></p><p><a href="donate.html">Donate</a></p><p><a href="partnerships.html">Partner With Us</a></p><p><a href="coffee.html">Let's Get a Coffee</a></p><p><a href="contact.html">Contact</a></p></div>
-      <div><h2 class="footer-heading">Support</h2><p><a href="support.html">Need Support?</a></p><p><a href="privacy.html">Privacy Notice</a></p><p><a href="terms.html">Member Account Terms</a></p><p class="footer-policy-note">Our safeguarding policy is being prepared.</p><p><a href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a></p></div>
+      <div><h2 class="footer-heading">Support</h2><p><a href="support.html">Need Support?</a></p><p><a href="contact.html#accessibility">Accessibility</a></p><p><a href="privacy.html">Privacy Notice</a></p><p><a href="terms.html">Member Account Terms</a></p><p class="footer-policy-note">Our safeguarding policy is being prepared.</p><p><a href="mailto:hello@sprinkleofhappiness.co.uk">hello@sprinkleofhappiness.co.uk</a></p></div>
     </div>
     <div class="notice"><strong>Need urgent help?</strong> If there is immediate danger, call <strong>999</strong> or go to A&amp;E. Samaritans: <a href="tel:116123"><strong>116 123</strong></a>.</div>
     <div class="footer-bottom"><span>&copy; 2026 Sprinkle of Happiness Holistic Creative Arts Factory CIC.</span><span>All rights reserved.</span></div>
   </div>
 </footer>
-<script src="js/main.js?v=20261030b"></script>
-<script type="module" src="js/auth-nav.js?v=20261030b"></script>
+<script src="js/main.js?v=20261102"></script>
+<script type="module" src="js/auth-nav.js?v=20261102"></script>
+<script type="module" src="js/contact-form.js?v=20261102"></script>
 </body>
 </html>
 

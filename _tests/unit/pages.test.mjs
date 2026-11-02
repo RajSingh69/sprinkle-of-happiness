@@ -41,7 +41,10 @@ test("key features are still on their pages", () => {
     "donate.html": ["data-donations-off", "donate-form"],
     "whats-on.html": ["data-whats-on", "wo-dialog", "whats-on.js"],
     "year-of-becoming.html": ['id="winter"', 'id="spring"', 'id="summer"', 'id="autumn"', "yob-question"],
-    "kaan.html": ["Buy on Lulu", "Buy on Amazon"]
+    "kaan.html": ["Buy on Lulu", "Buy on Amazon"],
+    "contact.html": ['id="contact-form"', 'name="website"', 'id="accessibility"', "contact-form.js"],
+    "about.html": ['id="about-founder"'],
+    "workshops.html": ['id="workshop-dates"']
   };
   for (const [page, needles] of Object.entries(expect)) {
     const html = read(page);
