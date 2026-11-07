@@ -4381,3 +4381,14 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 .contact-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .access-list{margin:0 0 18px;padding-left:1.2em;display:grid;gap:8px;color:var(--plum)}
 .contact-access-scene h3{margin:22px 0 8px}
+
+/* Meet Kaan: works and projects */
+.works-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.works-col{padding:clamp(18px,3vw,28px);border-radius:26px;background:#fff;border:1px solid rgba(43,33,64,.08);box-shadow:var(--dream-shadow)}
+.works-col h3{margin:0 0 12px;color:var(--berry-deep)}
+.works-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.works-list li{display:grid;grid-template-columns:76px 1fr;gap:2px 12px;align-items:baseline}
+.works-year{grid-row:span 2;font-weight:900;font-size:.85rem;color:var(--plum-soft)}
+.works-list strong{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--plum);overflow-wrap:anywhere}
+.works-type{font-size:.92rem;color:var(--plum-soft)}
+@media (max-width:760px){.works-grid{grid-template-columns:1fr}.works-list li{grid-template-columns:64px 1fr}}
