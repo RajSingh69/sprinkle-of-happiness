@@ -4382,13 +4382,18 @@ a[href^="mailto:"]{overflow-wrap:anywhere;word-break:break-word}
 .access-list{margin:0 0 18px;padding-left:1.2em;display:grid;gap:8px;color:var(--plum)}
 .contact-access-scene h3{margin:22px 0 8px}
 
-/* Meet Kaan: works and projects */
-.works-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.works-col{padding:clamp(18px,3vw,28px);border-radius:26px;background:#fff;border:1px solid rgba(43,33,64,.08);box-shadow:var(--dream-shadow)}
-.works-col h3{margin:0 0 12px;color:var(--berry-deep)}
-.works-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.works-list li{display:grid;grid-template-columns:76px 1fr;gap:2px 12px;align-items:baseline}
-.works-year{grid-row:span 2;font-weight:900;font-size:.85rem;color:var(--plum-soft)}
-.works-list strong{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--plum);overflow-wrap:anywhere}
-.works-type{font-size:.92rem;color:var(--plum-soft)}
-@media (max-width:760px){.works-grid{grid-template-columns:1fr}.works-list li{grid-template-columns:64px 1fr}}
+/* Meet Kaan: biography and works table */
+.kaan-bio-scene h3{margin:26px 0 8px;color:var(--berry-deep)}
+.works-table-wrap{border-radius:24px;background:#fff;border:1px solid rgba(43,33,64,.08);box-shadow:var(--dream-shadow);overflow:hidden}
+.works-table{width:100%;border-collapse:collapse;color:var(--plum)}
+.works-table th,.works-table td{padding:12px 16px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(43,33,64,.08)}
+.works-table thead th{font-size:.8rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--berry-deep);background:#fff0f5}
+.works-table tbody tr:last-child td{border-bottom:0}
+.works-table em{font-family:var(--serif);font-weight:700}
+@media (max-width:640px){
+  .works-table thead{position:absolute;left:-9999px}
+  .works-table tr{display:grid;grid-template-columns:90px 1fr;gap:2px 12px;padding:12px 16px;border-bottom:1px solid rgba(43,33,64,.08)}
+  .works-table td{padding:0;border:0}
+  .works-table td:first-child{grid-row:span 3;font-weight:900;color:var(--plum-soft)}
+  .works-table td:nth-child(3),.works-table td:nth-child(4){font-size:.9rem;color:var(--plum-soft)}
+}

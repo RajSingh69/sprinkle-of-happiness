@@ -41,7 +41,7 @@ test("key features are still on their pages", () => {
     "donate.html": ["data-donations-off", "donate-form"],
     "whats-on.html": ["data-whats-on", "wo-dialog", "whats-on.js"],
     "year-of-becoming.html": ['id="winter"', 'id="spring"', 'id="summer"', 'id="autumn"', "yob-question"],
-    "kaan.html": ["Buy on Lulu", "Buy on Amazon", 'id="background"', 'id="performance"', 'id="community-work"', 'id="works"', 'id="philosophy"', "does not practise as a therapist"],
+    "kaan.html": ["Buy on Lulu", "Buy on Amazon", 'id="biography"', 'id="career"', 'id="community-work"', 'id="works"', 'id="personal-life"', "Early life and education"],
     "contact.html": ['id="contact-form"', 'name="website"', 'id="accessibility"', "contact-form.js"],
     "about.html": ['id="about-founder"'],
     "workshops.html": ['id="workshop-dates"']
